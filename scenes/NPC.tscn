@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://bc18qelbxsy74"]
+
+[ext_resource type="Script" path="res://scripts/NPC.gd" id="1_iswqn"]
+[ext_resource type="Resource" uid="uid://bi3qk3rd2d04l" path="res://voicelines/NPC_variants.tres" id="2_sri8l"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pmrqo"]
+
+[node name="NPC" type="CharacterBody3D"]
+script = ExtResource("1_iswqn")
+variants = ExtResource("2_sri8l")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_pmrqo")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.943094, 0)
+pixel_size = 0.001
+billboard = 2

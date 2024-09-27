@@ -151,12 +151,33 @@ func _dropCursorTile(clickPos: Vector2):
 		if posInHandSpace.y < -tileHeight:
 			var posInBoardSpace = clickPos - $board.position
 			var displacedTile = $board.placeTileAtBoardCoords(tileOnCursor, clickPos)
+			_checkValidWordFromTile(tileOnCursor)
 			if displacedTile != null:
 				addTileToHand(displacedTile)
 			tileOnCursor = null
 			return
 		addTileToHand(tileOnCursor)
 		tileOnCursor = null
+
+func _checkValidWordFromTile(tile):
+	if tile.onGrid == false:
+		return
+	var horizontalTiles = $board.getContiguousTiles(tile.gridX, tile.gridY, 1, 0)
+	var verticalTiles = $board.getContiguousTiles(tile.gridX, tile.gridY, 0, 1)
+	
+	if horizontalTiles.size() > 1:
+		var horizontalString = String()
+		for horizTile in horizontalTiles:
+			horizontalString = horizontalString + horizTile.letter
+		if $dictionary.getWordDefinitions(horizontalString).size() > 0:
+			$board.highlightTiles(horizontalTiles)
+	
+	if verticalTiles.size() > 1:
+		var verticalString = String()
+		for vertTile in verticalTiles:
+			verticalString = verticalString + vertTile.letter
+		if $dictionary.getWordDefinitions(verticalString).size() > 0:
+			$board.highlightTiles(verticalTiles)
 
 func _addTile(letter, score) -> Tile:
 	var tile = tileTemplate.instantiate()
@@ -174,8 +195,13 @@ func _input(event):
 			_dropCursorTile(clickPos)
 
 func addTileToHand(tile: Tile) -> Tile:
-	tilesInHand.append(tile)
 	tile.reparent($hand)
+	
+	var handIndex = ceil((tilesInHand.size() - 1)/2 + tile.position.x/tileWidth)
+	handIndex = max(min(handIndex, tilesInHand.size()), 0)
+	print(handIndex)
+	tilesInHand.insert(handIndex, tile)
+	
 	return tile
 
 func drawRandomTile() -> Tile:

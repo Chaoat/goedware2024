@@ -99,5 +99,6 @@ func getWordDefinitions(word: String) -> Array:
 		if letterIsValid(letter) == false or currentNode[letterToIndex(letter)] == null:
 			return []
 		currentNode = currentNode[letterToIndex(letter)]
-	words.append(currentNode[numberOfLetters])
+	if currentNode[numberOfLetters] != null:
+		words.append(currentNode[numberOfLetters])
 	return words

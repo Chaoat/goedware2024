@@ -56,6 +56,48 @@ func placeTileAtBoardCoords(tile: Tile, coords: Vector2) -> Tile:
 	var indices = _boardCoordsToIndex(posInBoardSpace.x, posInBoardSpace.y)
 	return placeTile(tile, indices[0], indices[1])
 
+func getContiguousTiles(x: int, y: int, xDir: int, yDir: int) -> Array:
+	var lastTile = getTile(x, y)
+	while lastTile != null:
+		x = x - xDir
+		y = y - yDir
+		lastTile = getTile(x, y)
+	x = x + xDir
+	y = y + yDir
+	
+	var returnTiles = []
+	var nextTile = getTile(x, y)
+	while nextTile != null:
+		returnTiles.append(nextTile)
+		x = x + xDir
+		y = y + yDir
+		nextTile = getTile(x, y)
+	return returnTiles
+
+func highlightTiles(tiles: Array):
+	var minX = tiles[0].gridX
+	var minY = tiles[0].gridY
+	var maxX = tiles[0].gridX
+	var maxY = tiles[0].gridY
+	for i in range(1, tiles.size()):
+		var tile = tiles[i]
+		minX = min(minX, tile.gridX)
+		minY = min(minY, tile.gridY)
+		maxX = max(maxX, tile.gridX)
+		maxY = max(maxY, tile.gridY)
+	
+	var width = maxX - minX
+	var height = maxY - minY
+	var centerX = minX + width/2.0
+	var centerY = minY + height/2.0
+	$wordHighlight.position.x = centerX*tileWidth
+	$wordHighlight.position.y = centerY*tileHeight
+	$wordHighlight.material.set_shader_parameter("splits", tiles.size())
+	$wordHighlight.scale.x = 4*tiles.size() + 4
+	
+	if height > width:
+		$wordHighlight.rotation = PI/2
+
 func getTile(x: int, y: int) -> Tile:
 	if x >= 0 and x < boardWidth and y >= 0 and y < boardHeight:
 		return boardArray[x][y]

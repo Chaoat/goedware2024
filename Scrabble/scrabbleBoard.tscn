@@ -1,9 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://3whfta4brxjt"]
+[gd_scene load_steps=8 format=3 uid="uid://3whfta4brxjt"]
 
 [ext_resource type="Script" path="res://Scrabble/scrabble.gd" id="1_csm6w"]
 [ext_resource type="PackedScene" uid="uid://nchb22ey8og0" path="res://Scrabble/tile.tscn" id="2_8dhyv"]
 [ext_resource type="Script" path="res://Scrabble/board.gd" id="3_26o8r"]
 [ext_resource type="Script" path="res://dict/dictionary.gd" id="4_n44sb"]
+[ext_resource type="Shader" path="res://shaders/validWord.gdshader" id="4_xuo5h"]
+[ext_resource type="Texture2D" uid="uid://dwwtx6fp2xy8e" path="res://sprites/empty_tile.png" id="5_hqnx6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fe076"]
+shader = ExtResource("4_xuo5h")
+shader_parameter/splits = 2.0
 
 [node name="ScrabbleBoard" type="Control"]
 clip_contents = true
@@ -26,6 +32,13 @@ grow_vertical = 2
 
 [node name="board" type="Node2D" parent="."]
 script = ExtResource("3_26o8r")
+
+[node name="wordHighlight" type="Sprite2D" parent="board"]
+z_index = 10
+material = SubResource("ShaderMaterial_fe076")
+position = Vector2(280.25, 108)
+scale = Vector2(12, 8)
+texture = ExtResource("5_hqnx6")
 
 [node name="hand" type="Control" parent="."]
 layout_mode = 1

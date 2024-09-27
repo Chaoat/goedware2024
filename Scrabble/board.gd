@@ -38,6 +38,9 @@ func _process(dt: float) -> void:
 
 #Returns the displaced tile if there is one
 func placeTile(tile: Tile, x: int, y: int) -> Tile:
+	x = min(max(x, 0), boardWidth - 1)
+	y = min(max(y, 0), boardHeight - 1)
+	
 	var displacedTile = boardArray[x][y]
 	boardArray[x][y] = tile
 	tile.reparent(self)

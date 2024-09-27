@@ -9,6 +9,7 @@ var letter: String
 var score: int
 
 func _init() -> void:
+	
 	pass
 
 func setStats(inputletter: String, inputScore: int):

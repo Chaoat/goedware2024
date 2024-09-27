@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://dvwv3i1nchh8m"]
+
+[ext_resource type="ArrayMesh" uid="uid://cjfm5xpg5d2tb" path="res://meshes/furniture/table.obj" id="1_yibqj"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_5c24l"]
+height = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x41hj"]
+cull_mode = 1
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+grow = true
+grow_amount = 0.15
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5spl6"]
+next_pass = SubResource("StandardMaterial3D_x41hj")
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.29, 0.1914, 0.116, 1)
+
+[node name="Table" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.488895, 0)
+shape = SubResource("CylinderShape3D_5c24l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0.951557, 0)
+mesh = ExtResource("1_yibqj")
+surface_material_override/0 = SubResource("StandardMaterial3D_5spl6")

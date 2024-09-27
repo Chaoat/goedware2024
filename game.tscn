@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d37gqogm3w57j"]
 
-[ext_resource type="Script" path="res://dictionaryReader.gd" id="1_m4n62"]
+[ext_resource type="Script" path="res://dict/dictionaryReader.gd" id="1_m4n62"]
 
 [node name="Node3D" type="Node3D"]
 

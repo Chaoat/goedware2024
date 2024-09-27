@@ -1,0 +1,64 @@
+extends Node2D
+
+@export var boardWidth : int = 10
+@export var boardHeight : int = 10
+
+var tileWidth = 0
+var tileHeight = 0
+
+var boardArray = []
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	for x in range(boardWidth):
+		boardArray.append([])
+		boardArray[x].resize(boardHeight)
+
+func _indexToBoardCoords(x: int, y: int) -> Array:
+	return [x*tileWidth, y*tileHeight]
+
+func _boardCoordsToIndex(x: int, y: int) -> Array:
+	return [ceil(x/tileWidth - 0.5), ceil(y/tileHeight - 0.5)]
+
+func _updateTiles(dt: float):
+	for x in range(boardWidth):
+		for y in range(boardHeight):
+			var tile:Tile = boardArray[x][y]
+			if tile != null:
+				if tile.onGrid == false:
+					boardArray[x][y] = null
+					continue
+					
+				var coords = _indexToBoardCoords(x, y)
+				tile.position.x = coords[0]
+				tile.position.y = coords[1]
+
+func _process(dt: float) -> void:
+	_updateTiles(dt)
+
+#Returns the displaced tile if there is one
+func placeTile(tile: Tile, x: int, y: int) -> Tile:
+	var displacedTile = boardArray[x][y]
+	boardArray[x][y] = tile
+	tile.reparent(self)
+	tile.placedOnGrid(x, y)
+	
+	if displacedTile != null:
+		displacedTile.takeOffGrid()
+		return displacedTile
+	return null
+	
+func placeTileAtBoardCoords(tile: Tile, coords: Vector2) -> Tile:
+	var posInBoardSpace = coords - position
+	var indices = _boardCoordsToIndex(posInBoardSpace.x, posInBoardSpace.y)
+	return placeTile(tile, indices[0], indices[1])
+
+func getTile(x: int, y: int) -> Tile:
+	if x >= 0 and x < boardWidth and y >= 0 and y < boardHeight:
+		return boardArray[x][y]
+	return null
+
+func getTileAtBoardCoords(coords: Vector2) -> Tile:
+	var posInBoardSpace = coords - position
+	var indices = _boardCoordsToIndex(posInBoardSpace.x, posInBoardSpace.y)
+	return getTile(indices[0], indices[1])

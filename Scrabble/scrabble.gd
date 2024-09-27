@@ -1,15 +1,75 @@
 extends Control
 
-@export var boardWidth : int = 10
-@export var boardHeight : int = 10
-
 @export var tileTemplate : PackedScene
 var tileWidth = 0
 var tileHeight = 0
 
-var boardArray = []
+var tileBag : TileBag
 var tilesInHand = []
 var tileOnCursor : Tile
+
+class TileBag:
+	var numberOfLetters = 0
+	var tilesLeft = 0
+	var tilesInBag = []
+	var letterToScore = []
+	
+	func _defineLetter(number, score):
+		tilesLeft = tilesLeft + number
+		tilesInBag.append(number)
+		letterToScore.append(score)
+		numberOfLetters = numberOfLetters + 1
+	
+	func _init():
+		_defineLetter(16, 1) #a
+		_defineLetter(4, 3) #b
+		_defineLetter(6, 3) #c
+		_defineLetter(8, 2) #d
+		_defineLetter(24, 1) #e
+		_defineLetter(4, 4) #f
+		_defineLetter(5, 2) #g
+		_defineLetter(5, 4) #h
+		_defineLetter(13, 1) #i
+		_defineLetter(2, 8) #j
+		_defineLetter(2, 5) #k
+		_defineLetter(7, 1) #l
+		_defineLetter(6, 3) #m
+		_defineLetter(13, 1) #n
+		_defineLetter(15, 1) #o
+		_defineLetter(3, 4) #p
+		_defineLetter(2, 10) #q
+		_defineLetter(13, 1) #r
+		_defineLetter(10, 1) #s
+		_defineLetter(15, 1) #t
+		_defineLetter(7, 1) #u
+		_defineLetter(3, 4) #v
+		_defineLetter(4, 4) #w
+		_defineLetter(2, 8) #x
+		_defineLetter(4, 4) #y
+		_defineLetter(1, 10) #z
+	
+	func returnTile(tile: Tile):
+		var index = WordDictionary.letterToIndex(tile.letter)
+		tilesInBag[index] = tilesInBag[index] + 1
+		tilesLeft = tilesLeft + 1
+	
+	func pullTile() -> Array:
+		if tilesLeft > 0:
+			var randomChoice = randi() % tilesLeft
+			var letter
+			var score
+			for i in range(numberOfLetters):
+				var nLetters = tilesInBag[i]
+				if nLetters >= randomChoice:
+					letter = WordDictionary.indexToLetter(i)
+					score = letterToScore[i]
+					tilesInBag[i] = tilesInBag[i] - 1
+					break
+				else:
+					randomChoice = randomChoice - nLetters
+			tilesLeft = tilesLeft - 1
+			return [letter, score]
+		return []
 
 func _initTileDimensions():
 	var tempTile = tileTemplate.instantiate()
@@ -19,31 +79,16 @@ func _initTileDimensions():
 			tileHeight = max(tileHeight, ceil(child.get_transform().get_scale().y * child.get_rect().size.y))
 	print("tile width: ",tileWidth," tile height: ",tileHeight)
 	tempTile.queue_free()
-
-func _initBoard():
-	for x in range(boardWidth):
-		boardArray.append([])
-		boardArray[x].resize(boardHeight)
+	
+	$board.tileWidth = tileWidth
+	$board.tileHeight = tileHeight
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	_initTileDimensions()
-	_initBoard()
-	
-	placeTile(addTile(), 3, 2)
-	placeTile(addTile(), 3, 5)
-	addTileToHand(addTile())
-	addTileToHand(addTile())
-	addTileToHand(addTile())
-
-func _updateBoardTiles(dt: float):
-	for x in range(boardWidth):
-		for y in range(boardHeight):
-			var tile:Tile = boardArray[x][y]
-			if tile != null:
-				var coords = indexToBoardCoords(x, y)
-				tile.position.x = coords[0]
-				tile.position.y = coords[1]
+	tileBag = TileBag.new()
+	for i in range(0,11):
+		drawRandomTile()
 
 func _updateHandTiles(dt: float):
 	var tileI = 0
@@ -73,7 +118,6 @@ func _mousePosToLocalPos(pos: Vector2):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(dt: float) -> void:
-	_updateBoardTiles(dt)
 	_updateHandTiles(dt)
 	_updateTileOnCursor(dt)
 	_updateCameraMovement(dt)
@@ -94,13 +138,11 @@ func _checkHandTileClicked(clickPos: Vector2) -> bool:
 	return false
 
 func _checkBoardTileClicked(clickPos: Vector2) -> bool:
-	var posInBoardSpace = clickPos - $board.position
-	var indices = boardCoordsToIndex(posInBoardSpace.x, posInBoardSpace.y)
-	if indices[0] >= 0 and indices[0] < boardWidth and indices[1] >= 0 and indices[1] < boardHeight:
-		if boardArray[indices[0]][indices[1]] != null:
-			_putTileOnCursor(boardArray[indices[0]][indices[1]])
-			boardArray[indices[0]][indices[1]] = null
-			return true
+	var tile = $board.getTileAtBoardCoords(clickPos)
+	if tile != null:
+		_putTileOnCursor(tile)
+		tile.takeOffGrid()
+		return true
 	return false
 
 func _dropCursorTile(clickPos: Vector2):
@@ -108,14 +150,19 @@ func _dropCursorTile(clickPos: Vector2):
 		var posInHandSpace = clickPos - $hand.position
 		if posInHandSpace.y < -tileHeight:
 			var posInBoardSpace = clickPos - $board.position
-			var indices = boardCoordsToIndex(posInBoardSpace.x, posInBoardSpace.y)
-			if indices[0] >= 0 and indices[0] < boardWidth and indices[1] >= 0 and indices[1] < boardHeight:
-				if boardArray[indices[0]][indices[1]] == null:
-					placeTile(tileOnCursor, indices[0], indices[1])
-					tileOnCursor = null
-					return
+			var displacedTile = $board.placeTileAtBoardCoords(tileOnCursor, clickPos)
+			if displacedTile != null:
+				addTileToHand(displacedTile)
+			tileOnCursor = null
+			return
 		addTileToHand(tileOnCursor)
 		tileOnCursor = null
+
+func _addTile(letter, score) -> Tile:
+	var tile = tileTemplate.instantiate()
+	tile.setStats(letter, score)
+	add_child(tile)
+	return tile
 
 func _input(event):
 	if event is InputEventMouseButton:
@@ -125,25 +172,14 @@ func _input(event):
 				_checkBoardTileClicked(clickPos)
 		elif event.is_action_released("placeTile"):
 			_dropCursorTile(clickPos)
-			
-
-func indexToBoardCoords(x: int, y: int) -> Array:
-	return [x*tileWidth, y*tileHeight]
-
-func boardCoordsToIndex(x: int, y: int) -> Array:
-	return [ceil(x/tileWidth - 0.5), ceil(y/tileHeight - 0.5)]
 
 func addTileToHand(tile: Tile) -> Tile:
 	tilesInHand.append(tile)
 	tile.reparent($hand)
 	return tile
 
-func placeTile(tile: Tile, x: int, y: int) -> Tile:
-	boardArray[x][y] = tile
-	tile.reparent($board)
-	return tile
-
-func addTile() -> Tile:
-	var newTile = tileTemplate.instantiate()
-	add_child(newTile)
-	return newTile
+func drawRandomTile() -> Tile:
+	var tileStats = tileBag.pullTile()
+	if tileStats.is_empty():
+		return null
+	return addTileToHand(_addTile(tileStats[0], tileStats[1]))

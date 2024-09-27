@@ -1,11 +1,26 @@
 class_name Tile
 extends Node2D
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+var onGrid = false
+var gridX = 0
+var gridY = 0
 
+var letter: String
+var score: int
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _init() -> void:
 	pass
+
+func setStats(inputletter: String, inputScore: int):
+	letter = inputletter
+	score = inputScore
+	$Letter.text = letter
+	$Score.text = String.num_int64(score)
+
+func placedOnGrid(x: int, y: int):
+	onGrid = true
+	gridX = x
+	gridY = y
+
+func takeOffGrid():
+	onGrid = false

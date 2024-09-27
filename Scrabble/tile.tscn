@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://nchb22ey8og0"]
+
+[ext_resource type="Texture2D" uid="uid://dwwtx6fp2xy8e" path="res://sprites/empty_tile.png" id="1_iaq4b"]
+[ext_resource type="Script" path="res://Scrabble/tile.gd" id="1_itbeu"]
+
+[node name="Tile" type="Node2D"]
+script = ExtResource("1_itbeu")
+
+[node name="EmptyTile" type="Sprite2D" parent="."]
+scale = Vector2(4, 4)
+texture = ExtResource("1_iaq4b")

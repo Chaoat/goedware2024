@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://qvquajxc8rlq"]
+
+[ext_resource type="PackedScene" uid="uid://3whfta4brxjt" path="res://Scrabble/scrabbleBoard.tscn" id="1_bowbb"]
+
+[node name="Andrew" type="Node3D"]
+
+[node name="ScrabbleBoard" parent="." instance=ExtResource("1_bowbb")]
+offset_left = 762.0
+offset_top = 3.0
+offset_right = -2.0
+offset_bottom = -399.0

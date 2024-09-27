@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://mgp5vyu5py3g"]
+
+[ext_resource type="PackedScene" uid="uid://dnjrskqnue2hw" path="res://scenes/3D_player.tscn" id="1_a7fng"]
+[ext_resource type="PackedScene" uid="uid://bc18qelbxsy74" path="res://scenes/NPC.tscn" id="2_jcypb"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_mjs0o"]
+size = Vector2(20, 20)
+
+[node name="World" type="Node3D"]
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="Floor" type="MeshInstance3D" parent="Environment"]
+mesh = SubResource("PlaneMesh_mjs0o")
+
+[node name="NPC" parent="." instance=ExtResource("2_jcypb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.91534, 0, -2.79813)
+
+[node name="Player" parent="." instance=ExtResource("1_a7fng")]

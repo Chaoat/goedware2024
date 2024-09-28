@@ -68,8 +68,11 @@ interact={
 [layer_names]
 
 3d_physics/layer_1="NPC"
+3d_navigation/layer_1="Inside"
 3d_physics/layer_2="Wall"
+3d_navigation/layer_2="Outside"
 3d_physics/layer_3="Player"
+3d_physics/layer_4="Trees"
 
 [rendering]
 

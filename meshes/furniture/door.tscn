@@ -23,6 +23,8 @@ data = PackedVector3Array(-0.525, 0.975, 0.04, 0.525, 0.975, 0.04, -0.525, -0.97
 
 [node name="Door" type="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+collision_layer = 2
+collision_mask = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.939607, 0)

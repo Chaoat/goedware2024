@@ -23,3 +23,5 @@ billboard = 2
 [node name="Shadow" type="Sprite3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, 0.5, 0, -0.5, -2.18557e-08, 0, 0.068722, 0)
 texture = ExtResource("3_dhwnu")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

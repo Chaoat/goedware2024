@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bxnvu1orw53tp"]
+[gd_scene load_steps=4 format=3 uid="uid://bxnvu1orw53tp"]
 
 [ext_resource type="Texture2D" uid="uid://y0sv430l7ktc" path="res://sprites/Evergreen.webp" id="1_yxmhw"]
+[ext_resource type="Texture2D" uid="uid://dk4ms7bojytff" path="res://sprites/shadow.png" id="2_2aph0"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8meeo"]
 height = 4.05532
@@ -18,3 +19,8 @@ texture = ExtResource("1_yxmhw")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 shape = SubResource("CylinderShape3D_8meeo")
+
+[node name="Shadow" type="Sprite3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, 0.5, 0, -0.5, -2.18557e-08, 0, 0.068722, 0)
+pixel_size = 0.03
+texture = ExtResource("2_2aph0")

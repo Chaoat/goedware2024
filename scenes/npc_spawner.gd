@@ -13,7 +13,7 @@ func _ready() -> void:
 	
 func custom_setup():
 	var inside_map = inside.get_navigation_map()
-	var outside_map = outside.get_navigation_map()
+	#var outside_map = outside.get_navigation_map()
 	await get_tree().physics_frame
 	
 	var root = get_tree().root
@@ -21,7 +21,7 @@ func custom_setup():
 		x = x%variants
 		var i = npc.instantiate()
 		i.inside = inside_map
-		i.outside = outside_map
+		#i.outside = outside_map
 		i.NPC_id = x
 		i.spawn_point = NavigationServer3D.map_get_random_point(inside_map, 1, false)
 		root.call_deferred("add_child", i)

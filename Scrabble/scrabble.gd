@@ -1,5 +1,9 @@
 extends Control
 
+const dragDistanceToPickup:float = 15.0
+const doubleClickTime:float = 0.2
+const startingHandSize:int = 9
+
 @export var tileTemplate : PackedScene
 var tileWidth = 0
 var tileHeight = 0
@@ -7,6 +11,20 @@ var tileHeight = 0
 var tileBag : TileBag
 var tilesInHand = []
 var tileOnCursor : Tile
+
+var validWords = []
+var confirmedWords = []
+
+class ValidWord:
+	func _init(inputTiles):
+		tiles = inputTiles
+		word = ""
+		for tile in tiles:
+			word = word + tile.letter
+	
+	var tiles: Array
+	var word: String
+	var highlightSprite: Sprite2D
 
 class TileBag:
 	var numberOfLetters = 0
@@ -87,7 +105,7 @@ func _initTileDimensions():
 func _ready() -> void:
 	_initTileDimensions()
 	tileBag = TileBag.new()
-	for i in range(0,11):
+	for i in range(0,startingHandSize):
 		drawRandomTile()
 
 func _updateHandTiles(dt: float):
@@ -105,12 +123,22 @@ func _updateTileOnCursor(dt: float):
 		tileOnCursor.position.x = mousePos.x
 		tileOnCursor.position.y = mousePos.y
 
-var mousePosLastFrame;
-func _updateCameraMovement(dt: float):
+var waitingForDragMovement: bool
+var startingClickPos: Vector2
+var doubleClickTimer: float
+var mousePosLastFrame
+func _updateMouseMovement(dt: float):
+	doubleClickTimer = doubleClickTimer - dt
 	if Input.is_action_pressed("moveScrabbleCamera"):
 		var mouseDelta = get_viewport().get_mouse_position() - mousePosLastFrame
 		$board.move_local_x(mouseDelta.x)
 		$board.move_local_y(mouseDelta.y)
+	if waitingForDragMovement == true:
+		var mousePos: Vector2 = _mousePosToLocalPos(get_viewport().get_mouse_position())
+		if startingClickPos.distance_to(mousePos) > dragDistanceToPickup:
+			if _checkHandTileClicked(startingClickPos) == false:
+				_checkBoardTileClicked(startingClickPos)
+			waitingForDragMovement = false
 	mousePosLastFrame = get_viewport().get_mouse_position()
 
 func _mousePosToLocalPos(pos: Vector2):
@@ -120,35 +148,53 @@ func _mousePosToLocalPos(pos: Vector2):
 func _process(dt: float) -> void:
 	_updateHandTiles(dt)
 	_updateTileOnCursor(dt)
-	_updateCameraMovement(dt)
+	_updateMouseMovement(dt)
 
 func _putTileOnCursor(tile: Tile):
 	tileOnCursor = tile
 	tile.reparent(self)
 	add_child(tile)
 
+func _checkPointInTile(pointPos, tile) -> bool:
+	return pointPos.x >= tile.position.x - tileWidth/2 and pointPos.x <= tile.position.x + tileWidth/2 and pointPos.y >= tile.position.y - tileHeight/2 and pointPos.y <= tile.position.y + tileHeight/2
+
 func _checkHandTileClicked(clickPos: Vector2) -> bool:
 	var posInHandSpace = clickPos - $hand.position
 	for i in range(tilesInHand.size()):
 		var tile = tilesInHand[i]
-		if posInHandSpace.x >= tile.position.x - tileWidth/2 and posInHandSpace.x <= tile.position.x + tileWidth/2 and posInHandSpace.y >= tile.position.y - tileHeight/2 and posInHandSpace.y <= tile.position.y + tileHeight/2:
+		if _checkPointInTile(posInHandSpace, tile):
 			tilesInHand.remove_at(i)
 			_putTileOnCursor(tile)
 			return true
 	return false
 
+func _takeTileOffBoard(tile):
+	tile.takeOffGrid()
+	
+	for i in range(validWords.size() - 1, -1, -1):
+		var existingValidWord: ValidWord = validWords[i]
+		if existingValidWord.tiles.find(tile) != -1:
+			validWords.remove_at(i)
+			existingValidWord.highlightSprite.queue_free()
+	
+	_checkValidWordFromTile($board.getTile(tile.gridX - 1, tile.gridY))
+	_checkValidWordFromTile($board.getTile(tile.gridX + 1, tile.gridY))
+	_checkValidWordFromTile($board.getTile(tile.gridX, tile.gridY - 1))
+	_checkValidWordFromTile($board.getTile(tile.gridX, tile.gridY + 1))
+
 func _checkBoardTileClicked(clickPos: Vector2) -> bool:
 	var tile = $board.getTileAtBoardCoords(clickPos)
-	if tile != null:
+	if tile != null and tile.confirmed == false:
 		_putTileOnCursor(tile)
-		tile.takeOffGrid()
+		_takeTileOffBoard(tile)
+		
 		return true
 	return false
 
 func _dropCursorTile(clickPos: Vector2):
 	if tileOnCursor != null:
 		var posInHandSpace = clickPos - $hand.position
-		if posInHandSpace.y < -tileHeight:
+		if posInHandSpace.y < -tileHeight and $board.canPlaceTileAtBoardCoords(clickPos):
 			var posInBoardSpace = clickPos - $board.position
 			var displacedTile = $board.placeTileAtBoardCoords(tileOnCursor, clickPos)
 			_checkValidWordFromTile(tileOnCursor)
@@ -159,25 +205,72 @@ func _dropCursorTile(clickPos: Vector2):
 		addTileToHand(tileOnCursor)
 		tileOnCursor = null
 
+func _addValidWord(newValidWord: ValidWord) -> bool:
+	for existingValidWord:ValidWord in validWords + confirmedWords:
+		var notIdentical = false
+		for newTile in newValidWord.tiles:
+			if existingValidWord.tiles.find(newTile) == -1:
+				notIdentical = true
+				break
+		if notIdentical == false:
+			return false
+	
+	for i in range(validWords.size() - 1, -1, -1):
+		var existingValidWord: ValidWord = validWords[i]
+		var keepExistingWord: bool
+		for existingTile in existingValidWord.tiles:
+			if newValidWord.tiles.find(existingTile) == -1:
+				keepExistingWord = true
+				break
+		if keepExistingWord == false:
+			validWords.remove_at(i)
+			existingValidWord.highlightSprite.queue_free()
+	validWords.append(newValidWord)
+	return true
+
+func _confirmWord(validWord:ValidWord):
+	confirmedWords.append(validWord)
+	for i in range(validWord.tiles.size()):
+		if validWord.tiles[i].confirmed == false:
+			validWord.tiles[i].confirm()
+			drawRandomTile()
+
+func _checkWordConfirmation(clickPos: Vector2):
+	var tile = $board.getTileAtBoardCoords(clickPos)
+	if tile != null:
+		for i in range(validWords.size() - 1, -1, -1):
+			var validWord:ValidWord = validWords[i]
+			if validWord.tiles.find(tile) != -1:
+				validWords.remove_at(i)
+				validWord.highlightSprite.queue_free()
+				_confirmWord(validWord)
+
 func _checkValidWordFromTile(tile):
+	if tile == null:
+		return
 	if tile.onGrid == false:
 		return
 	var horizontalTiles = $board.getContiguousTiles(tile.gridX, tile.gridY, 1, 0)
 	var verticalTiles = $board.getContiguousTiles(tile.gridX, tile.gridY, 0, 1)
 	
-	if horizontalTiles.size() > 1:
-		var horizontalString = String()
-		for horizTile in horizontalTiles:
-			horizontalString = horizontalString + horizTile.letter
-		if $dictionary.getWordDefinitions(horizontalString).size() > 0:
-			$board.highlightTiles(horizontalTiles)
-	
-	if verticalTiles.size() > 1:
-		var verticalString = String()
-		for vertTile in verticalTiles:
-			verticalString = verticalString + vertTile.letter
-		if $dictionary.getWordDefinitions(verticalString).size() > 0:
-			$board.highlightTiles(verticalTiles)
+	if horizontalTiles.size() > 1 and verticalTiles.size() > 1:
+		var horizontalWord = ValidWord.new(horizontalTiles)
+		var verticalWord = ValidWord.new(verticalTiles)
+		if $dictionary.getWordDefinitions(horizontalWord.word).size() > 0 and $dictionary.getWordDefinitions(verticalWord.word).size() > 0:
+			if _addValidWord(horizontalWord):
+				horizontalWord.highlightSprite = $board.highlightTiles(horizontalWord.tiles)
+			if _addValidWord(verticalWord):
+				verticalWord.highlightSprite = $board.highlightTiles(verticalWord.tiles)
+	elif horizontalTiles.size() > 1:
+		var horizontalWord = ValidWord.new(horizontalTiles)
+		if $dictionary.getWordDefinitions(horizontalWord.word).size() > 0:
+			if _addValidWord(horizontalWord):
+				horizontalWord.highlightSprite = $board.highlightTiles(horizontalWord.tiles)
+	elif verticalTiles.size() > 1:
+		var verticalWord = ValidWord.new(verticalTiles)
+		if $dictionary.getWordDefinitions(verticalWord.word).size() > 0:
+			if _addValidWord(verticalWord):
+				verticalWord.highlightSprite = $board.highlightTiles(verticalWord.tiles)
 
 func _addTile(letter, score) -> Tile:
 	var tile = tileTemplate.instantiate()
@@ -189,9 +282,14 @@ func _input(event):
 	if event is InputEventMouseButton:
 		var clickPos = _mousePosToLocalPos(event.position)
 		if event.is_action_pressed("placeTile"):
-			if _checkHandTileClicked(clickPos) == false:
-				_checkBoardTileClicked(clickPos)
+			if doubleClickTimer > 0:
+				_checkWordConfirmation(clickPos)
+			else:
+				startingClickPos = clickPos
+				waitingForDragMovement = true
+				doubleClickTimer = doubleClickTime
 		elif event.is_action_released("placeTile"):
+			waitingForDragMovement = false
 			_dropCursorTile(clickPos)
 
 func addTileToHand(tile: Tile) -> Tile:

@@ -3,6 +3,8 @@ extends Node2D
 @export var boardWidth : int = 10
 @export var boardHeight : int = 10
 
+@export var highlightTemplate : PackedScene
+
 var tileWidth = 0
 var tileHeight = 0
 
@@ -36,12 +38,19 @@ func _updateTiles(dt: float):
 func _process(dt: float) -> void:
 	_updateTiles(dt)
 
+func canPlaceTileAtBoardCoords(coords: Vector2) -> bool:
+	var tile = getTileAtBoardCoords(coords)
+	return tile == null or tile.confirmed == false
+
 #Returns the displaced tile if there is one
 func placeTile(tile: Tile, x: int, y: int) -> Tile:
 	x = min(max(x, 0), boardWidth - 1)
 	y = min(max(y, 0), boardHeight - 1)
 	
 	var displacedTile = boardArray[x][y]
+	if displacedTile != null and displacedTile.confirmed:
+		return null
+	
 	boardArray[x][y] = tile
 	tile.reparent(self)
 	tile.placedOnGrid(x, y)
@@ -74,7 +83,7 @@ func getContiguousTiles(x: int, y: int, xDir: int, yDir: int) -> Array:
 		nextTile = getTile(x, y)
 	return returnTiles
 
-func highlightTiles(tiles: Array):
+func highlightTiles(tiles: Array) -> Sprite2D:
 	var minX = tiles[0].gridX
 	var minY = tiles[0].gridY
 	var maxX = tiles[0].gridX
@@ -90,17 +99,25 @@ func highlightTiles(tiles: Array):
 	var height = maxY - minY
 	var centerX = minX + width/2.0
 	var centerY = minY + height/2.0
-	$wordHighlight.position.x = centerX*tileWidth
-	$wordHighlight.position.y = centerY*tileHeight
-	$wordHighlight.material.set_shader_parameter("splits", tiles.size())
-	$wordHighlight.scale.x = 4*tiles.size() + 4
+	
+	var newHighlight:Sprite2D = highlightTemplate.instantiate()
+	add_child(newHighlight)
+	
+	newHighlight.position.x = centerX*tileWidth
+	newHighlight.position.y = centerY*tileHeight
+	newHighlight.material.set_local_to_scene(true)
+	newHighlight.material.set_shader_parameter("splits", tiles.size())
+	newHighlight.scale.x = 4*tiles.size() + 4
 	
 	if height > width:
-		$wordHighlight.rotation = PI/2
+		newHighlight.rotation = PI/2
+	
+	return newHighlight
 
 func getTile(x: int, y: int) -> Tile:
 	if x >= 0 and x < boardWidth and y >= 0 and y < boardHeight:
-		return boardArray[x][y]
+		if boardArray[x][y] != null and boardArray[x][y].onGrid == true:
+			return boardArray[x][y]
 	return null
 
 func getTileAtBoardCoords(coords: Vector2) -> Tile:

@@ -5,6 +5,8 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_bjl1e"]
 
 [node name="Player" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 2
 script = ExtResource("1_4rap4")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -16,4 +18,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-target_position = Vector3(0, 0, -1)
+target_position = Vector3(0, 0, -1.5)

@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxnvu1orw53tp"]
+
+[ext_resource type="Texture2D" uid="uid://y0sv430l7ktc" path="res://sprites/Evergreen.webp" id="1_yxmhw"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_8meeo"]
+height = 4.05532
+radius = 1.97229
+
+[node name="Tree" type="StaticBody3D"]
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.88582, 0)
+billboard = 2
+texture = ExtResource("1_yxmhw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("CylinderShape3D_8meeo")

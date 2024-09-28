@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://bwop078e42h1f"]
+
+[ext_resource type="Texture2D" uid="uid://bod5vecw08ryl" path="res://sprites/barn_door.png" id="1_imxg7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oq8c1"]
+albedo_color = Color(0.780392, 0.784314, 0.780392, 1)
+albedo_texture = ExtResource("1_imxg7")
+uv1_scale = Vector3(1.36, 1.6, 1)
+uv1_offset = Vector3(0.28, 0.185, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tebgc"]
+lightmap_size_hint = Vector2i(9, 29)
+size = Vector3(1, 1.87, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_634p6"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5hipc"]
+size = Vector3(1.05, 1.95, 0.08)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_lrwpa"]
+data = PackedVector3Array(-0.525, 0.975, 0.04, 0.525, 0.975, 0.04, -0.525, -0.975, 0.04, 0.525, 0.975, 0.04, 0.525, -0.975, 0.04, -0.525, -0.975, 0.04, 0.525, 0.975, -0.04, -0.525, 0.975, -0.04, 0.525, -0.975, -0.04, -0.525, 0.975, -0.04, -0.525, -0.975, -0.04, 0.525, -0.975, -0.04, 0.525, 0.975, 0.04, 0.525, 0.975, -0.04, 0.525, -0.975, 0.04, 0.525, 0.975, -0.04, 0.525, -0.975, -0.04, 0.525, -0.975, 0.04, -0.525, 0.975, -0.04, -0.525, 0.975, 0.04, -0.525, -0.975, -0.04, -0.525, 0.975, 0.04, -0.525, -0.975, 0.04, -0.525, -0.975, -0.04, 0.525, 0.975, 0.04, -0.525, 0.975, 0.04, 0.525, 0.975, -0.04, -0.525, 0.975, 0.04, -0.525, 0.975, -0.04, 0.525, 0.975, -0.04, -0.525, -0.975, 0.04, 0.525, -0.975, 0.04, -0.525, -0.975, -0.04, 0.525, -0.975, 0.04, 0.525, -0.975, -0.04, -0.525, -0.975, -0.04)
+
+[node name="Door" type="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.939607, 0)
+material_override = SubResource("StandardMaterial3D_oq8c1")
+mesh = SubResource("BoxMesh_tebgc")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.939607, -0.05)
+material_override = SubResource("StandardMaterial3D_oq8c1")
+mesh = SubResource("BoxMesh_tebgc")
+
+[node name="trim" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.931688, -0.024049)
+material_override = SubResource("StandardMaterial3D_634p6")
+mesh = SubResource("BoxMesh_5hipc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.931688, -0.024049)
+shape = SubResource("ConcavePolygonShape3D_lrwpa")

@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://wcp5naua7r6b"
+path="res://.godot/imported/inside_walls.obj-6b44aec91a65309316a1bf7e57de15da.mesh"
+
+[deps]
+
+files=["res://.godot/imported/inside_walls.obj-6b44aec91a65309316a1bf7e57de15da.mesh"]
+
+source_file="res://meshes/inside_walls.obj"
+dest_files=["res://.godot/imported/inside_walls.obj-6b44aec91a65309316a1bf7e57de15da.mesh", "res://.godot/imported/inside_walls.obj-6b44aec91a65309316a1bf7e57de15da.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

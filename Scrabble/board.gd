@@ -16,6 +16,11 @@ func _ready() -> void:
 		boardArray.append([])
 		boardArray[x].resize(boardHeight)
 
+func _draw():
+	for x in range(boardWidth):
+		for y in range(boardHeight):
+			draw_rect(Rect2((x - 0.5)*tileWidth, (y - 0.5)*tileHeight, tileWidth, tileHeight), Color.RED, false)
+
 func _indexToBoardCoords(x: int, y: int) -> Array:
 	return [x*tileWidth, y*tileHeight]
 
@@ -32,8 +37,8 @@ func _updateTiles(dt: float):
 					continue
 					
 				var coords = _indexToBoardCoords(x, y)
-				tile.position.x = coords[0]
-				tile.position.y = coords[1]
+				tile.targetPos.x = coords[0]
+				tile.targetPos.y = coords[1]
 
 func _process(dt: float) -> void:
 	_updateTiles(dt)
@@ -107,7 +112,7 @@ func highlightTiles(tiles: Array) -> Sprite2D:
 	newHighlight.position.y = centerY*tileHeight
 	newHighlight.material.set_local_to_scene(true)
 	newHighlight.material.set_shader_parameter("splits", tiles.size())
-	newHighlight.scale.x = 4*tiles.size() + 4
+	newHighlight.scale.x = tiles.size() + 1
 	
 	if height > width:
 		newHighlight.rotation = PI/2

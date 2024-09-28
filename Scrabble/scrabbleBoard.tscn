@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://3whfta4brxjt"]
+[gd_scene load_steps=7 format=3 uid="uid://3whfta4brxjt"]
 
 [ext_resource type="Script" path="res://Scrabble/scrabble.gd" id="1_csm6w"]
 [ext_resource type="PackedScene" uid="uid://nchb22ey8og0" path="res://Scrabble/tile.tscn" id="2_8dhyv"]
 [ext_resource type="Script" path="res://Scrabble/board.gd" id="3_26o8r"]
 [ext_resource type="Script" path="res://dict/dictionary.gd" id="4_n44sb"]
 [ext_resource type="PackedScene" uid="uid://d08gthteb2j6v" path="res://Scrabble/wordHighlight.tscn" id="4_s6gv8"]
+[ext_resource type="Texture2D" uid="uid://bpe275veohgpy" path="res://sprites/scrabble/brain.png" id="5_awfis"]
 
 [node name="ScrabbleBoard" type="Control"]
 clip_contents = true
@@ -17,7 +18,7 @@ grow_vertical = 2
 script = ExtResource("1_csm6w")
 tileTemplate = ExtResource("2_8dhyv")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="background" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -28,6 +29,11 @@ grow_vertical = 2
 [node name="board" type="Node2D" parent="."]
 script = ExtResource("3_26o8r")
 highlightTemplate = ExtResource("4_s6gv8")
+
+[node name="Brain" type="Sprite2D" parent="board"]
+position = Vector2(263, 198)
+scale = Vector2(0.304, 0.304)
+texture = ExtResource("5_awfis")
 
 [node name="hand" type="Control" parent="."]
 layout_mode = 1

@@ -112,16 +112,16 @@ func _updateHandTiles(dt: float):
 	var tileI = 0
 	var nTiles = tilesInHand.size()
 	for tile:Tile in tilesInHand:
-		tile.position.x = (tileI - (nTiles - 1)/2.0)*tileWidth
-		tile.position.y = 0
+		tile.targetPos.x = (tileI - (nTiles - 1)/2.0)*tileWidth
+		tile.targetPos.y = 0
 		tileI = tileI + 1
 
 func _updateTileOnCursor(dt: float):
 	if tileOnCursor != null:
 		var mousePos = get_viewport().get_mouse_position()
 		mousePos = _mousePosToLocalPos(mousePos)
-		tileOnCursor.position.x = mousePos.x
-		tileOnCursor.position.y = mousePos.y
+		tileOnCursor.targetPos.x = mousePos.x
+		tileOnCursor.targetPos.y = mousePos.y
 
 var waitingForDragMovement: bool
 var startingClickPos: Vector2

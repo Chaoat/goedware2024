@@ -1,16 +1,17 @@
 [gd_scene load_steps=5 format=3 uid="uid://nchb22ey8og0"]
 
-[ext_resource type="Texture2D" uid="uid://dwwtx6fp2xy8e" path="res://sprites/empty_tile.png" id="1_iaq4b"]
 [ext_resource type="Script" path="res://Scrabble/tile.gd" id="1_itbeu"]
+[ext_resource type="Texture2D" uid="uid://1kp74a1apn73" path="res://sprites/scrabble/tiles/1.png" id="2_dhrbv"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qreja"]
-font_size = 36
+font_size = 26
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 4
 shadow_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_pi7h6"]
+font_size = 12
 outline_size = 5
 outline_color = Color(0, 0, 0, 1)
 
@@ -18,8 +19,8 @@ outline_color = Color(0, 0, 0, 1)
 script = ExtResource("1_itbeu")
 
 [node name="EmptyTile" type="Sprite2D" parent="."]
-scale = Vector2(4, 4)
-texture = ExtResource("1_iaq4b")
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("2_dhrbv")
 
 [node name="Letter" type="Label" parent="."]
 offset_left = -19.0
@@ -33,10 +34,10 @@ vertical_alignment = 1
 uppercase = true
 
 [node name="Score" type="Label" parent="."]
-offset_left = 3.0
-offset_top = -6.0
-offset_right = 30.0
-offset_bottom = 51.0
+offset_left = -9.0
+offset_top = -15.0
+offset_right = 18.0
+offset_bottom = 42.0
 text = "1"
 label_settings = SubResource("LabelSettings_pi7h6")
 horizontal_alignment = 2

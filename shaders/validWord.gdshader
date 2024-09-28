@@ -26,7 +26,6 @@ void fragment() {
 	
 	dist = dist - 0.04*abs(sin(2.0*angle));
 	COLOR = edgeDist(dist - 0.06*sin(10.0*(angle + TIME))) * vec4(0.66, 0.33, 1, 1);
-	COLOR.a = COLOR.a + 0.2;
 }
 
 //void light() {

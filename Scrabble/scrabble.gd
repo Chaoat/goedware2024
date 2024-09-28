@@ -12,8 +12,13 @@ var tileBag : TileBag
 var tilesInHand = []
 var tileOnCursor : Tile
 
+var tilesSnakingOutMouth = []
+var tilesSnakingPositions = []
+
 var validWords = []
 var confirmedWords = []
+
+var desiredWords = []
 
 class ValidWord:
 	func _init(inputTiles):
@@ -21,6 +26,11 @@ class ValidWord:
 		word = ""
 		for tile in tiles:
 			word = word + tile.letter
+	
+	func clearHighlightSprite():
+		if highlightSprite != null:
+			highlightSprite.queue_free()
+			highlightSprite = null
 	
 	var tiles: Array
 	var word: String
@@ -141,6 +151,14 @@ func _updateMouseMovement(dt: float):
 			waitingForDragMovement = false
 	mousePosLastFrame = get_viewport().get_mouse_position()
 
+func _updateSnakingTiles(dt: float):
+	for i in range(tilesSnakingOutMouth.size() - 1, -1, -1):
+		var tile:Tile = tilesSnakingOutMouth[i]
+		tile.targetPos = tilesSnakingPositions[i]
+		if i == 0 and tile.position.distance_to(tile.targetPos) <= 1:
+			tilesSnakingOutMouth.remove_at(i)
+			tile.queue_free()
+
 func _mousePosToLocalPos(pos: Vector2):
 	return pos - global_position
 
@@ -149,9 +167,11 @@ func _process(dt: float) -> void:
 	_updateHandTiles(dt)
 	_updateTileOnCursor(dt)
 	_updateMouseMovement(dt)
+	_updateSnakingTiles(dt)
 
 func _putTileOnCursor(tile: Tile):
 	tileOnCursor = tile
+	tileOnCursor.localPositionLerpMult = 3
 	tile.reparent(self)
 	add_child(tile)
 
@@ -168,14 +188,20 @@ func _checkHandTileClicked(clickPos: Vector2) -> bool:
 			return true
 	return false
 
-func _takeTileOffBoard(tile):
-	tile.takeOffGrid()
-	
+func _takeTileOffBoard(tile:Tile):
+	for i in range(confirmedWords.size() - 1, -1, -1):
+		var existingValidWord: ValidWord = confirmedWords[i]
+		if existingValidWord.tiles.find(tile) != -1:
+			confirmedWords.remove_at(i)
+			existingValidWord.clearHighlightSprite()
+
 	for i in range(validWords.size() - 1, -1, -1):
 		var existingValidWord: ValidWord = validWords[i]
 		if existingValidWord.tiles.find(tile) != -1:
 			validWords.remove_at(i)
-			existingValidWord.highlightSprite.queue_free()
+			existingValidWord.clearHighlightSprite()
+	
+	tile.takeOffGrid()
 	
 	_checkValidWordFromTile($board.getTile(tile.gridX - 1, tile.gridY))
 	_checkValidWordFromTile($board.getTile(tile.gridX + 1, tile.gridY))
@@ -200,9 +226,11 @@ func _dropCursorTile(clickPos: Vector2):
 			_checkValidWordFromTile(tileOnCursor)
 			if displacedTile != null:
 				addTileToHand(displacedTile)
+			tileOnCursor.localPositionLerpMult = 1
 			tileOnCursor = null
 			return
 		addTileToHand(tileOnCursor)
+		tileOnCursor.localPositionLerpMult = 1
 		tileOnCursor = null
 
 func _addValidWord(newValidWord: ValidWord) -> bool:
@@ -224,9 +252,62 @@ func _addValidWord(newValidWord: ValidWord) -> bool:
 				break
 		if keepExistingWord == false:
 			validWords.remove_at(i)
-			existingValidWord.highlightSprite.queue_free()
+			existingValidWord.clearHighlightSprite()
 	validWords.append(newValidWord)
 	return true
+
+func _randomlySelectDesiredWord() -> ValidWord:
+	if desiredWords.size() >= confirmedWords.size():
+		return null
+	var index = randi()%confirmedWords.size()
+	var validChoice = false
+	while validChoice == false:
+		validChoice = true
+		for word in desiredWords:
+			if confirmedWords[index] == word:
+				validChoice = false
+				index = randi()%confirmedWords.size()
+				break
+				
+	desiredWords.append(confirmedWords[index])
+	confirmedWords[index].highlightSprite = $board.highlightTiles(confirmedWords[index].tiles, Vector4(0.2, 0.8, 1.0, 1.0))
+	return confirmedWords[index]
+
+func _snakeIntoMouth(tile:Tile):
+	if tilesSnakingOutMouth.is_empty():
+		tilesSnakingPositions.clear()
+	tilesSnakingPositions.append(tile.position)
+	tile.localPositionLerpMult = 2
+	tilesSnakingOutMouth.append(tile)
+	_takeTileOffBoard(tile)
+
+func _checkDesiredWordDone(desiredWord:ValidWord) -> bool:
+	var endzoneTiles = $board.getTilesInEndzone()
+	for tile:Tile in endzoneTiles:
+		var tiles:Array = $board.pathfindBetweenTiles(tile, desiredWord.tiles[0])
+		if tiles.is_empty() == false:
+			for pathTile in tiles:
+				if pathTile.onGrid:
+					var isDesiredWord = false
+					for i in range(desiredWords.size() - 1, -1, -1):
+						var checkingDesiredWord:ValidWord = desiredWords[i]
+						if checkingDesiredWord.tiles.find(pathTile) != -1:
+							isDesiredWord = true
+							for desiredTile in checkingDesiredWord.tiles:
+								if desiredTile.onGrid:
+									_snakeIntoMouth(desiredTile)
+							desiredWords.remove_at(i)
+					
+					if isDesiredWord == false:
+						_snakeIntoMouth(pathTile)
+			return true
+	return false
+
+func _checkDesiredWordOnPosition(clickPos: Vector2):
+	var tile = $board.getTileAtBoardCoords(clickPos)
+	for desiredWord:ValidWord in desiredWords:
+		if desiredWord.tiles.find(tile) != -1:
+			_checkDesiredWordDone(desiredWord)
 
 func _confirmWord(validWord:ValidWord):
 	confirmedWords.append(validWord)
@@ -234,6 +315,13 @@ func _confirmWord(validWord:ValidWord):
 		if validWord.tiles[i].confirmed == false:
 			validWord.tiles[i].confirm()
 			drawRandomTile()
+	
+	for i in range(validWords.size()):
+		if validWords[i] == validWord:
+			validWords.remove_at(i)
+	
+	if desiredWords.size() == 0:
+		_randomlySelectDesiredWord()
 
 func _checkWordConfirmation(clickPos: Vector2):
 	var tile = $board.getTileAtBoardCoords(clickPos)
@@ -242,7 +330,7 @@ func _checkWordConfirmation(clickPos: Vector2):
 			var validWord:ValidWord = validWords[i]
 			if validWord.tiles.find(tile) != -1:
 				validWords.remove_at(i)
-				validWord.highlightSprite.queue_free()
+				validWord.clearHighlightSprite()
 				_confirmWord(validWord)
 
 func _checkValidWordFromTile(tile):
@@ -258,19 +346,19 @@ func _checkValidWordFromTile(tile):
 		var verticalWord = ValidWord.new(verticalTiles)
 		if $dictionary.getWordDefinitions(horizontalWord.word).size() > 0 and $dictionary.getWordDefinitions(verticalWord.word).size() > 0:
 			if _addValidWord(horizontalWord):
-				horizontalWord.highlightSprite = $board.highlightTiles(horizontalWord.tiles)
+				horizontalWord.highlightSprite = $board.highlightTiles(horizontalWord.tiles, Vector4(0.66, 0.33, 1.0, 1.0))
 			if _addValidWord(verticalWord):
-				verticalWord.highlightSprite = $board.highlightTiles(verticalWord.tiles)
+				verticalWord.highlightSprite = $board.highlightTiles(verticalWord.tiles, Vector4(0.66, 0.33, 1.0, 1.0))
 	elif horizontalTiles.size() > 1:
 		var horizontalWord = ValidWord.new(horizontalTiles)
 		if $dictionary.getWordDefinitions(horizontalWord.word).size() > 0:
 			if _addValidWord(horizontalWord):
-				horizontalWord.highlightSprite = $board.highlightTiles(horizontalWord.tiles)
+				horizontalWord.highlightSprite = $board.highlightTiles(horizontalWord.tiles, Vector4(0.66, 0.33, 1.0, 1.0))
 	elif verticalTiles.size() > 1:
 		var verticalWord = ValidWord.new(verticalTiles)
 		if $dictionary.getWordDefinitions(verticalWord.word).size() > 0:
 			if _addValidWord(verticalWord):
-				verticalWord.highlightSprite = $board.highlightTiles(verticalWord.tiles)
+				verticalWord.highlightSprite = $board.highlightTiles(verticalWord.tiles, Vector4(0.66, 0.33, 1.0, 1.0))
 
 func _addTile(letter, score) -> Tile:
 	var tile = tileTemplate.instantiate()
@@ -284,6 +372,7 @@ func _input(event):
 		if event.is_action_pressed("placeTile"):
 			if doubleClickTimer > 0:
 				_checkWordConfirmation(clickPos)
+				_checkDesiredWordOnPosition(clickPos)
 			else:
 				startingClickPos = clickPos
 				waitingForDragMovement = true

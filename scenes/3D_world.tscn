@@ -9,7 +9,7 @@
 [ext_resource type="ArrayMesh" uid="uid://mw021gkb7k68" path="res://meshes/roof.obj" id="3_wh0d0"]
 [ext_resource type="ArrayMesh" uid="uid://bk8oe6cwx5f1x" path="res://meshes/outside_walls.obj" id="4_0eta0"]
 [ext_resource type="PackedScene" uid="uid://bxnvu1orw53tp" path="res://scenes/furniture/tree.tscn" id="5_vpx7i"]
-[ext_resource type="NavigationMesh" uid="uid://d3kvfp2mdkjnj" path="res://meshes/navmesh.tres" id="6_83n75"]
+[ext_resource type="NavigationMesh" path="res://meshes/navmesh.tres" id="6_83n75"]
 [ext_resource type="Script" path="res://scripts/roof.gd" id="7_orhr8"]
 [ext_resource type="Script" path="res://scenes/npc_spawner.gd" id="10_bttmi"]
 [ext_resource type="PackedScene" uid="uid://bhqkj3yodgg2t" path="res://meshes/furniture/sofa.tscn" id="12_lqxl8"]

@@ -5,6 +5,8 @@ extends Node2D
 
 @export var highlightTemplate : PackedScene
 
+var endZone : Array = [[2,3], [3,3], [3,4], [4,4]]
+
 var tileWidth = 0
 var tileHeight = 0
 
@@ -88,7 +90,7 @@ func getContiguousTiles(x: int, y: int, xDir: int, yDir: int) -> Array:
 		nextTile = getTile(x, y)
 	return returnTiles
 
-func highlightTiles(tiles: Array) -> Sprite2D:
+func highlightTiles(tiles: Array, colour: Vector4) -> Sprite2D:
 	var minX = tiles[0].gridX
 	var minY = tiles[0].gridY
 	var maxX = tiles[0].gridX
@@ -112,6 +114,7 @@ func highlightTiles(tiles: Array) -> Sprite2D:
 	newHighlight.position.y = centerY*tileHeight
 	newHighlight.material.set_local_to_scene(true)
 	newHighlight.material.set_shader_parameter("splits", tiles.size())
+	newHighlight.material.set_shader_parameter("colour", colour)
 	newHighlight.scale.x = tiles.size() + 1
 	
 	if height > width:
@@ -129,3 +132,50 @@ func getTileAtBoardCoords(coords: Vector2) -> Tile:
 	var posInBoardSpace = coords - position
 	var indices = _boardCoordsToIndex(posInBoardSpace.x, posInBoardSpace.y)
 	return getTile(indices[0], indices[1])
+
+func getTilesInEndzone() -> Array:
+	var tiles = []
+	for endZoneCoord in endZone:
+		var tile = getTile(endZoneCoord[0], endZoneCoord[1])
+		if tile != null:
+			tiles.append(tile)
+	return tiles
+
+func isTileInEndzone(tile: Tile) -> bool:
+	for endZoneCoord in endZone:
+		if tile.gridX == endZoneCoord[0] and tile.gridY == endZoneCoord[1]:
+			return true
+	return false
+
+func pathfindBetweenTiles(tile1:Tile, tile2:Tile) -> Array:
+	var checkingTiles = [[tile1, null]]
+	var checkedTiles = []
+	
+	var checkTileValid = func(tile:Tile) -> bool:
+		return tile != null and tile.confirmed == true and checkedTiles.find(tile) == -1
+	
+	while checkingTiles.size() > 0:
+		var nextTileGroup = checkingTiles.pop_front()
+		var tile = nextTileGroup[0]
+		
+		if tile == tile2:
+			var returnTiles = []
+			while nextTileGroup != null:
+				returnTiles.push_front(nextTileGroup[0])
+				nextTileGroup = nextTileGroup[1]
+			return returnTiles
+		
+		var leftTile = getTile(tile.gridX - 1, tile.gridY)
+		if checkTileValid.call(leftTile):
+			checkingTiles.append([leftTile, nextTileGroup])
+		var topTile = getTile(tile.gridX, tile.gridY - 1)
+		if checkTileValid.call(topTile):
+			checkingTiles.append([topTile, nextTileGroup])
+		var rightTile = getTile(tile.gridX + 1, tile.gridY)
+		if checkTileValid.call(rightTile):
+			checkingTiles.append([rightTile, nextTileGroup])
+		var bottomTile = getTile(tile.gridX, tile.gridY + 1)
+		if checkTileValid.call(bottomTile):
+			checkingTiles.append([bottomTile, nextTileGroup])
+		checkedTiles.append(tile)
+	return []

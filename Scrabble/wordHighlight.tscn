@@ -6,6 +6,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fe076"]
 shader = ExtResource("1_iiy8f")
 shader_parameter/splits = 2.0
+shader_parameter/colour = Vector4(0.66, 0.33, 1, 1)
 
 [node name="wordHighlight" type="Sprite2D"]
 z_index = 10

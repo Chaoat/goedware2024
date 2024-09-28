@@ -40,6 +40,9 @@ func _process(dt: float) -> void:
 		#if abs(position - targetPos) <= lerpLeeway:
 		#	position = targetPos
 
+func isWildtile() -> bool:
+	return letter == "?"
+
 func setStats(inputletter: String, inputScore: int):
 	letter = inputletter
 	score = inputScore

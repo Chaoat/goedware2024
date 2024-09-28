@@ -9,7 +9,7 @@ float edgeDist(float edge) {
 
 void fragment() {
 	float edgeRatio = (4.0*splits + 4.0)/(4.0*splits);
-	
+
 	vec2 stretchedUV = vec2(splits*(UV.x - 0.5), UV.y);
 	float dist = 1.0;
 	float angle = 0.0;
@@ -24,7 +24,7 @@ void fragment() {
 			angle = (2.0*mod(i, 2) - 1.0)*atan(stretchedUV.y - tempCenter.y, stretchedUV.x - tempCenter.x);
 		}
 	}
-	
+
 	dist = dist - 0.04*abs(sin(2.0*angle));
 	COLOR = edgeDist(dist - 0.06*sin(10.0*(angle + TIME))) * colour;
 }

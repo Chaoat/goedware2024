@@ -1,3 +1,4 @@
+class_name Player3D
 extends CharacterBody3D
 
 @export var speed = 400
@@ -8,6 +9,7 @@ extends CharacterBody3D
 var clock = 0
 var bob_rate = 12
 var bob_height = 5
+var movementLocked:bool = false
 
 func _physics_process(delta):
 	clock += delta * bob_rate
@@ -20,24 +22,25 @@ func _physics_process(delta):
 	else:
 		rot_dir = lerpf(rot_dir, 0, 0.1)
 	
-	if linear_dir:
-		velocity = basis.z.normalized() * speed * linear_dir * delta
-		position.y = lerpf(position.y, bob, 0.2)
-	else:
-		#velocity = Vector3.ZERO
-		velocity.z = lerpf(velocity.z, 0, 0.5)
-		velocity.x = lerpf(velocity.x, 0, 0.5)
-		velocity.y = lerpf(velocity.y, 0, 0.5)
-		position.y = lerpf(position.y, 0, 0.2)
-	
-	
+	if movementLocked == false:
+		if linear_dir:
+			velocity = basis.z.normalized() * speed * linear_dir * delta
+			position.y = lerpf(position.y, bob, 0.2)
+		else:
+			#velocity = Vector3.ZERO
+			velocity.z = lerpf(velocity.z, 0, 0.5)
+			velocity.x = lerpf(velocity.x, 0, 0.5)
+			velocity.y = lerpf(velocity.y, 0, 0.5)
+			position.y = lerpf(position.y, 0, 0.2)
+		move_and_slide()
 	
 	rotate_y(rot_dir)
-	move_and_slide()
 
 func _process(_delta):
 	if Input.is_action_just_pressed("interact"):
 		if interact_ray.is_colliding() and interact_ray.get_collider().has_method("interact"):
 			interact_ray.get_collider().interact()
 			
-	
+
+func lockMovement(locked:bool):
+	movementLocked = locked

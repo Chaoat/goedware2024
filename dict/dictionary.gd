@@ -25,7 +25,7 @@ func _addWordToDictionary(newWord: WordDefinition) -> void:
 		
 		if currentNode.is_empty():
 			currentNode.resize(numberOfLetters + 1)
-		currentNode[numberOfLetters] = newWord
+		currentNode[numberOfLetters] = word
 
 func _bannedCharacterCheck(word: String) -> bool:
 	return word.contains("_") or word.contains("-") or word.contains("0") or word.contains("1") or word.contains("2") or word.contains("3") or word.contains("4") or word.contains("5") or word.contains("6") or word.contains("7") or word.contains("8") or word.contains("9") or word.contains("(") or word.contains(")")
@@ -68,6 +68,18 @@ func _readFile(fileName: String):
 		
 		lineI = lineI + 1
 
+func _readRawText(fileName: String):
+	var file = FileAccess.open(fileName, FileAccess.READ)
+	var lineI = 0
+	while file.eof_reached() == false:
+		var nextLine = file.get_line()
+		var newWord = WordDefinition.new()
+		newWord.words = [nextLine.to_lower()]
+		_addWordToDictionary(newWord)
+		
+		lineI = lineI + 1
+
+
 static func letterIsValid(letter: String) -> bool:
 	var index = letterToIndex(letter)
 	if index >= 0 and index < numberOfLetters:
@@ -75,10 +87,11 @@ static func letterIsValid(letter: String) -> bool:
 	return false
 
 func _ready() -> void:
-	_readFile("dict/data.noun")
-	_readFile("dict/data.verb")
-	_readFile("dict/data.adj")
-	_readFile("dict/data.adv")
+	#_readFile("dict/data.noun")
+	#_readFile("dict/data.verb")
+	#_readFile("dict/data.adj")
+	#_readFile("dict/data.adv")
+	_readRawText("dict/scrabbleWords.txt")
 	
 	return
 
@@ -93,12 +106,35 @@ static func letterToIndex(letter: String) -> int:
 	return loweredLetter.unicode_at(0) - 97;
 
 func getWordDefinitions(word: String) -> Array:
-	var currentNode = dictionaryTree
-	var words = []
+	var currentNodes = [dictionaryTree]
+	var nextNodes = []
 	for letter in word:
-		if letterIsValid(letter) == false or currentNode[letterToIndex(letter)] == null:
-			return []
-		currentNode = currentNode[letterToIndex(letter)]
-	if currentNode[numberOfLetters] != null:
-		words.append(currentNode[numberOfLetters])
+		for currentNode in currentNodes:
+			if letter == "?":
+				for i in range(numberOfLetters):
+					if currentNode[i] != null:
+						nextNodes.append(currentNode[i])
+			elif letterIsValid(letter) == true and currentNode[letterToIndex(letter)] != null:
+				nextNodes.append(currentNode[letterToIndex(letter)])
+		currentNodes = nextNodes
+		nextNodes = []
+	
+	var words = []
+	for currentNode in currentNodes:
+		if currentNode[numberOfLetters] != null:
+			words.append(currentNode[numberOfLetters])
+		
 	return words
+
+func randomlyGenerateWord() -> String:
+	var letterIndex = randi()%numberOfLetters
+	var currentNode = dictionaryTree
+	var word = ""
+	while currentNode[letterIndex] != null:
+		currentNode = currentNode[letterIndex]
+		word = word + indexToLetter(letterIndex)
+		letterIndex = randi()%numberOfLetters
+		if currentNode[numberOfLetters] == null:
+			while currentNode[letterIndex] == null:
+				letterIndex = (letterIndex + 1)%numberOfLetters
+	return word

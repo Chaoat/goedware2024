@@ -46,8 +46,54 @@ func _process(dt: float) -> void:
 	_updateTiles(dt)
 
 func canPlaceTileAtBoardCoords(coords: Vector2) -> bool:
-	var tile = getTileAtBoardCoords(coords)
-	return tile == null or tile.confirmed == false
+	var posInBoardSpace = coords - position
+	var indices = _boardCoordsToIndex(posInBoardSpace.x, posInBoardSpace.y)
+	return canPlaceTile(indices[0], indices[1])
+
+func canPlaceTile(x:int, y:int) -> bool:
+	if x >= 0 and x < boardWidth and y >= 0 and y < boardHeight:
+		var tile = getTile(x, y)
+		return tile == null or tile.confirmed == false
+	else:
+		return false
+
+func isTileValidForWordPlacement(x:int, y:int):
+	for coords in endZone:
+		if coords[0] == x and coords[1] == y:
+			return false
+	
+	if canPlaceTile(x, y) == false:
+		return false
+	if canPlaceTile(x + 1, y) == false:
+		return false
+	if canPlaceTile(x, y + 1) == false:
+		return false
+	if canPlaceTile(x - 1, y) == false:
+		return false
+	if canPlaceTile(x, y - 1) == false:
+		return false
+	
+	return true
+
+#Returns duples as [x, y, orientation(0 for horizontal, 1 for vertical)]
+func getValidTilesForWord(word:String) -> Array:
+	var wordLength = word.length()
+	var returnArray = []
+	for x in range(boardWidth):
+		for y in range(boardHeight):
+			var horizontalValid = true
+			var verticalValid = true
+			for i in range(wordLength):
+				if isTileValidForWordPlacement(x + i, y) == false:
+					horizontalValid = false
+				if isTileValidForWordPlacement(x, y + i) == false:
+					verticalValid = false
+			
+			if horizontalValid:
+				returnArray.append([x, y, 0])
+			if verticalValid:
+				returnArray.append([x, y, 1])
+	return returnArray
 
 #Returns the displaced tile if there is one
 func placeTile(tile: Tile, x: int, y: int) -> Tile:
@@ -66,13 +112,15 @@ func placeTile(tile: Tile, x: int, y: int) -> Tile:
 		displacedTile.takeOffGrid()
 		return displacedTile
 	return null
-	
+
 func placeTileAtBoardCoords(tile: Tile, coords: Vector2) -> Tile:
 	var posInBoardSpace = coords - position
 	var indices = _boardCoordsToIndex(posInBoardSpace.x, posInBoardSpace.y)
 	return placeTile(tile, indices[0], indices[1])
 
-func getContiguousTiles(x: int, y: int, xDir: int, yDir: int) -> Array:
+func getContiguousTiles(x: int, y: int, xDir: int, yDir: int, onlyAddConformed:bool) -> Array:
+	var startX = x
+	var startY = y
 	var lastTile = getTile(x, y)
 	while lastTile != null:
 		x = x - xDir
@@ -84,7 +132,10 @@ func getContiguousTiles(x: int, y: int, xDir: int, yDir: int) -> Array:
 	var returnTiles = []
 	var nextTile = getTile(x, y)
 	while nextTile != null:
-		returnTiles.append(nextTile)
+		if onlyAddConformed == false or nextTile.confirmed or (x == startX and y == startY):
+			returnTiles.append(nextTile)
+		elif returnTiles.find(getTile(startX, startY)) != -1:
+			return returnTiles
 		x = x + xDir
 		y = y + yDir
 		nextTile = getTile(x, y)

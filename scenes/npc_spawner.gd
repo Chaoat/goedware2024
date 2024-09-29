@@ -9,10 +9,17 @@ extends Node3D
 @onready var inside = $Environment/Outside/Inside
 @onready var outside = $Environment/Outside
 
+@onready var floor = $Environment/Outside/Inside/Floor
+@onready var ground = $Environment/Outside/Ground
+@onready var roof = $Environment/House/Roof
+
 var npcList:Array = []
 
 func _ready() -> void:
 	call_deferred("custom_setup")
+	ground.visible = true
+	floor.visible = true
+	roof.visible = true
 	
 func custom_setup():
 	var inside_map = inside.get_navigation_map()

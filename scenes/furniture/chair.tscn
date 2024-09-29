@@ -22,10 +22,10 @@ _surfaces = [{
 }]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xff2e"]
-size = Vector3(2.005, 0.845, 1.25)
+size = Vector3(1.095, 10, 1.25)
 
 [node name="Chair" type="StaticBody3D"]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.4, 0, 0, 0)
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.4, 0, 1.29953, 0)
 collision_layer = 2
 collision_mask = 0
 
@@ -38,5 +38,5 @@ mesh = SubResource("ArrayMesh_lm7sq")
 surface_material_override/0 = ExtResource("2_8cvci")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.214194, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.08237, 0)
 shape = SubResource("BoxShape3D_xff2e")

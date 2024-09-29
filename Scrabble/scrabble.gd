@@ -34,6 +34,12 @@ class ValidWord:
 			highlightSprite.queue_free()
 			highlightSprite = null
 	
+	func getScore():
+		var score = 0
+		for tile:Tile in tiles:
+			score = score + tile.score
+		return score
+	
 	var tiles: Array
 	var word: String
 	var highlightSprite: Sprite2D
@@ -80,7 +86,7 @@ class TileBag:
 	
 	func returnTile(tile: Tile):
 		var index = WordDictionary.letterToIndex(tile.letter)
-		tilesInBag[index] = tilesInBag[index] + 1
+		#tilesInBag[index] = tilesInBag[index] + 1
 		#tilesLeft = tilesLeft + 1
 	
 	func pullTile() -> Array:
@@ -93,7 +99,7 @@ class TileBag:
 				if nLetters >= randomChoice:
 					letter = WordDictionary.indexToLetter(i)
 					score = letterToScore[i]
-					tilesInBag[i] = tilesInBag[i] - 1
+					#tilesInBag[i] = tilesInBag[i] - 1
 					break
 				else:
 					randomChoice = randomChoice - nLetters
@@ -291,7 +297,6 @@ func areDesiresCleared() -> bool:
 	return desiredWords.size() == 0
 
 func _snakeIntoMouth(tile:Tile):
-	Global.convincingness += success_reward
 	if tilesSnakingOutMouth.is_empty():
 		tilesSnakingPositions.clear()
 	tilesSnakingPositions.append(tile.position)
@@ -378,14 +383,7 @@ func _checkWordConfirmation(clickPos: Vector2):
 						if validWord.tiles[j].letter == "?":
 							var wildTile = validWord.tiles[j]
 							wildTile.setStats(validWord.word[j], 0)
-							#for k in range(validWords.size() - 1, -1, -1):
-								#var existingValidWord: ValidWord = validWords[k]
-								#if existingValidWord.tiles.find(wildTile) != -1:
-									#validWords.remove_at(k)
-									#existingValidWord.clearHighlightSprite()
-									#if k <= i:
-										#i = i - 1
-							#_checkValidWordFromTile(wildTile)
+				Global.addConvincingness(validWord.getScore())
 				_confirmWord(validWord, true)
 				return
 

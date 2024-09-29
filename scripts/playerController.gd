@@ -80,7 +80,6 @@ func _getRandomNPCBetweenDifficulties(minDifficulty:int, maxDifficulty:int):
 	return viableNPCs[index]
 
 var isGameRunning = true
-var huntingNPC:NPC
 func _process(delta: float) -> void:
 	if isGameRunning:
 		if isInConversation == false:

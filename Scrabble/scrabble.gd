@@ -6,6 +6,7 @@ const doubleClickTime:float = 0.2
 const startingHandSize:int = 9
 
 @export var tileTemplate : PackedScene
+@export var success_reward : int = 10
 var tileWidth = 0
 var tileHeight = 0
 
@@ -291,6 +292,7 @@ func areDesiresCleared() -> bool:
 	return desiredWords.size() == 0
 
 func _snakeIntoMouth(tile:Tile):
+	Global.convincingness += success_reward
 	if tilesSnakingOutMouth.is_empty():
 		tilesSnakingPositions.clear()
 	tilesSnakingPositions.append(tile.position)

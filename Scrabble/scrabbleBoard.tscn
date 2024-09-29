@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://3whfta4brxjt"]
+[gd_scene load_steps=16 format=3 uid="uid://3whfta4brxjt"]
 
 [ext_resource type="Script" path="res://Scrabble/scrabble.gd" id="1_csm6w"]
 [ext_resource type="PackedScene" uid="uid://nchb22ey8og0" path="res://Scrabble/tile.tscn" id="2_8dhyv"]
@@ -8,6 +8,10 @@
 [ext_resource type="PackedScene" uid="uid://d08gthteb2j6v" path="res://Scrabble/wordHighlight.tscn" id="4_s6gv8"]
 [ext_resource type="Texture2D" uid="uid://bpe275veohgpy" path="res://sprites/scrabble/brain.png" id="5_awfis"]
 [ext_resource type="Texture2D" uid="uid://bfa5l2f23pemc" path="res://sprites/scrabble/brainZones.png" id="5_go63l"]
+[ext_resource type="Texture2D" uid="uid://8kjb25x4g6fo" path="res://sprites/scrabble/frontalLobe.png" id="9_3edbr"]
+[ext_resource type="Texture2D" uid="uid://bpnxhxkpadkol" path="res://sprites/scrabble/occipitalLobe.png" id="10_6y3ot"]
+[ext_resource type="Texture2D" uid="uid://b6f1w80f6f246" path="res://sprites/scrabble/parietalLobe.png" id="11_dyqpp"]
+[ext_resource type="Texture2D" uid="uid://dbfo3ll52cpyu" path="res://sprites/scrabble/temporalLobe.png" id="12_pe7el"]
 
 [sub_resource type="Gradient" id="Gradient_eposy"]
 colors = PackedColorArray(0.15, 0.063, 0.08185, 1, 0.6794, 0.86, 0.74863, 1)
@@ -56,6 +60,26 @@ position = Vector2(-92, -206)
 scale = Vector2(0.504, 0.504)
 texture = ExtResource("5_awfis")
 centered = false
+
+[node name="FrontalLobe" type="Sprite2D" parent="board"]
+position = Vector2(85, 279)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("9_3edbr")
+
+[node name="OccipitalLobe" type="Sprite2D" parent="board"]
+position = Vector2(709, 283)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("10_6y3ot")
+
+[node name="ParietalLobe" type="Sprite2D" parent="board"]
+position = Vector2(491, 59)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("11_dyqpp")
+
+[node name="TemporalLobe" type="Sprite2D" parent="board"]
+position = Vector2(414, 310)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("12_pe7el")
 
 [node name="hand" type="Control" parent="."]
 layout_mode = 1

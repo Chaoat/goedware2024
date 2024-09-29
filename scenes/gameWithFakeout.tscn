@@ -1,0 +1,141 @@
+[gd_scene load_steps=14 format=3 uid="uid://dg1g8cn54h20h"]
+
+[ext_resource type="PackedScene" uid="uid://mgp5vyu5py3g" path="res://scenes/3D_world.tscn" id="1_exngd"]
+[ext_resource type="Texture2D" uid="uid://ca4ix4jqbyer" path="res://sprites/UI/POV_hand.png" id="2_ws74f"]
+[ext_resource type="Script" path="res://scenes/hand.gd" id="3_u10gs"]
+[ext_resource type="Texture2D" uid="uid://cbh6uk1vlg2qp" path="res://sprites/NPCs/drinks/drink_0.png" id="4_bgluj"]
+[ext_resource type="PackedScene" uid="uid://3whfta4brxjt" path="res://Scrabble/scrabbleBoard.tscn" id="5_6t7ce"]
+[ext_resource type="Texture2D" uid="uid://ddnqojkb8h8up" path="res://scenes/border.png" id="6_yeycq"]
+[ext_resource type="Texture2D" uid="uid://cubnt67dhox6i" path="res://sprites/UI/convincingness bar 0.png" id="7_cc0pe"]
+[ext_resource type="Texture2D" uid="uid://bgu14j14x5gdl" path="res://sprites/UI/convincingness bar.png" id="8_2mkvl"]
+[ext_resource type="Texture2D" uid="uid://ho4l7jgw4fqw" path="res://sprites/UI/convincingness bar 100.png" id="9_46hb3"]
+[ext_resource type="Script" path="res://scenes/conv_bar.gd" id="10_g27s3"]
+[ext_resource type="Script" path="res://scripts/playerController.gd" id="11_28x2i"]
+[ext_resource type="Script" path="res://scripts/fakeoutController.gd" id="12_sownw"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_y6kg5"]
+font_size = 117
+font_color = Color(0, 1, 0, 1)
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.525
+anchor_bottom = 1.0
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(604, 648)
+render_target_update_mode = 4
+
+[node name="World" parent="SubViewportContainer/SubViewport" instance=ExtResource("1_exngd")]
+
+[node name="HandPositioning" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.35
+anchor_top = 0.65
+anchor_right = 0.52
+anchor_bottom = 1.0
+offset_left = -0.199982
+offset_top = -0.199982
+offset_right = -0.200012
+offset_bottom = -0.199951
+
+[node name="Hand" type="TextureRect" parent="HandPositioning"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("2_ws74f")
+expand_mode = 3
+stretch_mode = 4
+script = ExtResource("3_u10gs")
+
+[node name="Drinks" type="TextureRect" parent="HandPositioning/Hand"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -261.111
+offset_top = -641.667
+offset_right = 1738.89
+offset_bottom = -141.667
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.49, 0.49)
+texture = ExtResource("4_bgluj")
+
+[node name="ScrabbleBoard" parent="." instance=ExtResource("5_6t7ce")]
+layout_mode = 1
+
+[node name="Border" type="TextureRect" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_yeycq")
+expand_mode = 1
+
+[node name="ConvBar" type="TextureProgressBar" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = -144.0
+offset_right = 1970.0
+offset_bottom = 483.0
+grow_vertical = 0
+scale = Vector2(0.22, 0.22)
+step = 0.01
+value = 100.0
+texture_under = ExtResource("7_cc0pe")
+texture_over = ExtResource("8_2mkvl")
+texture_progress = ExtResource("9_46hb3")
+script = ExtResource("10_g27s3")
+
+[node name="PlayerController" type="Node" parent="." node_paths=PackedStringArray("worldReference", "boardReference", "handReference")]
+script = ExtResource("11_28x2i")
+worldReference = NodePath("../SubViewportContainer/SubViewport/World")
+boardReference = NodePath("../ScrabbleBoard")
+handReference = NodePath("../HandPositioning/Hand")
+
+[node name="FakeoutController" type="Node" parent="." node_paths=PackedStringArray("worldReference", "boardReference", "playerReference", "borderReference", "barReference")]
+script = ExtResource("12_sownw")
+worldReference = NodePath("../SubViewportContainer/SubViewport/World")
+boardReference = NodePath("../ScrabbleBoard")
+playerReference = NodePath("../PlayerController")
+borderReference = NodePath("../Border")
+barReference = NodePath("../ConvBar")
+
+[node name="Label" type="Label" parent="FakeoutController"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "--WAKING UP--"
+label_settings = SubResource("LabelSettings_y6kg5")
+horizontal_alignment = 1
+vertical_alignment = 1

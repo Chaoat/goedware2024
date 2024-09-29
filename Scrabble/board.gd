@@ -216,7 +216,7 @@ func getTilesInEndzone() -> Array:
 	var tiles = []
 	for endZoneCoord in endZone:
 		var tile = getTile(endZoneCoord[0], endZoneCoord[1])
-		if tile != null:
+		if tile != null and tile.confirmed:
 			tiles.append(tile)
 	return tiles
 

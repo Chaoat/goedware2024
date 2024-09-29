@@ -132,7 +132,6 @@ func _ready() -> void:
 		drawRandomTile()
 	
 	addWordToBoard("party")
-	addWildtile()
 
 func _updateHandTiles(dt: float):
 	var tileI = 0
@@ -278,31 +277,6 @@ func _addValidWord(newValidWord: ValidWord) -> bool:
 			existingValidWord.clearHighlightSprite()
 	validWords.append(newValidWord)
 	return true
-
-func randomlySelectDesiredWord() -> ValidWord:
-	if desiredWords.size() >= confirmedWords.size():
-		return null
-	var index = randi()%confirmedWords.size()
-	var validChoice = false
-	while validChoice == false:
-		validChoice = true
-		for word in desiredWords:
-			if confirmedWords[index] == word:
-				validChoice = false
-				index = randi()%confirmedWords.size()
-				break
-				
-	desiredWords.append(confirmedWords[index])
-	confirmedWords[index].highlightSprite = $board.highlightTiles(confirmedWords[index].tiles, Vector4(0.2, 0.8, 1.0, 1.0))
-	return confirmedWords[index]
-
-func areDesiresCleared() -> bool:
-	return desiredWords.size() == 0
-
-func clearDesires():
-	for i in range(desiredWords.size() - 1, -1, -1):
-		desiredWords[i].clearHighlightSprite()
-		desiredWords.remove_at(i)
 
 func _snakeIntoMouth(tile:Tile):
 	if tilesSnakingOutMouth.is_empty():
@@ -543,3 +517,36 @@ func randomClutter() -> void:
 					tile.setStats(tileStats[0], tileStats[1])
 				#var tileStats = tileBag.pullTile()
 				#tile.setStats(tileStats[0], tileStats[1])
+
+func selectDesiredWord(word:String) -> ValidWord:
+	for validWord:ValidWord in confirmedWords:
+		if validWord.word == word:
+			desiredWords.append(validWord)
+			validWord.highlightSprite = $board.highlightTiles(validWord.tiles, Vector4(0.2, 0.8, 1.0, 1.0))
+			return validWord
+	return null
+
+func randomlySelectDesiredWord() -> ValidWord:
+	if desiredWords.size() >= confirmedWords.size():
+		return null
+	var index = randi()%confirmedWords.size()
+	var validChoice = false
+	while validChoice == false:
+		validChoice = true
+		for word in desiredWords:
+			if confirmedWords[index] == word:
+				validChoice = false
+				index = randi()%confirmedWords.size()
+				break
+				
+	desiredWords.append(confirmedWords[index])
+	confirmedWords[index].highlightSprite = $board.highlightTiles(confirmedWords[index].tiles, Vector4(0.2, 0.8, 1.0, 1.0))
+	return confirmedWords[index]
+
+func areDesiresCleared() -> bool:
+	return desiredWords.size() == 0
+
+func clearDesires():
+	for i in range(desiredWords.size() - 1, -1, -1):
+		desiredWords[i].clearHighlightSprite()
+		desiredWords.remove_at(i)

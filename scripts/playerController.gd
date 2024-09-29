@@ -1,3 +1,4 @@
+class_name PlayerController
 extends Node
 
 @export var worldReference : NPCSpawner
@@ -73,73 +74,75 @@ func _getRandomNPCBetweenDifficulties(minDifficulty:int, maxDifficulty:int):
 	var index = randi()%viableNPCs.size()
 	return viableNPCs[index]
 
+var isGameRunning = true
 var huntingNPC:NPC
 func _process(delta: float) -> void:
-	if isInConversation == false:
-		for npc:NPC in worldReference.npcList:
-			if npc.talking and npc.conversationDifficulty > 0 and boardReference.confirmedWords.size() >= npc.conversationDifficulty:
-				_startConversation(npc)
-			elif npc.talking:
-				npc.talking = false
-		
-		if huntingNPC == null:
-			if timerTillConversation > 0:
-				timerTillConversation = timerTillConversation - delta
-			else:
-				huntingNPC = _getRandomNPCBetweenDifficulties(1, 9)
-		else:
-			huntingNPC.setNavTarget(playerReference.position)
-			if huntingNPC.position.distance_to(playerReference.position) <= 1.5:
-				huntingNPC.talking = true
-				_startConversation(huntingNPC)
-				huntingNPC = null
-	else:
-		if boardReference.areDesiresCleared():
-			_endConversation()
-		elif playerReference.position.distance_to(startingPlayerPos) > conversationWalkAwayDistance:
-			_walkAwayFromConversation()
-	
-	if drink_timer:
-		drink_timer -= delta
-		if drink_timer <=0:
-			drink_timer = 0
-			handReference.finish_drink()
-			current_drink = null
-		else:
-			match current_drink:
-				0:
-					print('hand size')
-					boardReference.drawRandomTile()
-					current_drink = null
-				1:
-					if randi() % wildcard_chance == 0:
-						print('wilding')
-						for i in (randi() % wildcard_count + 1):
-							boardReference.addWildtile()
-							
-				2:
-					print('head empty')
-					boardReference.clearClutter()
-					current_drink = null
-					
-				3:
-					print('go again')
-					boardReference.redraw()
-					current_drink = null
-					
-				4:
-					rotate_timer += delta
-					if rotate_timer > rotate_freq:
-						rotate_timer = 0
-						print('revolving door')
-						boardReference.rotate()
-						
-				5:
-					print('trippy')
-					boardReference.randomClutter()
-					current_drink = null
-
+	if isGameRunning:
+		if isInConversation == false:
+			for npc:NPC in worldReference.npcList:
+				if npc.talking and npc.conversationDifficulty > 0 and boardReference.confirmedWords.size() >= npc.conversationDifficulty:
+					_startConversation(npc)
+				elif npc.talking:
+					npc.talking = false
 			
+			if huntingNPC == null:
+				if timerTillConversation > 0:
+					timerTillConversation = timerTillConversation - delta
+				else:
+					huntingNPC = _getRandomNPCBetweenDifficulties(1, 9)
+			else:
+				huntingNPC.setNavTarget(playerReference.position)
+				if huntingNPC.position.distance_to(playerReference.position) <= 1.5:
+					huntingNPC.talking = true
+					_startConversation(huntingNPC)
+					huntingNPC = null
+		else:
+			if boardReference.areDesiresCleared():
+				_endConversation()
+			elif playerReference.position.distance_to(startingPlayerPos) > conversationWalkAwayDistance:
+				_walkAwayFromConversation()
+		
+		if drink_timer:
+			drink_timer -= delta
+			if drink_timer <=0:
+				drink_timer = 0
+				handReference.finish_drink()
+				current_drink = null
+			else:
+				match current_drink:
+					0:
+						print('hand size')
+						boardReference.drawRandomTile()
+						current_drink = null
+					1:
+						if randi() % wildcard_chance == 0:
+							print('wilding')
+							for i in (randi() % wildcard_count + 1):
+								boardReference.addWildtile()
+								
+					2:
+						print('head empty')
+						boardReference.clearClutter()
+						current_drink = null
+						
+					3:
+						print('go again')
+						boardReference.redraw()
+						current_drink = null
+						
+					4:
+						rotate_timer += delta
+						if rotate_timer > rotate_freq:
+							rotate_timer = 0
+							print('revolving door')
+							boardReference.rotate()
+							
+					5:
+						print('trippy')
+						boardReference.randomClutter()
+						current_drink = null
+
+
 func player_drank(drink):
 	if drink_timer == 0:
 		current_drink = drink

@@ -2,13 +2,21 @@ extends Node
 
 @export var worldReference : NPCSpawner
 @export var boardReference : ScrabbleBoard
+@export var handReference : Hand
 
 var playerReference : Player3D
+var isInConversation : bool = false
 
-var isInConversation:bool = false
+var drink_timer : float = 0
+@export var drink_duration : float = 5
+var current_drink
+
+var wildcard_chance : int = 200 # Lower is less probable
+var wildcard_count : int = 4 # Max wildcards per proc
 
 func _ready() -> void:
 	playerReference = worldReference.find_child("Player")
+	playerReference.drinking.connect(player_drank)
 
 var conversingNPC:NPC = null
 func _startConversation(npc:NPC):
@@ -34,3 +42,22 @@ func _process(delta: float) -> void:
 	else:
 		if boardReference.areDesiresCleared():
 			_endConversation()
+			
+	if drink_timer:
+		drink_timer -= delta
+		if drink_timer <=0:
+			drink_timer = 0
+			handReference.finish_drink()
+		else:
+			match current_drink:
+				1:
+					if randi() % wildcard_chance == 0:
+						print('wilding')
+						for i in (randi() % wildcard_count + 1):
+							boardReference.addWildtile()
+			
+func player_drank(drink):
+	if drink_timer == 0:
+		current_drink = drink
+		handReference.player_drank(drink)
+		drink_timer = drink_duration

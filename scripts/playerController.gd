@@ -109,10 +109,12 @@ func _process(delta: float) -> void:
 		if drink_timer:
 			_handle_drinks(delta)
 		
-	leave_timer += delta
-	if leave_timer > leave_freq:
-		leave_timer = 0
-		worldReference.force_leave()
+		leave_timer += delta
+		if leave_timer > leave_freq:
+			leave_timer = 0
+			worldReference.force_leave()
+		
+		
 
 func _handle_drinks(delta):
 	drink_timer -= delta

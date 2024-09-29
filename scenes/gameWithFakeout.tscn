@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dg1g8cn54h20h"]
+[gd_scene load_steps=14 format=3 uid="uid://chblun3xgkim8"]
 
 [ext_resource type="PackedScene" uid="uid://mgp5vyu5py3g" path="res://scenes/3D_world.tscn" id="1_exngd"]
 [ext_resource type="Texture2D" uid="uid://ca4ix4jqbyer" path="res://sprites/UI/POV_hand.png" id="2_ws74f"]

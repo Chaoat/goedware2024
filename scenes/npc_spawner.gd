@@ -48,8 +48,9 @@ func _spawn_NPCs():
 		root.call_deferred("add_child", x)
 		
 func force_leave():
-	var npc = npcList.pop_front()
-	npc.leave()
+	if not npcList.is_empty():
+		var npc = npcList.pop_front()
+		npc.leave()
 
 func _spawn_waiters(n):
 	var waiterDataList = []

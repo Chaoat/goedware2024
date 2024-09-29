@@ -123,22 +123,22 @@ func _handle_drinks(delta):
 	else:
 		match current_drink:
 			0:
-				print('hand size')
+				#print('hand size')
 				boardReference.drawRandomTile()
 				current_drink = null
 			1:
 				if randi() % wildcard_chance == 0:
-					print('wilding')
+					#print('wilding')
 					for i in (randi() % wildcard_count + 1):
 						boardReference.addWildtile()
 							
 			2:
-				print('head empty')
+				#print('head empty')
 				boardReference.clearClutter()
 				current_drink = null
 					
 			3:
-				print('go again')
+				#print('go again')
 				boardReference.redraw()
 				current_drink = null
 					
@@ -146,14 +146,13 @@ func _handle_drinks(delta):
 				rotate_timer += delta
 				if rotate_timer > rotate_freq:
 					rotate_timer = 0
-					print('revolving door')
+					#print('revolving door')
 					boardReference.rotate()
 						
 			5:
-				print('trippy')
+				#print('trippy')
 				boardReference.randomClutter()
 				current_drink = null
-
 
 func player_drank(drink):
 	if drink_timer == 0:

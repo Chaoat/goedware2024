@@ -119,7 +119,7 @@ func _initTileDimensions():
 		if child is Sprite2D:
 			tileWidth = max(tileWidth, ceil(child.get_transform().get_scale().x * child.get_rect().size.x))
 			tileHeight = max(tileHeight, ceil(child.get_transform().get_scale().y * child.get_rect().size.y))
-	print("tile width: ",tileWidth," tile height: ",tileHeight)
+	#print("tile width: ",tileWidth," tile height: ",tileHeight)
 	tempTile.queue_free()
 	
 	$board.initBoardDimensions(tileWidth, tileHeight)
@@ -460,7 +460,7 @@ func addTileToHand(tile: Tile) -> Tile:
 	
 	var handIndex = ceil((tilesInHand.size() - 1)/2 + tile.position.x/tileWidth)
 	handIndex = max(min(handIndex, tilesInHand.size()), 0)
-	print(handIndex)
+	#print(handIndex)
 	tilesInHand.insert(handIndex, tile)
 	
 	return tile

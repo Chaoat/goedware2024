@@ -2,7 +2,7 @@ class_name NPC
 extends CharacterBody3D
 
 @export var NPC_id = 0
-@export var variants : Resource
+#@export var variants : Resource
 @onready var sprite:Sprite3D = $Sprite3D
 
 const GRAV = 15
@@ -65,12 +65,12 @@ func setNavTarget(target:Vector3):
 func interact():
 	velocity.y = JUMP
 	talking = true
-	print('talking to me')
-	print(variants.txt[str(NPC_id)])
+	#print('talking to me')
+	#print(variants.txt[str(NPC_id)])
 	#leave()
 	
 	if waiter:
-		print('have a drink!')
+		#print('have a drink!')
 		return({"drink": drink})
 
 func _physics_process(delta):

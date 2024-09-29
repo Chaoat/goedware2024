@@ -6,7 +6,6 @@ extends Node3D
 const SPEED : float = 0.01
 
 func _process(delta: float) -> void:
-	print(hr)
 	hr.rotate_z(SPEED/12)
 	min.rotate_z(SPEED)
 

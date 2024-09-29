@@ -37,7 +37,7 @@ func _ready(): # Initialisation
 	if NPC_id == 2:
 		waiter = true
 		drink = randi() % 6
-		drink = 1
+		drink = 0
 		platter.visible = true
 		drinks.texture = load("res://sprites/NPCs/drinks/drink_%s.png" % drink)
 	else:

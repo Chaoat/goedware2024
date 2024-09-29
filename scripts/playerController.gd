@@ -49,13 +49,20 @@ func _process(delta: float) -> void:
 		if drink_timer <=0:
 			drink_timer = 0
 			handReference.finish_drink()
+			current_drink = null
 		else:
 			match current_drink:
+				0:
+					print('hand size')
+					boardReference.drawRandomTile()
+					current_drink = null
 				1:
 					if randi() % wildcard_chance == 0:
 						print('wilding')
 						for i in (randi() % wildcard_count + 1):
 							boardReference.addWildtile()
+							
+
 			
 func player_drank(drink):
 	if drink_timer == 0:

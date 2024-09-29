@@ -10,7 +10,9 @@ var clock = 0
 var bob_rate = 12
 var bob_height = 5
 var player : CharacterBody3D
-var movementLocked : bool = false
+var cameraLocked : bool = false
+
+var cameraLookTarget:Vector3
 
 signal drinking(drink)
 
@@ -25,18 +27,28 @@ func _physics_process(delta):
 	else:
 		rot_dir = lerpf(rot_dir, 0, 0.1)
 	
-	if movementLocked == false:
-		if linear_dir:
-			velocity = basis.z.normalized() * speed * linear_dir * delta
-			position.y = lerpf(position.y, bob, 0.2)
-		else:
-			#velocity = Vector3.ZERO
-			velocity.z = lerpf(velocity.z, 0, 0.5)
-			velocity.x = lerpf(velocity.x, 0, 0.5)
-			velocity.y = lerpf(velocity.y, 0, 0.5)
-			position.y = lerpf(position.y, 0, 0.2)
-		move_and_slide()
-	rotate_y(rot_dir)
+	if linear_dir:
+		velocity.x = sin(basis.get_euler().y) * speed * linear_dir * delta
+		velocity.z = cos(basis.get_euler().y) * speed * linear_dir * delta
+		position.y = lerpf(position.y, bob, 0.2)
+	else:
+		#velocity = Vector3.ZERO
+		velocity.z = lerpf(velocity.z, 0, 0.5)
+		velocity.x = lerpf(velocity.x, 0, 0.5)
+		velocity.y = lerpf(velocity.y, 0, 0.5)
+		position.y = lerpf(position.y, 0, 0.2)
+	move_and_slide()
+	
+	
+	if cameraLocked == false:
+		rotate_y(rot_dir)
+		rotation.x = lerp_angle(rotation.x, 0, delta)
+	else:
+		var vecBetween = cameraLookTarget - position
+		var xAngle = atan2(vecBetween.y, sqrt(pow(vecBetween.x, 2) + pow(vecBetween.z, 2)))
+		var yAngle = atan2(-vecBetween.z, vecBetween.x) - PI/2
+		rotation.x = lerp_angle(rotation.x, xAngle, delta)
+		rotation.y = lerp_angle(rotation.y, yAngle, delta)
 
 func _process(_delta):
 	if Input.is_action_just_pressed("interact"):
@@ -45,7 +57,10 @@ func _process(_delta):
 			if i:
 				if i.has("drink"):
 					drinking.emit(i["drink"])
-			
 
-func lockMovement(locked:bool):
-	movementLocked = locked
+func unlockCamera():
+	cameraLocked = false
+	
+func lockCamera(lookTarget:Vector3):
+	cameraLocked = true
+	cameraLookTarget = lookTarget

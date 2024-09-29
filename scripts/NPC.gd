@@ -3,7 +3,7 @@ extends CharacterBody3D
 
 @export var NPC_id = 0
 @export var variants : Resource
-@onready var sprite = $Sprite3D
+@onready var sprite:Sprite3D = $Sprite3D
 
 const GRAV = 15
 const JUMP = 3.5
@@ -51,6 +51,9 @@ func _ready(): # Initialisation
 		
 func get_nav_target():
 	nav.set_target_position(NavigationServer3D.map_get_random_point(inside, 1, false))
+
+func setNavTarget(target:Vector3):
+	nav.set_target_position(target)
 
 func interact():
 	velocity.y = JUMP
@@ -101,3 +104,9 @@ func leave():
 			nav.set_target_position(Vector3(0,0,40))
 	
 	#nav.set_target_position(NavigationServer3D.map_get_random_point(outside, 1, false))
+
+func getFacePosition() -> Vector3:
+	var height = sprite.pixel_size*sprite.texture.get_height()
+	var lookPosition = position
+	lookPosition.y = 0.4*height - 1
+	return lookPosition 

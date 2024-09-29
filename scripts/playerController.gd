@@ -30,7 +30,8 @@ func _endConversation():
 	isInConversation = false
 	conversingNPC.talking = false
 	playerReference.lockMovement(false)
-	boardReference.addWordToBoard(boardReference.find_child("dictionary").randomlyGenerateWord())
+	for i in range(0,conversingNPC.conversationDifficulty + 1):
+		boardReference.addWordToBoard(boardReference.find_child("dictionary").randomlyGenerateWord())
 
 func _process(delta: float) -> void:
 	if isInConversation == false:

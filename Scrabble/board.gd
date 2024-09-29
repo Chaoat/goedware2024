@@ -4,24 +4,46 @@ extends Node2D
 @export var boardHeight : int = 10
 
 @export var highlightTemplate : PackedScene
+@export var brainZones : CompressedTexture2D
 
-var endZone : Array = [[2,3], [3,3], [3,4], [4,4]]
+var endZone : Array = []
 
-var tileWidth = 0
-var tileHeight = 0
+var tileWidth:float = 0.0
+var tileHeight:float = 0.0
 
 var boardArray = []
+var blockedArray = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	for x in range(boardWidth):
 		boardArray.append([])
 		boardArray[x].resize(boardHeight)
+		blockedArray.append([])
+		blockedArray[x].resize(boardHeight)
+
+func initBoardDimensions(inputTileWidth:int, inputTileHeight:int) -> void:
+	tileWidth = inputTileWidth
+	tileHeight = inputTileHeight
+	var xOffset = -$Brain.position.x
+	var yOffset = -$Brain.position.y
+	for x in range(boardWidth):
+		for y in range(boardHeight):
+			var image:Image = $Brain.texture.get_image()
+			var pixel:Color = image.get_pixelv(Vector2((xOffset + tileWidth*x)/$Brain.scale.x, (yOffset + tileHeight*y)/$Brain.scale.x))
+			if pixel.a > 0:
+				blockedArray[x][y] = false
+			else:
+				blockedArray[x][y] = true
+			var zonePixel:Color = brainZones.get_image().get_pixelv(Vector2((xOffset + tileWidth*x)/$Brain.scale.x, (yOffset + tileHeight*y)/$Brain.scale.x))
+			if zonePixel.g == 1 and zonePixel.b == 1:
+				endZone.append([x, y])
 
 func _draw():
 	for x in range(boardWidth):
 		for y in range(boardHeight):
-			draw_rect(Rect2((x - 0.5)*tileWidth, (y - 0.5)*tileHeight, tileWidth, tileHeight), Color.RED, false)
+			if blockedArray[x][y] == false:
+				draw_rect(Rect2((x - 0.5)*tileWidth, (y - 0.5)*tileHeight, tileWidth, tileHeight), Color.RED, false)
 
 func _indexToBoardCoords(x: int, y: int) -> Array:
 	return [x*tileWidth, y*tileHeight]
@@ -52,6 +74,8 @@ func canPlaceTileAtBoardCoords(coords: Vector2) -> bool:
 
 func canPlaceTile(x:int, y:int) -> bool:
 	if x >= 0 and x < boardWidth and y >= 0 and y < boardHeight:
+		if blockedArray[x][y] == true:
+			return false
 		var tile = getTile(x, y)
 		return tile == null or tile.confirmed == false
 	else:

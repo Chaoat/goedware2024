@@ -11,7 +11,7 @@ const NAV_ACC = 0.5
 
 var speed : float
 var spawn_point : Vector3
-var inside : RID
+var map : RID
 #var outside : RID
 var prev_pos : Vector3
 
@@ -27,9 +27,16 @@ var drink
 @onready var drinks = $Platter/Drinks
 @onready var shadow = $Shadow
 
+func constructor(npcData : Object):
+	speed = npcData.speed
+	NPC_id = npcData.id
+	conversationDifficulty = npcData.difficulty
+	spawn_point = npcData.spawn_point
+	map = npcData.map
+	
 func _ready(): # Initialisation
 	sprite.texture = load("res://sprites/NPCs/NPC_%s.png" % NPC_id)
-	speed = randf_range(50,200)
+	#speed = randf_range(50,200)
 	#speed = randf_range(5,20)
 	if spawn_point:
 		global_position = spawn_point
@@ -50,7 +57,7 @@ func _ready(): # Initialisation
 	call_deferred("get_nav_target")
 		
 func get_nav_target():
-	nav.set_target_position(NavigationServer3D.map_get_random_point(inside, 1, false))
+	nav.set_target_position(NavigationServer3D.map_get_random_point(map, 1, false))
 
 func setNavTarget(target:Vector3):
 	nav.set_target_position(target)
@@ -92,7 +99,6 @@ func _physics_process(delta):
 	
 func leave():
 	leaving = true
-	#nav.set_navigation_map(outside)
 	nav.set_navigation_layer_value(1, false)
 	nav.set_navigation_layer_value(2, true)
 	match randi() % 3:
@@ -102,8 +108,7 @@ func leave():
 			nav.set_target_position(Vector3(40,0,0))
 		2:
 			nav.set_target_position(Vector3(0,0,40))
-	
-	#nav.set_target_position(NavigationServer3D.map_get_random_point(outside, 1, false))
+
 
 func getFacePosition() -> Vector3:
 	var height = sprite.pixel_size*sprite.texture.get_height()

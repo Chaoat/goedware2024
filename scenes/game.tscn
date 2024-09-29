@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://mgp5vyu5py3g" path="res://scenes/3D_world.tscn" id="1_7exlk"]
 [ext_resource type="Script" path="res://scripts/playerController.gd" id="1_grx7k"]
 [ext_resource type="PackedScene" uid="uid://3whfta4brxjt" path="res://Scrabble/scrabbleBoard.tscn" id="2_75qiq"]
+[ext_resource type="Texture2D" uid="uid://baikormjjx5je" path="res://sprites/NPCs/drinks_final/hand only.png" id="2_tcy0w"]
 [ext_resource type="Script" path="res://scenes/hand.gd" id="3_boswx"]
 [ext_resource type="Texture2D" uid="uid://cubnt67dhox6i" path="res://sprites/UI/convincingness bar 0.png" id="3_ix56m"]
 [ext_resource type="Texture2D" uid="uid://cbh6uk1vlg2qp" path="res://sprites/NPCs/drinks/drink_0.png" id="3_o3urq"]
@@ -10,7 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://ho4l7jgw4fqw" path="res://sprites/UI/convincingness bar 100.png" id="5_17jd7"]
 [ext_resource type="Script" path="res://scenes/conv_bar.gd" id="6_rhttb"]
 [ext_resource type="Texture2D" uid="uid://ddnqojkb8h8up" path="res://scenes/border.png" id="6_uh3ab"]
-[ext_resource type="Texture2D" uid="uid://ca4ix4jqbyer" path="res://sprites/UI/POV_hand.png" id="7_uuvnr"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -50,7 +50,7 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource("7_uuvnr")
+texture = ExtResource("2_tcy0w")
 expand_mode = 3
 stretch_mode = 4
 script = ExtResource("3_boswx")

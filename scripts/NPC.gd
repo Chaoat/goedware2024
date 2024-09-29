@@ -25,6 +25,7 @@ var drink
 @onready var nav = $NavigationAgent3D
 @onready var platter = $Platter
 @onready var drinks = $Platter/Drinks
+@onready var shadow = $Shadow
 
 func _ready(): # Initialisation
 	sprite.texture = load("res://sprites/NPCs/NPC_%s.png" % NPC_id)
@@ -78,10 +79,12 @@ func _physics_process(delta):
 			queue_free()
 	
 	if not talking:
-		var direction = global_position.direction_to(nav.get_next_path_position()) * speed * delta
-		velocity += Vector3(direction.x, 0, direction.z)
+		#var direction = global_position.direction_to(nav.get_next_path_position()) * speed * delta
+		#velocity += Vector3(direction.x, 0, direction.z)
+		velocity += global_position.direction_to(nav.get_next_path_position()) * speed * delta
 	
 	move_and_slide()
+	shadow.global_position.y = 0.1
 	
 func leave():
 	leaving = true

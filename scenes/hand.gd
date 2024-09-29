@@ -10,19 +10,20 @@ var player : CharacterBody3D
 
 func _ready() -> void:
 	start_position = position
-	player = get_tree().get_root().get_node("./Node3D/Word/Player")
-
+	player = get_tree().root.get_node("Node3D/SubViewportContainer/SubViewport/World/Player")
+	player.drinking.connect(player_drank)
+	
 func _process(delta: float) -> void:
-	print(bobbing)
 	if Input.is_action_just_pressed("interact"):
 		bobbing = true
 	if bobbing:
 		position.y = lerp(position.y, start_position.y+bob, BOB_RATE)
-		print(position.y)
-		print(start_position.y + bob)
 		if abs(position.y - start_position.y - bob) < 1:
 			bobbing = false
 	elif position != start_position:
 		position = position.lerp(start_position, BOB_RATE)
 		
-		
+func player_drank(drink):
+	print('hand got %s' % drink)
+	drinks.texture = load("res://sprites/NPCs/drinks/drink_%s.png" % drink)
+	drinks.visible = true

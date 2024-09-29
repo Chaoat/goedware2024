@@ -93,7 +93,8 @@ anchors_preset = -1
 anchor_left = 0.55
 grow_horizontal = 0
 
-[node name="PlayerController" type="Node" parent="." node_paths=PackedStringArray("worldReference", "boardReference")]
+[node name="PlayerController" type="Node" parent="." node_paths=PackedStringArray("worldReference", "boardReference", "handReference")]
 script = ExtResource("1_grx7k")
 worldReference = NodePath("../SubViewportContainer/SubViewport/World")
 boardReference = NodePath("../ScrabbleBoard")
+handReference = NodePath("../Control/Hand")

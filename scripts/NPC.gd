@@ -36,6 +36,7 @@ func _ready(): # Initialisation
 	if NPC_id == 2:
 		waiter = true
 		drink = randi() % 6
+		drink = 1
 		platter.visible = true
 		drinks.texture = load("res://sprites/NPCs/drinks/drink_%s.png" % drink)
 	else:
@@ -74,12 +75,11 @@ func _physics_process(delta):
 		if not leaving :
 			get_nav_target()
 		else:
-			print(global_position)
-			print("I left")
 			queue_free()
 	
 	if not talking:
-		velocity += global_position.direction_to(nav.get_next_path_position()) * speed * delta
+		var direction = global_position.direction_to(nav.get_next_path_position()) * speed * delta
+		velocity += Vector3(direction.x, 0, direction.z)
 	
 	move_and_slide()
 	

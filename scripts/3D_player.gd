@@ -45,19 +45,6 @@ func _process(_delta):
 			if i:
 				if i.has("drink"):
 					drinking.emit(i["drink"])
-					match i["drink"]:
-						1:
-							print('drink 1')
-						2:
-							print('drink 2')
-						3:
-							print('drink 3')
-						4:
-							print('drink 4')
-						5:
-							print('drink 5')
-						0:
-							print('drink 0')
 			
 
 func lockMovement(locked:bool):

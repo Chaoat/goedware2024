@@ -1,3 +1,4 @@
+class_name Hand
 extends TextureRect
 
 var bobbing = false
@@ -10,8 +11,6 @@ var player : CharacterBody3D
 
 func _ready() -> void:
 	start_position = position
-	player = get_tree().root.get_node("Node3D/SubViewportContainer/SubViewport/World/Player")
-	player.drinking.connect(player_drank)
 	
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("interact"):
@@ -22,8 +21,11 @@ func _process(delta: float) -> void:
 			bobbing = false
 	elif position != start_position:
 		position = position.lerp(start_position, BOB_RATE)
+			
 		
 func player_drank(drink):
-	print('hand got %s' % drink)
 	drinks.texture = load("res://sprites/NPCs/drinks/drink_%s.png" % drink)
 	drinks.visible = true
+	
+func finish_drink():
+	drinks.visible = false

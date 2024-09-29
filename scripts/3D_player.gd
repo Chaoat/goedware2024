@@ -45,7 +45,7 @@ func _process(_delta):
 			if i:
 				if i.has("drink"):
 					drinking.emit(i["drink"])
-					match i:
+					match i["drink"]:
 						1:
 							print('drink 1')
 						2:

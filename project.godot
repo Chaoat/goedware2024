@@ -78,6 +78,7 @@ interact={
 3d_navigation/layer_2="Outside"
 3d_physics/layer_3="Player"
 3d_physics/layer_4="Trees"
+3d_physics/layer_5="Interactible"
 
 [rendering]
 

@@ -21,6 +21,7 @@ var wildcard_count : int = 4 # Max wildcards per proc
 func _ready() -> void:
 	playerReference = worldReference.find_child("Player")
 	playerReference.drinking.connect(player_drank)
+	playerReference.interact.connect(got_word)
 
 var conversingNPC:NPC = null
 var startingPlayerPos:Vector3
@@ -88,3 +89,6 @@ func player_drank(drink):
 		current_drink = drink
 		handReference.player_drank(drink)
 		drink_timer = drink_duration
+
+func got_word(word):
+	boardReference.addWordToBoard(word)

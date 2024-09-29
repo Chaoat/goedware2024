@@ -13,6 +13,7 @@ var player : CharacterBody3D
 var movementLocked : bool = false
 
 signal drinking(drink)
+signal interact(word)
 
 func _physics_process(delta):
 	clock += delta * bob_rate
@@ -45,6 +46,8 @@ func _process(_delta):
 			if i:
 				if i.has("drink"):
 					drinking.emit(i["drink"])
+				elif i.has("word"):
+					interact.emit(i["word"])
 			
 
 func lockMovement(locked:bool):

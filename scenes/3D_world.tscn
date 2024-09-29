@@ -812,4 +812,4 @@ mesh = ExtResource("3_wh0d0")
 skeleton = NodePath("../../Outside/Inside/Walls")
 
 [node name="Clock" parent="Environment" instance=ExtResource("15_55iov")]
-transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 6.55678, 2.34123, 1.23932)
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 6.55678, 2.07087, 1.23932)

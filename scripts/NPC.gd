@@ -99,7 +99,6 @@ func _physics_process(delta):
 	
 func leave():
 	leaving = true
-	#nav.set_navigation_map(outside)
 	nav.set_navigation_layer_value(1, false)
 	nav.set_navigation_layer_value(2, true)
 	match randi() % 3:
@@ -109,8 +108,7 @@ func leave():
 			nav.set_target_position(Vector3(40,0,0))
 		2:
 			nav.set_target_position(Vector3(0,0,40))
-	
-	#nav.set_target_position(NavigationServer3D.map_get_random_point(outside, 1, false))
+
 
 func getFacePosition() -> Vector3:
 	var height = sprite.pixel_size*sprite.texture.get_height()

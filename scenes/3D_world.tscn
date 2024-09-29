@@ -1,20 +1,21 @@
-[gd_scene load_steps=39 format=4 uid="uid://mgp5vyu5py3g"]
+[gd_scene load_steps=40 format=4 uid="uid://mgp5vyu5py3g"]
 
 [ext_resource type="PackedScene" uid="uid://dnjrskqnue2hw" path="res://scenes/3D_player.tscn" id="1_a7fng"]
 [ext_resource type="Texture2D" uid="uid://di5wxcf3q2d2h" path="res://sprites/wall_tile.png" id="1_ul7cw"]
 [ext_resource type="PackedScene" uid="uid://dvwv3i1nchh8m" path="res://scenes/furniture/table.tscn" id="1_yuja0"]
 [ext_resource type="ArrayMesh" uid="uid://wcp5naua7r6b" path="res://meshes/inside_walls.obj" id="2_bwxd0"]
 [ext_resource type="PackedScene" uid="uid://bc18qelbxsy74" path="res://scenes/NPC.tscn" id="2_jcypb"]
-[ext_resource type="PackedScene" path="res://scenes/furniture/door.tscn" id="2_ru2k3"]
+[ext_resource type="PackedScene" uid="uid://bwop078e42h1f" path="res://scenes/furniture/door.tscn" id="2_ru2k3"]
 [ext_resource type="ArrayMesh" uid="uid://mw021gkb7k68" path="res://meshes/roof.obj" id="3_wh0d0"]
 [ext_resource type="ArrayMesh" uid="uid://bk8oe6cwx5f1x" path="res://meshes/outside_walls.obj" id="4_0eta0"]
 [ext_resource type="PackedScene" uid="uid://bxnvu1orw53tp" path="res://scenes/furniture/tree.tscn" id="5_vpx7i"]
 [ext_resource type="Script" path="res://scenes/npc_spawner.gd" id="10_bttmi"]
 [ext_resource type="ArrayMesh" uid="uid://cjfm5xpg5d2tb" path="res://meshes/furniture/table.obj" id="10_qsq3c"]
-[ext_resource type="Material" path="res://scenes/furniture/outline_mat.tres" id="11_7tepa"]
-[ext_resource type="PackedScene" path="res://scenes/furniture/chair.tscn" id="11_jsnuj"]
-[ext_resource type="PackedScene" path="res://scenes/furniture/sofa.tscn" id="12_lqxl8"]
+[ext_resource type="Material" uid="uid://dqvshmy5p8nvs" path="res://scenes/furniture/outline_mat.tres" id="11_7tepa"]
+[ext_resource type="PackedScene" uid="uid://cdrvk02xdsjog" path="res://scenes/furniture/chair.tscn" id="11_jsnuj"]
+[ext_resource type="PackedScene" uid="uid://bhqkj3yodgg2t" path="res://scenes/furniture/sofa.tscn" id="12_lqxl8"]
 [ext_resource type="PackedScene" uid="uid://itsvv4f0cowy" path="res://scenes/furniture/clock.tscn" id="15_55iov"]
+[ext_resource type="PackedScene" uid="uid://caimvy1pgho56" path="res://scenes/furniture/vase.tscn" id="16_ypi5f"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_25jkb"]
 vertices = PackedVector3Array(-11.5, 0.272281, -7, -10.75, 0.522281, -7.25, -10.75, 0.522281, -8.25, -11.5, 0.272281, -8.5, -12.75, 0.522281, -6, -11.5, 0.522281, -6.25, -11, 0.522281, -10.25, -6.75, 0.272281, -16.5, -5.25, 0.272281, -49.5, -49.5, 0.272281, -49.5, -49.5, 0.272281, -4.75, -6.75, 0.522281, -10.25, -5, 0.272281, -16.75, -12.75, 0.522281, -4.5, -3.75, 0.272281, -16.75, -3, 0.272281, -17.5, -1.5, 0.272281, -17.75, -1.5, 0.272281, -49.5, -1, 0.272281, -17.75, -0.5, 0.272281, -16.75, 11, 0.272281, -17, 11, 0.272281, -49.5, 16.75, 0.272281, -10.25, 16.75, 0.272281, -8.75, 49.5, 0.272281, -9, 16.25, 0.272281, -11, 49.5, 0.272281, -49.5, -1.5, 0.522281, -15.5, -2.25, 0.522281, -16.25, -2.75, 0.522281, -15.5, -0.5, 0.522281, -12, -0.5, 0.522281, -15.5, -1, 0.522281, -10.5, 1.75, 0.522281, -8.5, 2.75, 0.522281, -9.75, -5.5, 0.522281, -10.5, -5.5, 0.522281, -15.5, 2.75, 0.522281, -15.5, 1, 0.522281, -15.5, 1, 0.522281, -13, 3, 0.522281, -11.5, 4.25, 0.522281, -13.25, 4.5, 0.522281, -14, 5.75, 0.522281, -13, 5.5, 0.522281, -11.75, 9.5, 0.522281, -10.75, 12.5, 0.522281, -13, 10.5, 0.522281, -15.5, 5.75, 0.522281, -14.25, 5.5, 0.522281, -15.5, 4, 0.522281, -9.75, 9.75, 0.522281, -9.5, 15.5, 0.522281, -9.5, 15, 0.522281, -10.25, 14.25, 0.522281, -10.25, 12.75, 0.522281, -8.75, 12.25, 0.522281, -7, 15.5, 0.522281, -7.25, 10, 0.522281, -7.75, 10, 0.522281, -6.5, 11, 0.522281, -6.5, 2.5, 0.522281, -8, 1.25, 0.522281, 7, 2.25, 0.522281, 7, 2.75, 0.522281, 6, 2.5, 0.522281, 4.25, 1.25, 0.522281, 3.75, 6.25, 0.522281, 3.75, 6.75, 0.522281, 6, 7, 0.522281, 5.5, 11.5, 0.522281, -5, 12.25, 0.522281, -5, 8.75, 0.522281, 0.75, 9, 0.522281, -3.5, 8.5, 0.522281, -3.75, 3.5, 0.522281, 1, 7.75, 0.522281, 5.5, 7.75, 0.522281, 3.5, 6.5, 0.522281, 3.25, 3, 0.522281, 3.5, 3.75, 0.522281, 2, 2.5, 0.522281, 2, 2.5, 0.522281, 2.75, 0.25, 0.522281, -5.75, 0, 0.522281, -6.75, -2, 0.522281, -6.25, -1.75, 0.522281, -5.25, 6.25, 0.522281, 2, 2.5, 0.522281, -7, 8.75, 0.522281, -8, 12, 0.522281, -8.75, 11.25, 0.522281, -10, 1, 0.522281, 1.75, 1.5, 0.522281, -5.75, 0, 0.522281, 3, 0.5, 0.522281, -7.5, -1.75, 0.522281, -9, -2.75, 0.522281, -9, -2.75, 0.522281, -6.25, -10, 0.522281, -7, -9.5, 0.522281, -9, -7.75, 0.522281, -6, -6.75, 0.522281, -6.25, -6.75, 0.522281, -9, -11.5, 0.522281, 5, -8.5, 0.522281, 5, -8.25, 0.522281, 3.25, -7.75, 0.522281, -5.25, -9.75, 0.522281, -5.25, -11.5, 0.522281, -5, -5.75, 0.522281, -5, -6, 0.522281, 3.25, 16.75, 0.272281, 5, 49.5, 0.272281, 5.25, -4.5, 0.522281, 3.25, -4.25, 0.522281, 4, -3.25, 0.522281, 4.25, -3.25, 0.522281, 8, -2, 0.522281, 7.5, 0, 0.522281, 8, -49.5, 0.272281, 4.75, -12.75, 0.522281, 4.5, 10, 0.522281, 5.5, 10.25, 0.522281, 6.5, 10.5, 0.272281, 6.75, 12, 0.522281, 5.5, 12.25, 0.522281, 0.75, 9.25, 0.522281, 1, 14, 0.522281, 1, 14, 0.522281, 2, 15.5, 0.522281, 5.5, 15.5, 0.522281, -3.5, 13.5, 0.522281, 2.25, 13.5, 0.522281, 5.5, 9.25, 0.522281, 5.5, -12.75, 0.522281, 6, -11, 0.272281, 6.25, -49.5, 0.272281, 49.5, -11.25, 0.272281, 49.5, 16.5, 0.272281, 6.75, 15.25, 0.272281, 49.5, 49.5, 0.272281, 49.5, 15, 0.272281, 6.75, -4.5, 0.272281, 9, -4.5, 0.272281, 6.25, -3, 0.272281, 49.5, -2.75, 0.272281, 9.25, 4.5, 0.522281, 7, 6.25, 0.522281, 7, 6.25, 0.522281, 6.5, 4.5, 0.522281, 6.25, 10.5, 0.272281, 7.5, 8.75, 0.272281, 8.25, 1, 0.272281, 9.25, -0.5, 0.272281, 9.25, -0.25, 0.272281, 49.5, 11, 0.272281, 7.75, 10.5, 0.272281, 49.5, 1.25, 0.272281, 8.25, 12.5, 0.272281, 6.75, 11.75, 0.272281, 7.75)
@@ -813,3 +814,6 @@ skeleton = NodePath("../../Outside/Inside/Walls")
 
 [node name="Clock" parent="Environment" instance=ExtResource("15_55iov")]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 6.55678, 2.07087, 1.23932)
+
+[node name="Vase" parent="Environment" instance=ExtResource("16_ypi5f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.39567, 1.66266, 5.05199)

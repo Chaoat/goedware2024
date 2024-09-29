@@ -13,6 +13,7 @@ extends Node3D
 @onready var roof = $Environment/House/Roof
 
 var npcList : Array = []
+var waiterList : Array = []
 var npcDataList : Array = []
 var map : RID
 var root : Window
@@ -33,10 +34,10 @@ class npcData:
 		
 func _spawn_NPCs():
 	npcDataList.append_array([
-		npcData.new(0, 0, 1, map),
-		npcData.new(1, 0, 1, map),
-		npcData.new(2, 0, 2, map),
-		npcData.new(3, 0, 3, map)
+		npcData.new(0, 120, 1, map), # Girl
+		npcData.new(1, 200, 1, map), # Dog
+		npcData.new(2, 70, 2, map), # Worm
+		npcData.new(3, 50, 3, map) # Cloud
 	])
 	
 	for i in npcDataList:
@@ -45,18 +46,21 @@ func _spawn_NPCs():
 		x.constructor(i)
 		npcList.append(x)
 		root.call_deferred("add_child", x)
+		
+func force_leave():
+	var npc = npcList.pop_front()
+	npc.leave()
 
-func spawn_waiters(n):
+func _spawn_waiters(n):
 	var waiterDataList = []
 	for x in n:
-		waiterDataList.append(npcData.new(-1, 0, 0, map))
+		waiterDataList.append(npcData.new(-1, 100, 0, map))
 	for i in n:
 		var x = npcReference.instantiate()
 		x.constructor(waiterDataList[i])
 		x.drink = i % 6
 		root.call_deferred("add_child", x)
-		npcList.append(x)
-
+		waiterList.append(x)
 		
 func _ready() -> void:
 	call_deferred("custom_setup")
@@ -69,5 +73,5 @@ func custom_setup():
 	await get_tree().physics_frame
 	root = get_tree().root
 	_spawn_NPCs()
-	spawn_waiters(waiter_count)
+	_spawn_waiters(waiter_count)
 		

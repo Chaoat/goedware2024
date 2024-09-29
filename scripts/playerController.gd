@@ -30,6 +30,7 @@ func _ready() -> void:
 
 var conversingNPC:NPC = null
 var startingPlayerPos:Vector3
+
 func _startConversation(npc:NPC):
 	timerTillConversation = conversationGap
 	isInConversation = true

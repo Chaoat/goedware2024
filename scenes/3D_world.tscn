@@ -132,7 +132,7 @@ uv1_triplanar_sharpness = 0.499998
 
 [node name="World" type="Node3D"]
 script = ExtResource("10_bttmi")
-npc = ExtResource("2_jcypb")
+npcReference = ExtResource("2_jcypb")
 variants = 4
 
 [node name="Player" parent="." instance=ExtResource("1_a7fng")]

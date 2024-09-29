@@ -17,10 +17,10 @@ var tileOnCursor : Tile
 var tilesSnakingOutMouth = []
 var tilesSnakingPositions = []
 
-var validWords = []
-var confirmedWords = []
-
-var desiredWords = []
+# These are all arrays of valid words
+var validWords = [] # Words that are valid on the board, but not yet confirmed
+var confirmedWords = [] # Words that are confirmed and locked into the board
+var desiredWords = [] # Words that need to be sent out of mouth (OVERLAPS WITH CONFIRMED WORDS)
 
 class ValidWord:
 	func _init(inputTiles):

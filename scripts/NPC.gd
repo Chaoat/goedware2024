@@ -1,3 +1,4 @@
+class_name NPC
 extends CharacterBody3D
 
 @export var NPC_id = 0
@@ -14,6 +15,7 @@ var inside : RID
 #var outside : RID
 var prev_pos : Vector3
 
+var conversationDifficulty:int = 1
 
 var waiter : bool = false
 var leaving : bool = false

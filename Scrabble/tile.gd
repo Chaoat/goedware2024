@@ -11,8 +11,9 @@ var score: int
 
 var placedTime:float = 0.0
 
-var lerpMultiplier:float = 10.0
-var lerpLeeway = 0.01
+const lerpMultiplier:float = 10.0
+const lerpLeeway = 0.05
+var localPositionLerpMult = 1
 
 var targetPos:Vector2 = Vector2(0, 0)
 var targetRotation:float = 0.0
@@ -35,9 +36,12 @@ func _process(dt: float) -> void:
 			rotation = targetRotation
 	
 	if position != targetPos:
-		position = position + 3*lerpMultiplier*dt*(targetPos - position)
+		position = position + localPositionLerpMult*lerpMultiplier*dt*(targetPos - position)
 		#if abs(position - targetPos) <= lerpLeeway:
 		#	position = targetPos
+
+func isWildtile() -> bool:
+	return letter == "?"
 
 func setStats(inputletter: String, inputScore: int):
 	letter = inputletter

@@ -1,3 +1,4 @@
+class_name NPCSpawner
 extends Node3D
 
 @export var npc : PackedScene
@@ -7,7 +8,9 @@ extends Node3D
 
 @onready var inside = $Environment/Outside/Inside
 @onready var outside = $Environment/Outside
-	
+
+var npcList:Array = []
+
 func _ready() -> void:
 	call_deferred("custom_setup")
 	
@@ -25,3 +28,4 @@ func custom_setup():
 		i.NPC_id = x
 		i.spawn_point = NavigationServer3D.map_get_random_point(inside_map, 1, false)
 		root.call_deferred("add_child", i)
+		npcList.append(i)

@@ -506,7 +506,12 @@ func clearClutter() -> void:
 				for word in confirmedWords:
 					if word.tiles.find(tile) != -1:
 						clutter = false
+				
 				if clutter:
+					for i in range(validWords.size() - 1, -1, -1):
+						if validWords[i].tiles.find(tile) != -1:
+							validWords[i].clearHighlightSprite()
+							validWords.remove_at(i)
 					#_snakeIntoMouth(tile) # This is kind of a cool effect
 					tile.queue_free() # Maybe a nice particle effect to make it look like you're vomiting
 				

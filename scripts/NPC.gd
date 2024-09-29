@@ -34,10 +34,10 @@ func _ready(): # Initialisation
 	if spawn_point:
 		global_position = spawn_point
 		
-	if NPC_id == 2:
+	if NPC_id == -1:
 		waiter = true
-		drink = randi() % 6
-		drink = 0
+		#drink = randi() % 6
+		#drink = 0
 		platter.visible = true
 		drinks.texture = load("res://sprites/NPCs/drinks/drink_%s.png" % drink)
 		conversationDifficulty = 0
@@ -59,7 +59,7 @@ func interact():
 	velocity.y = JUMP
 	talking = true
 	print('talking to me')
-	print(variants.txt[NPC_id])
+	print(variants.txt[str(NPC_id)])
 	#leave()
 	
 	if waiter:

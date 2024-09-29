@@ -1,8 +1,9 @@
 extends Resource
 
-var txt = [
-	"I am 0",
-	"I am 1",
-	"I am 2",
-	"I am 3"
-]
+var txt = {
+	"0":"I am 0",
+	"1":"I am 1",
+	"2":"I am 2",
+	"3":"I am 3",
+	"-1":"I am a waiter"
+}

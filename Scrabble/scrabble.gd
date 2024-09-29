@@ -137,10 +137,13 @@ func _ready() -> void:
 func _updateHandTiles(dt: float):
 	var tileI = 0
 	var nTiles = tilesInHand.size()
-	for tile:Tile in tilesInHand:
-		tile.targetPos.x = (tileI - (nTiles - 1)/2.0)*tileWidth
-		tile.targetPos.y = 0
-		tileI = tileI + 1
+	#for tile:Tile in tilesInHand:
+	for i in range(tilesInHand.size()):
+		if is_instance_valid(tilesInHand[i]): # Checks that tile hasn't been freed
+			var tile = tilesInHand[i]
+			tile.targetPos.x = (tileI - (nTiles - 1)/2.0)*tileWidth
+			tile.targetPos.y = 0
+			tileI = tileI + 1
 
 func _updateTileOnCursor(dt: float):
 	if tileOnCursor != null:
@@ -493,3 +496,45 @@ func drawRandomTile() -> Tile:
 	if tileStats.is_empty():
 		return null
 	return addTileToHand(_addTile(tileStats[0], tileStats[1]))
+	
+func clearClutter() -> void:
+	for x in range($board.boardWidth):
+		for y in range($board.boardHeight):
+			var tile:Tile = $board.boardArray[x][y]
+			if tile != null and tile.onGrid:
+				var clutter = true
+				for word in confirmedWords:
+					if word.tiles.find(tile) != -1:
+						clutter = false
+				if clutter:
+					#_snakeIntoMouth(tile) # This is kind of a cool effect
+					tile.queue_free() # Maybe a nice particle effect to make it look like you're vomiting
+				
+func redraw() -> void:
+	var discard : int = 0
+	for tile in tilesInHand:
+		tile.queue_free()
+		discard += 1
+	tilesInHand.clear()
+	for i in discard:
+		drawRandomTile()
+	
+func rotate() -> void:
+	tilesInHand.pop_back().queue_free()
+	drawRandomTile()
+	
+func randomClutter() -> void:
+	for x in range($board.boardWidth):
+		for y in range($board.boardHeight):
+			var tile:Tile = $board.boardArray[x][y]
+			if tile != null and tile.onGrid:
+				# <<<This instead if you only wanted it to affect clutter
+				var clutter = true
+				for word in confirmedWords:
+					if word.tiles.find(tile) != -1:
+						clutter = false
+				if clutter:
+					var tileStats = tileBag.pullTile()
+					tile.setStats(tileStats[0], tileStats[1])
+				#var tileStats = tileBag.pullTile()
+				#tile.setStats(tileStats[0], tileStats[1])

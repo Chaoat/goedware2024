@@ -18,12 +18,14 @@ var prev_pos : Vector3
 var waiter : bool = false
 var leaving : bool = false
 var talking : bool = false
+var drink
 
 @onready var nav = $NavigationAgent3D
+@onready var platter = $Platter
+@onready var drinks = $Platter/Drinks
 
 func _ready(): # Initialisation
-	var NPC_texture = "res://sprites/NPCs/NPC_%s.png" % NPC_id
-	sprite.texture = load(NPC_texture)
+	sprite.texture = load("res://sprites/NPCs/NPC_%s.png" % NPC_id)
 	speed = randf_range(50,200)
 	#speed = randf_range(5,20)
 	if spawn_point:
@@ -31,6 +33,11 @@ func _ready(): # Initialisation
 		
 	if NPC_id == 2:
 		waiter = true
+		drink = randi() % 6
+		platter.visible = true
+		drinks.texture = load("res://sprites/NPCs/drinks/drink_%s.png" % drink)
+	else:
+		platter.visible = false
 		
 	nav.path_desired_distance = NAV_ACC
 	nav.target_desired_distance = NAV_ACC
@@ -49,6 +56,7 @@ func interact():
 	
 	if waiter:
 		print('have a drink!')
+		return({"drink": drink})
 
 func _physics_process(delta):
 	velocity.x = 0

@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clhh4pdsf81ly"
-path.s3tc="res://.godot/imported/NPC_2.png-1b4bf6cefbdd11b068c3afbfb5fca22d.s3tc.ctex"
+uid="uid://ip6tb87qf6yv"
+path.s3tc="res://.godot/imported/dish.png-eab4b4f01eb6ab221bd5b4608983abc8.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://sprites/NPCs/NPC_2.png"
-dest_files=["res://.godot/imported/NPC_2.png-1b4bf6cefbdd11b068c3afbfb5fca22d.s3tc.ctex"]
+source_file="res://sprites/NPCs/dish.png"
+dest_files=["res://.godot/imported/dish.png-eab4b4f01eb6ab221bd5b4608983abc8.s3tc.ctex"]
 
 [params]
 

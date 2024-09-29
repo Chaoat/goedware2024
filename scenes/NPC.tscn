@@ -1,8 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://bc18qelbxsy74"]
+[gd_scene load_steps=8 format=3 uid="uid://bc18qelbxsy74"]
 
 [ext_resource type="Script" path="res://scripts/NPC.gd" id="1_iswqn"]
 [ext_resource type="Resource" uid="uid://bi3qk3rd2d04l" path="res://voicelines/NPC_variants.tres" id="2_sri8l"]
 [ext_resource type="Texture2D" uid="uid://dk4ms7bojytff" path="res://sprites/shadow.png" id="3_dhwnu"]
+[ext_resource type="Texture2D" uid="uid://clhh4pdsf81ly" path="res://sprites/NPCs/NPC_2.png" id="3_g82ju"]
+[ext_resource type="Texture2D" uid="uid://ip6tb87qf6yv" path="res://sprites/NPCs/dish.png" id="5_q2m6m"]
+[ext_resource type="Texture2D" uid="uid://cbh6uk1vlg2qp" path="res://sprites/NPCs/drinks/drink_0.png" id="6_5mff3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pmrqo"]
 
@@ -19,9 +22,23 @@ shape = SubResource("CapsuleShape3D_pmrqo")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.943094, 0)
 pixel_size = 0.001
 billboard = 2
+texture = ExtResource("3_g82ju")
 
 [node name="Shadow" type="Sprite3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, 0.5, 0, -0.5, -2.18557e-08, 0, 0.068722, 0)
 texture = ExtResource("3_dhwnu")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="Platter" type="Node3D" parent="."]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 1.16889, 0)
+
+[node name="Dish" type="Sprite3D" parent="Platter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.26192, 0)
+billboard = 2
+texture = ExtResource("5_q2m6m")
+
+[node name="Drinks" type="Sprite3D" parent="Platter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.79592, 0)
+billboard = 2
+texture = ExtResource("6_5mff3")

@@ -1,11 +1,81 @@
-[gd_scene load_steps=3 format=3 uid="uid://d37gqogm3w57j"]
+[gd_scene load_steps=10 format=3 uid="uid://d37gqogm3w57j"]
 
 [ext_resource type="PackedScene" uid="uid://mgp5vyu5py3g" path="res://scenes/3D_world.tscn" id="1_7exlk"]
 [ext_resource type="PackedScene" uid="uid://3whfta4brxjt" path="res://Scrabble/scrabbleBoard.tscn" id="2_75qiq"]
+[ext_resource type="Script" path="res://scenes/hand.gd" id="3_boswx"]
+[ext_resource type="Texture2D" uid="uid://cubnt67dhox6i" path="res://sprites/UI/convincingness bar 0.png" id="3_ix56m"]
+[ext_resource type="Texture2D" uid="uid://cbh6uk1vlg2qp" path="res://sprites/NPCs/drinks/drink_0.png" id="3_o3urq"]
+[ext_resource type="Texture2D" uid="uid://bgu14j14x5gdl" path="res://sprites/UI/convincingness bar.png" id="4_2coij"]
+[ext_resource type="Texture2D" uid="uid://ho4l7jgw4fqw" path="res://sprites/UI/convincingness bar 100.png" id="5_17jd7"]
+[ext_resource type="Script" path="res://scenes/conv_bar.gd" id="6_rhttb"]
+[ext_resource type="Texture2D" uid="uid://ca4ix4jqbyer" path="res://sprites/UI/POV_hand.png" id="7_uuvnr"]
 
 [node name="Node3D" type="Node3D"]
 
 [node name="World" parent="." instance=ExtResource("1_7exlk")]
 
-[node name="ScrabbleBoard" parent="." instance=ExtResource("2_75qiq")]
-offset_left = 642.0
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Hand" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -213.0
+offset_top = -319.0
+offset_right = 687.0
+offset_bottom = 581.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.36, 0.36)
+texture = ExtResource("7_uuvnr")
+script = ExtResource("3_boswx")
+
+[node name="Drinks" type="TextureRect" parent="Control/Hand"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -261.111
+offset_top = -641.667
+offset_right = 1738.89
+offset_bottom = -141.667
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.49, 0.49)
+texture = ExtResource("3_o3urq")
+
+[node name="ScrabbleBoard" parent="Control" instance=ExtResource("2_75qiq")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.551215
+metadata/_edit_use_anchors_ = true
+
+[node name="ConvBar" type="TextureProgressBar" parent="Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = -130.0
+offset_right = 1968.0
+offset_bottom = 497.0
+grow_vertical = 0
+scale = Vector2(0.2, 0.2)
+step = 0.01
+value = 100.0
+texture_under = ExtResource("3_ix56m")
+texture_over = ExtResource("4_2coij")
+texture_progress = ExtResource("5_17jd7")
+script = ExtResource("6_rhttb")

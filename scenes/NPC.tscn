@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/NPC.gd" id="1_iswqn"]
 [ext_resource type="Resource" uid="uid://bi3qk3rd2d04l" path="res://voicelines/NPC_variants.tres" id="2_sri8l"]
 [ext_resource type="Texture2D" uid="uid://dk4ms7bojytff" path="res://sprites/shadow.png" id="3_dhwnu"]
-[ext_resource type="Texture2D" uid="uid://clhh4pdsf81ly" path="res://sprites/NPCs/NPC_2.png" id="3_g82ju"]
+[ext_resource type="Texture2D" uid="uid://clhh4pdsf81ly" path="res://sprites/NPCs/NPC_-1.png" id="3_g82ju"]
 [ext_resource type="Texture2D" uid="uid://ip6tb87qf6yv" path="res://sprites/NPCs/dish.png" id="5_q2m6m"]
 [ext_resource type="Texture2D" uid="uid://cbh6uk1vlg2qp" path="res://sprites/NPCs/drinks/drink_0.png" id="6_5mff3"]
 

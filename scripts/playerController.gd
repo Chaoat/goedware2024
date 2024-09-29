@@ -13,13 +13,15 @@ var playerReference : Player3D
 var isInConversation : bool = false
 
 var drink_timer : float = 0
-@export var drink_duration : float = 5
+@export var drink_duration : float = 8
 var current_drink
 
 var timerTillConversation:float = conversationGap
 
 var wildcard_chance : int = 200 # Lower is less probable
 var wildcard_count : int = 4 # Max wildcards per proc
+var rotate_freq : float = 1 # Seconds between rotation
+var rotate_timer: float = 0
 
 func _ready() -> void:
 	playerReference = worldReference.find_child("Player")
@@ -115,6 +117,27 @@ func _process(delta: float) -> void:
 						for i in (randi() % wildcard_count + 1):
 							boardReference.addWildtile()
 							
+				2:
+					print('head empty')
+					boardReference.clearClutter()
+					current_drink = null
+					
+				3:
+					print('go again')
+					boardReference.redraw()
+					current_drink = null
+					
+				4:
+					rotate_timer += delta
+					if rotate_timer > rotate_freq:
+						rotate_timer = 0
+						print('revolving door')
+						boardReference.rotate()
+						
+				5:
+					print('trippy')
+					boardReference.randomClutter()
+					current_drink = null
 
 			
 func player_drank(drink):

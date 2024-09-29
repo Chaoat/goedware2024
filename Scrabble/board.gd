@@ -54,15 +54,19 @@ func _boardCoordsToIndex(x: int, y: int) -> Array:
 func _updateTiles(dt: float):
 	for x in range(boardWidth):
 		for y in range(boardHeight):
-			var tile:Tile = boardArray[x][y]
-			if tile != null:
-				if tile.onGrid == false:
-					boardArray[x][y] = null
-					continue
-					
-				var coords = _indexToBoardCoords(x, y)
-				tile.targetPos.x = coords[0]
-				tile.targetPos.y = coords[1]
+			if is_instance_valid(boardArray[x][y]): # Checks that tile hasn't been freed
+				var tile:Tile = boardArray[x][y]
+				if tile != null:
+					if tile.onGrid == false:
+						boardArray[x][y] = null
+						continue
+						
+					var coords = _indexToBoardCoords(x, y)
+					tile.targetPos.x = coords[0]
+					tile.targetPos.y = coords[1]
+			else:
+				boardArray[x][y] = null
+				
 
 func _process(dt: float) -> void:
 	_updateTiles(dt)

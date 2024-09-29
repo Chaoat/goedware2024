@@ -11,6 +11,9 @@ var player : CharacterBody3D
 
 func _ready() -> void:
 	start_position = position
+	#resize()
+	#get_tree().get_root().size_changed.connect(resize) 
+	
 	
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("interact"):
@@ -29,3 +32,13 @@ func player_drank(drink):
 	
 func finish_drink():
 	drinks.visible = false
+
+## Function to scale the TextureRect based on screen size
+#func resize():
+	#print(resize)
+	#var screen_size = get_viewport().size
+	#var scale_factor = 0.0005  # You can adjust this value based on how much you want to scale
+	#print(scale)
+	## Scale the TextureRect to a percentage of the screen size
+	#scale = Vector2(screen_size.y * scale_factor, screen_size.y * scale_factor)
+	#rect_size()

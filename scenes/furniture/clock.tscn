@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://itsvv4f0cowy"]
+
+[ext_resource type="Script" path="res://scripts/clock.gd" id="1_dido8"]
+[ext_resource type="Texture2D" uid="uid://ctilxrworil0u" path="res://sprites/UI/clock face.png" id="2_3jhdc"]
+[ext_resource type="Texture2D" uid="uid://d86krd8e2pva" path="res://sprites/UI/hour hand.png" id="3_quf0y"]
+[ext_resource type="Texture2D" uid="uid://bkxtwn60s16l2" path="res://sprites/UI/minute hand.png" id="4_nfoi5"]
+
+[node name="Clock" type="Node3D"]
+script = ExtResource("1_dido8")
+
+[node name="Face" type="Sprite3D" parent="."]
+render_priority = -1
+texture = ExtResource("2_3jhdc")
+
+[node name="HourHand" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0965119)
+offset = Vector2(0, 30)
+texture = ExtResource("3_quf0y")
+
+[node name="MinuteHand" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.068624)
+offset = Vector2(-2, 50)
+texture = ExtResource("4_nfoi5")

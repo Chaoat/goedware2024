@@ -15,6 +15,7 @@ var cameraLocked : bool = false
 var cameraLookTarget:Vector3
 
 signal drinking(drink)
+signal interact(word)
 
 func _physics_process(delta):
 	clock += delta * bob_rate
@@ -57,6 +58,8 @@ func _process(_delta):
 			if i:
 				if i.has("drink"):
 					drinking.emit(i["drink"])
+				elif i.has("word"):
+					interact.emit(i["word"])
 
 func unlockCamera():
 	cameraLocked = false

@@ -85,7 +85,7 @@ func canPlaceTile(x:int, y:int) -> bool:
 	else:
 		return false
 
-func isTileValidForWordPlacement(x:int, y:int):
+func _isTileValidForWordPlacement(x:int, y:int):
 	for coords in endZone:
 		if coords[0] == x and coords[1] == y:
 			return false
@@ -112,9 +112,9 @@ func getValidTilesForWord(word:String) -> Array:
 			var horizontalValid = true
 			var verticalValid = true
 			for i in range(wordLength):
-				if isTileValidForWordPlacement(x + i, y) == false:
+				if _isTileValidForWordPlacement(x + i, y) == false:
 					horizontalValid = false
-				if isTileValidForWordPlacement(x, y + i) == false:
+				if _isTileValidForWordPlacement(x, y + i) == false:
 					verticalValid = false
 			
 			if horizontalValid:
@@ -123,7 +123,7 @@ func getValidTilesForWord(word:String) -> Array:
 				returnArray.append([x, y, 1])
 	return returnArray
 
-#Returns the displaced tile if there is one
+#Returns the displaced tile if there is one, no validation check
 func placeTile(tile: Tile, x: int, y: int) -> Tile:
 	x = min(max(x, 0), boardWidth - 1)
 	y = min(max(y, 0), boardHeight - 1)

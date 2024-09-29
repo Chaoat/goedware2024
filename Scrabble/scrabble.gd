@@ -296,6 +296,11 @@ func randomlySelectDesiredWord() -> ValidWord:
 func areDesiresCleared() -> bool:
 	return desiredWords.size() == 0
 
+func clearDesires():
+	for i in range(desiredWords.size() - 1, -1, -1):
+		desiredWords[i].clearHighlightSprite()
+		desiredWords.remove_at(i)
+
 func _snakeIntoMouth(tile:Tile):
 	if tilesSnakingOutMouth.is_empty():
 		tilesSnakingPositions.clear()
@@ -383,7 +388,7 @@ func _checkWordConfirmation(clickPos: Vector2):
 						if validWord.tiles[j].letter == "?":
 							var wildTile = validWord.tiles[j]
 							wildTile.setStats(validWord.word[j], 0)
-				Global.addConvincingness(validWord.getScore())
+				Global.addConvincingness(2*validWord.getScore())
 				_confirmWord(validWord, true)
 				return
 

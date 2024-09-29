@@ -4,6 +4,10 @@ extends Node
 @export var boardReference : ScrabbleBoard
 @export var handReference : Hand
 
+const conversationReward:float = 100
+const conversationFailureMalus:float = -50
+const conversationWalkAwayDistance:float = 1
+
 var playerReference : Player3D
 var isInConversation : bool = false
 
@@ -19,19 +23,31 @@ func _ready() -> void:
 	playerReference.drinking.connect(player_drank)
 
 var conversingNPC:NPC = null
+var startingPlayerPos:Vector3
 func _startConversation(npc:NPC):
 	isInConversation = true
 	conversingNPC = npc
-	playerReference.lockMovement(true)
+	startingPlayerPos = playerReference.position
 	for i in range(npc.conversationDifficulty):
 		boardReference.randomlySelectDesiredWord()
 
 func _endConversation():
 	isInConversation = false
 	conversingNPC.talking = false
-	playerReference.lockMovement(false)
+	Global.addConvincingness(conversationReward)
 	for i in range(0,conversingNPC.conversationDifficulty + 1):
 		boardReference.addWordToBoard(boardReference.find_child("dictionary").randomlyGenerateWord())
+
+func _walkAwayFromConversation():
+	isInConversation = false
+	conversingNPC.talking = false
+	Global.addConvincingness(conversationFailureMalus)
+	boardReference.clearDesires()
+
+func _physics_process(delta):
+	if isInConversation:
+		var distFromStart = playerReference.position.distance_to(startingPlayerPos)
+		playerReference.position = playerReference.position.move_toward(startingPlayerPos, 0.012*playerReference.speed*delta*pow(distFromStart/conversationWalkAwayDistance, 2))
 
 func _process(delta: float) -> void:
 	if isInConversation == false:
@@ -43,6 +59,9 @@ func _process(delta: float) -> void:
 	else:
 		if boardReference.areDesiresCleared():
 			_endConversation()
+		elif playerReference.position.distance_to(startingPlayerPos) > conversationWalkAwayDistance:
+			_walkAwayFromConversation()
+		
 			
 	if drink_timer:
 		drink_timer -= delta

@@ -40,6 +40,7 @@ func _ready(): # Initialisation
 		drink = 0
 		platter.visible = true
 		drinks.texture = load("res://sprites/NPCs/drinks/drink_%s.png" % drink)
+		conversationDifficulty = 0
 	else:
 		platter.visible = false
 		

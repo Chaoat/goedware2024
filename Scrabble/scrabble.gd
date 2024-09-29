@@ -505,7 +505,6 @@ func clearClutter() -> void:
 				var clutter = true
 				for word in confirmedWords:
 					if word.tiles.find(tile) != -1:
-						print('X')
 						clutter = false
 				if clutter:
 					#_snakeIntoMouth(tile) # This is kind of a cool effect
@@ -530,12 +529,12 @@ func randomClutter() -> void:
 			var tile:Tile = $board.boardArray[x][y]
 			if tile != null and tile.onGrid:
 				# <<<This instead if you only wanted it to affect clutter
-				#var clutter = true
-				#for word in confirmedWords:
-					#if word.tiles.find(tile) != -1:
-						#clutter = false
-				#if clutter:
-					#var tileStats = tileBag.pullTile()
-					#tile.setStats(tileStats[0], tileStats[1])
-				var tileStats = tileBag.pullTile()
-				tile.setStats(tileStats[0], tileStats[1])
+				var clutter = true
+				for word in confirmedWords:
+					if word.tiles.find(tile) != -1:
+						clutter = false
+				if clutter:
+					var tileStats = tileBag.pullTile()
+					tile.setStats(tileStats[0], tileStats[1])
+				#var tileStats = tileBag.pullTile()
+				#tile.setStats(tileStats[0], tileStats[1])

@@ -81,7 +81,7 @@ class TileBag:
 	func returnTile(tile: Tile):
 		var index = WordDictionary.letterToIndex(tile.letter)
 		tilesInBag[index] = tilesInBag[index] + 1
-		tilesLeft = tilesLeft + 1
+		#tilesLeft = tilesLeft + 1
 	
 	func pullTile() -> Array:
 		if tilesLeft > 0:
@@ -97,7 +97,7 @@ class TileBag:
 					break
 				else:
 					randomChoice = randomChoice - nLetters
-			tilesLeft = tilesLeft - 1
+			#tilesLeft = tilesLeft - 1
 			return [letter, score]
 		return []
 	
@@ -116,8 +116,7 @@ func _initTileDimensions():
 	print("tile width: ",tileWidth," tile height: ",tileHeight)
 	tempTile.queue_free()
 	
-	$board.tileWidth = tileWidth
-	$board.tileHeight = tileHeight
+	$board.initBoardDimensions(tileWidth, tileHeight)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

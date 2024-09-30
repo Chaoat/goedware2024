@@ -15,7 +15,7 @@ var playerReference : Player3D
 var isInConversation : bool = false
 
 var drink_timer : float = 0
-@export var drink_duration : float = 8
+var drink_duration : float = 20
 var current_drink
 
 var timerTillConversation:float = conversationGap
@@ -26,7 +26,7 @@ var rotate_freq : float = 1 # Seconds between rotation
 var rotate_timer: float = 0
 
 var leave_timer : float = 0
-var leave_freq : float = 60
+var leave_freq : float = 100
 
 var huntingNPC:NPC
 var conversingNPC:NPC = null
@@ -95,9 +95,11 @@ var randomSpeechTime = 5.0
 var huntingTime = 0.0
 var moreWordsNeededWarning = 0.0
 var isGameRunning = true
+
 func _process(delta: float) -> void:
 	if isGameRunning:
-		if isInConversation == false:
+		if not isInConversation:
+			leave_timer += delta
 			for npc:NPC in worldReference.npcList:
 				if npc.talking and npc.conversationDifficulty > 0:
 					if boardReference.confirmedWords.size() >= npc.conversationDifficulty:
@@ -132,6 +134,7 @@ func _process(delta: float) -> void:
 				randomSpeechTime = randomSpeechTime + 2 + 4*randf()
 				_randomBackgroundNoise()
 		else:
+			leave_timer += delta
 			if boardReference.areDesiresCleared():
 				_endConversation()
 			elif playerReference.position.distance_to(startingPlayerPos) > conversationWalkAwayDistance:
@@ -140,7 +143,6 @@ func _process(delta: float) -> void:
 		if drink_timer:
 			_handle_drinks(delta)
 		
-		leave_timer += delta
 		if leave_timer > leave_freq:
 			leave_timer = 0
 			worldReference.force_leave()

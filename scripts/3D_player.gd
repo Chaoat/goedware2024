@@ -11,6 +11,7 @@ var bob_rate = 12
 var bob_height = 5
 var player : CharacterBody3D
 var cameraLocked : bool = false
+var interruptMovement:bool = false
 
 var cameraLookTarget:Vector3
 
@@ -20,6 +21,7 @@ signal interact(word)
 var walk_timer : float = 0
 var walk_rate : float = 2 * PI / bob_rate
 
+var lastInputDir:Vector2
 func _physics_process(delta):
 	clock += delta * bob_rate
 	var bob = sin(clock + (PI/bob_rate))/bob_height
@@ -31,7 +33,12 @@ func _physics_process(delta):
 	else:
 		rot_dir = lerpf(rot_dir, 0, 0.1)
 	
-	if linear_dir:
+	if interruptMovement == true and input_dir != lastInputDir:
+		interruptMovement = false
+	
+	if linear_dir and interruptMovement == false:
+		interruptMovement = false
+		lastInputDir = input_dir
 		velocity.x = sin(basis.get_euler().y) * speed * linear_dir * delta
 		velocity.z = cos(basis.get_euler().y) * speed * linear_dir * delta
 		position.y = lerpf(position.y, bob, 0.2)

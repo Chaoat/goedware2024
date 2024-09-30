@@ -91,7 +91,7 @@ func _ready() -> void:
 	#_readFile("dict/data.verb")
 	#_readFile("dict/data.adj")
 	#_readFile("dict/data.adv")
-	_readRawText("dict/scrabbleWords.txt")
+	_readRawText("res://dict/scrabbleWords.txt")
 	
 	return
 

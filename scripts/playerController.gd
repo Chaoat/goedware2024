@@ -38,6 +38,7 @@ func _ready() -> void:
 	playerReference.interact.connect(got_word)
 
 func _startConversation(npc:NPC):
+	playerReference.interruptMovement = true
 	timerTillConversation = conversationGap
 	isInConversation = true
 	conversingNPC = npc

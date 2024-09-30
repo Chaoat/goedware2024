@@ -39,11 +39,11 @@ func initBoardDimensions(inputTileWidth:int, inputTileHeight:int) -> void:
 			if zonePixel.g == 1 and zonePixel.b == 1:
 				endZone.append([x, y])
 
-func _draw():
-	for x in range(boardWidth):
-		for y in range(boardHeight):
-			if blockedArray[x][y] == false:
-				draw_rect(Rect2((x - 0.5)*tileWidth, (y - 0.5)*tileHeight, tileWidth, tileHeight), Color.RED, false)
+#func _draw():
+	#for x in range(boardWidth):
+		#for y in range(boardHeight):
+			#if blockedArray[x][y] == false:
+				#draw_rect(Rect2((x - 0.5)*tileWidth, (y - 0.5)*tileHeight, tileWidth, tileHeight), Color.RED, false)
 
 func _indexToBoardCoords(x: int, y: int) -> Array:
 	return [x*tileWidth, y*tileHeight]
@@ -104,10 +104,10 @@ func _isTileValidForWordPlacement(x:int, y:int):
 	return true
 
 #Returns duples as [x, y, orientation(0 for horizontal, 1 for vertical)]
-func getValidTilesForWord(word:String) -> Array:
+func getValidTilesForWord(word:String, maxXDistance:int = 999) -> Array:
 	var wordLength = word.length()
 	var returnArray = []
-	for x in range(boardWidth):
+	for x in range(min(boardWidth, maxXDistance)):
 		for y in range(boardHeight):
 			var horizontalValid = true
 			var verticalValid = true

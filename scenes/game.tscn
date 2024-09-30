@@ -18,13 +18,13 @@ font_color = Color(1, 0, 0, 1)
 outline_size = 8
 outline_color = Color(0, 0, 0, 1)
 
-[sub_resource type="Gradient" id="Gradient_8m36c"]
+[sub_resource type="Gradient" id="Gradient_idsyv"]
 interpolation_mode = 2
 offsets = PackedFloat32Array(0, 0.5, 1)
 colors = PackedColorArray(1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_kbmug"]
-gradient = SubResource("Gradient_8m36c")
+gradient = SubResource("Gradient_idsyv")
 fill_from = Vector2(1, 1)
 
 [node name="Control" type="Control"]

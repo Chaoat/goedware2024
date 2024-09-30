@@ -133,7 +133,7 @@ func _ready() -> void:
 	for i in range(0,startingHandSize):
 		drawRandomTile()
 	
-	addWordToBoard("party")
+	addWordToBoard("party", 6)
 	
 	var systemVoices = DisplayServer.tts_get_voices_for_language("en")
 	voices = []
@@ -480,8 +480,8 @@ func addWildtile():
 			addTileToHand(displacedTile)
 		newTile.confirmed = true
 
-func addWordToBoard(word:String) -> bool:
-	var validTiles:Array = $board.getValidTilesForWord(word)
+func addWordToBoard(word:String, maxX:int = 999) -> bool:
+	var validTiles:Array = $board.getValidTilesForWord(word, maxX)
 	if validTiles.size() > 0:
 		var index = randi()%validTiles.size()
 		var validTile = validTiles[index]

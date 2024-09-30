@@ -6,6 +6,9 @@ extends Node
 @export var handReference : Hand
 @export var moreWordsNeededLabel : Label
 
+@export var winScreen : TextureRect
+@export var loseScreen : TextureRect
+
 const conversationReward:float = 100
 const conversationFailureMalus:float = -50
 const conversationWalkAwayDistance:float = 1
@@ -21,12 +24,12 @@ var current_drink
 var timerTillConversation:float = conversationGap
 
 var wildcard_chance : int = 200 # Lower is less probable
-var wildcard_count : int = 4 # Max wildcards per proc
+var wildcard_count : int = 1 # Max wildcards per proc
 var rotate_freq : float = 1 # Seconds between rotation
 var rotate_timer: float = 0
 
 var leave_timer : float = 0
-var leave_freq : float = 100
+var leave_freq : float = 60
 
 var huntingNPC:NPC
 var conversingNPC:NPC = null
@@ -57,6 +60,7 @@ func _endConversation():
 	isInConversation = false
 	conversingNPC.talking = false
 	conversingNPC.waitTime = 5.0
+	conversingNPC.conversationWon = true
 	Global.addConvincingness(conversationReward)
 	var sentence = ""
 	for i in range(0,conversingNPC.conversationDifficulty + 1):
@@ -64,6 +68,9 @@ func _endConversation():
 		boardReference.addWordToBoard(word)
 		sentence = sentence + " " + word
 	boardReference.speakSentence(sentence, conversingNPC.NPC_id + 1)
+	
+	if worldReference.npcList.size() == 1:
+		worldReference.force_leave()
 	
 	playerReference.unlockCamera()
 
@@ -146,6 +153,14 @@ func _process(delta: float) -> void:
 		if leave_timer > leave_freq:
 			leave_timer = 0
 			worldReference.force_leave()
+		
+		if worldReference.npcList.size() == 0:
+			isGameRunning = false
+			winScreen.visible = true
+		
+		if Global.convincingness <= 0:
+			isGameRunning = false
+			loseScreen.visible = true
 	
 	if moreWordsNeededWarning > 0:
 		moreWordsNeededLabel.visible = true

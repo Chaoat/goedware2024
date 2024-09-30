@@ -31,14 +31,16 @@ class npcData:
 		
 func _spawn_NPCs():
 	npcDataList.append_array([
-		npcData.new(0, 120, 1, map), # Girl
+		npcData.new(2, 70, 1, map), # Worm
 		npcData.new(1, 200, 1, map), # Dog
-		npcData.new(2, 70, 2, map), # Worm
-		npcData.new(3, 50, 3, map), # Cloud
-		npcData.new(4, 50, 3, map), # Invis
-		npcData.new(5, 50, 3, map), # Mouth
-		npcData.new(6, 50, 3, map), # Man
-		npcData.new(7, 50, 3, map), # Robot
+		npcData.new(9, 140, 1, map), # Marble
+		npcData.new(3, 90, 2, map), # Cloud
+		npcData.new(0, 120, 2, map), # Girl
+		npcData.new(7, 80, 2, map), # Robot
+		npcData.new(4, 110, 3, map), # Invis
+		npcData.new(5, 40, 3, map), # Mouth
+		npcData.new(8, 120, 3, map), # Mutant
+		npcData.new(6, 100, 4, map), # Man
 	])
 	
 	for i in npcDataList:
@@ -49,6 +51,9 @@ func _spawn_NPCs():
 		
 func force_leave():
 	if not npcList.is_empty():
+		if npcList.size() == 1:
+			if npcList[0].conversationWon == false:
+				return
 		var npc = npcList.pop_front()
 		npc.leave()
 

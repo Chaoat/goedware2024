@@ -21,6 +21,7 @@ var waitTime = 0.0
 var waiter : bool = false
 var leaving : bool = false
 var talking : bool = false
+var conversationWon : bool = false
 var drink
 
 @onready var nav = $NavigationAgent3D

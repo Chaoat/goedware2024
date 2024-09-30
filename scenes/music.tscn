@@ -6,12 +6,12 @@
 
 [node name="music" type="AudioStreamPlayer"]
 stream = ExtResource("1_xcylu")
-volume_db = -15.0
+volume_db = -25.0
 script = ExtResource("2_y3tp6")
 
 [node name="musicIntro" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_ia1la")
-volume_db = -15.0
+volume_db = -25.0
 
 [connection signal="finished" from="." to="." method="_on_finished"]
 [connection signal="finished" from="musicIntro" to="." method="_on_music_intro_finished"]

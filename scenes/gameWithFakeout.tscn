@@ -128,6 +128,7 @@ value = 100.0
 texture_under = ExtResource("7_cc0pe")
 texture_over = ExtResource("8_2mkvl")
 texture_progress = ExtResource("9_46hb3")
+texture_progress_offset = Vector2(346, 0)
 script = ExtResource("10_g27s3")
 
 [node name="FakeoutController" type="Node" parent="." node_paths=PackedStringArray("worldReference", "boardReference", "playerReference", "borderReference", "barReference")]
@@ -181,7 +182,6 @@ autowrap_mode = 2
 
 [node name="WinScreen" type="TextureRect" parent="."]
 visible = false
-modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

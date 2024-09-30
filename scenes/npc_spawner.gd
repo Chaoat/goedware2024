@@ -47,7 +47,7 @@ func _spawn_NPCs():
 		var x = npcReference.instantiate()
 		x.constructor(i)
 		npcList.append(x)
-		root.call_deferred("add_child", x)
+		call_deferred("add_child", x)
 		
 func force_leave():
 	if not npcList.is_empty():
@@ -65,7 +65,7 @@ func _spawn_waiters(n):
 		var x = npcReference.instantiate()
 		x.constructor(waiterDataList[i])
 		x.drink = i % 6
-		root.call_deferred("add_child", x)
+		call_deferred("add_child", x)
 		waiterList.append(x)
 		
 func _ready() -> void:

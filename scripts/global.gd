@@ -5,7 +5,7 @@ var win = false
 static var maxConvincingness : int = 5
 
 var convincingness : float = maxConvincingness
-var skipIntro:bool = true
+var skipIntro:bool = false
 
 func _process(_delta: float) -> void:
 	if convincingness > maxConvincingness:

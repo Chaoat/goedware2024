@@ -8,6 +8,6 @@ func _ready() -> void:
 
 func _on_music_intro_finished() -> void:
 	play()
-	
+
 func _on_finished() -> void:
 	play()

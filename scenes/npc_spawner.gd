@@ -2,10 +2,7 @@ class_name NPCSpawner
 extends Node3D
 
 @export var npcReference : PackedScene
-
-@export var spawn_count = 10
 @export var waiter_count = 6
-@export var variants = 3
 
 @onready var inside = $Environment/Outside/Inside
 @onready var floorReference = $Environment/Outside/Inside/Floor
@@ -37,7 +34,11 @@ func _spawn_NPCs():
 		npcData.new(0, 120, 1, map), # Girl
 		npcData.new(1, 200, 1, map), # Dog
 		npcData.new(2, 70, 2, map), # Worm
-		npcData.new(3, 50, 3, map) # Cloud
+		npcData.new(3, 50, 3, map), # Cloud
+		npcData.new(4, 50, 3, map), # Invis
+		npcData.new(5, 50, 3, map), # Mouth
+		npcData.new(6, 50, 3, map), # Man
+		npcData.new(7, 50, 3, map), # Robot
 	])
 	
 	for i in npcDataList:

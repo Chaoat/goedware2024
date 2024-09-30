@@ -2,7 +2,7 @@ extends Node
 
 var lose = false
 var win = false
-static var maxConvincingness : int = 5
+static var maxConvincingness : int = 200
 
 var convincingness : float = maxConvincingness
 var skipIntro:bool = false

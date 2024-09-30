@@ -400,16 +400,17 @@ func _checkWordConfirmation(clickPos: Vector2):
 				return
 
 func _areLettersBreakingOtherWords(tiles:Array, dirX:int, dirY:int) -> bool:
-	for tile:Tile in tiles:
-		var perpTiles = $board.getContiguousTiles(tile.gridX, tile.gridY, dirX, dirY, true)
-		if perpTiles.size() > 1:
-			var word = ""
-			for perpTile in perpTiles:
-				word = word + perpTile.letter
-			if $dictionary.getWordDefinitions(word).size() == 0:
-				return true
-	
 	return false
+	#for tile:Tile in tiles:
+		#var perpTiles = $board.getContiguousTiles(tile.gridX, tile.gridY, dirX, dirY, true)
+		#if perpTiles.size() > 1:
+			#var word = ""
+			#for perpTile in perpTiles:
+				#word = word + perpTile.letter
+			#if $dictionary.getWordDefinitions(word).size() == 0:
+				#return true
+	#
+	#return false
 
 func _checkValidWordFromTile(tile):
 	if tile == null:

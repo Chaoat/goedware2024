@@ -156,10 +156,14 @@ func _process(delta: float) -> void:
 		
 		if worldReference.npcList.size() == 0:
 			isGameRunning = false
+			playerReference.speed = 0
+			playerReference.rotation_speed = 0
 			winScreen.visible = true
 		
 		if Global.convincingness <= 0:
 			isGameRunning = false
+			playerReference.speed = 0
+			playerReference.rotation_speed = 0
 			loseScreen.visible = true
 	
 	if moreWordsNeededWarning > 0:

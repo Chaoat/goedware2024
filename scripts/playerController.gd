@@ -41,8 +41,12 @@ func _startConversation(npc:NPC):
 	isInConversation = true
 	conversingNPC = npc
 	startingPlayerPos = playerReference.position
+	var spokenSentence:String = ""
 	for i in range(npc.conversationDifficulty):
-		boardReference.randomlySelectDesiredWord()
+		var validWord = boardReference.randomlySelectDesiredWord()
+		spokenSentence = spokenSentence + " " + validWord.word
+	
+	boardReference.speakSentence(spokenSentence, conversingNPC.NPC_id + 1)
 	
 	playerReference.lockCamera(npc.getFacePosition())
 
@@ -113,8 +117,6 @@ func _process(delta: float) -> void:
 		if leave_timer > leave_freq:
 			leave_timer = 0
 			worldReference.force_leave()
-		
-		
 
 func _handle_drinks(delta):
 	drink_timer -= delta

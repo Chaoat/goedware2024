@@ -22,6 +22,8 @@ var validWords = [] # Words that are valid on the board, but not yet confirmed
 var confirmedWords = [] # Words that are confirmed and locked into the board
 var desiredWords = [] # Words that need to be sent out of mouth (OVERLAPS WITH CONFIRMED WORDS)
 
+var voices:Array = []
+
 class ValidWord:
 	func _init(inputTiles):
 		tiles = inputTiles
@@ -132,6 +134,15 @@ func _ready() -> void:
 		drawRandomTile()
 	
 	addWordToBoard("party")
+	
+	var systemVoices = DisplayServer.tts_get_voices_for_language("en")
+	voices = []
+	for i in range(20):
+		var voiceI = randi()%systemVoices.size()
+		var volume = 40 + 30*randf()
+		var pitch = 0.3 + 1.5*randf()
+		var rate = 0.4 + 0.6*randf()
+		voices.append([systemVoices[voiceI], volume, pitch, rate])
 
 func _updateHandTiles(dt: float):
 	var tileI = 0
@@ -291,8 +302,15 @@ func _checkDesiredWordDone(desiredWord:ValidWord) -> bool:
 	for tile:Tile in endzoneTiles:
 		var tiles:Array = $board.pathfindBetweenTiles(tile, desiredWord.tiles[0])
 		if tiles.is_empty() == false:
+			var spokenWords:Array = []
 			for pathTile in tiles:
 				if pathTile.onGrid:
+					for i in range(confirmedWords.size() - 1, -1, -1):
+						var validWord:ValidWord = confirmedWords[i]
+						if spokenWords.find(validWord) == -1:
+							if validWord.tiles.find(pathTile) != -1:
+								spokenWords.append(validWord)
+					
 					var isDesiredWord = false
 					for i in range(desiredWords.size() - 1, -1, -1):
 						var checkingDesiredWord:ValidWord = desiredWords[i]
@@ -305,6 +323,11 @@ func _checkDesiredWordDone(desiredWord:ValidWord) -> bool:
 					
 					if isDesiredWord == false:
 						_snakeIntoMouth(pathTile)
+			
+			var speak:String = ""
+			for validWord:ValidWord in spokenWords:
+				speak = speak + validWord.word + " "
+			speakSentence(speak, 0)
 			return true
 	return false
 
@@ -434,6 +457,11 @@ func _placeWord(word:String, x:int, y:int, xDir:int, yDir:int) -> ValidWord:
 		tiles.append(newTile)
 	return ValidWord.new(tiles)
 
+func speakSentence(string:String, voiceID:int):
+	voiceID = voiceID%voices.size()
+	var voice = voices[voiceID]
+	DisplayServer.tts_speak(string, voice[0], voice[1], voice[2], voice[3])
+
 func addWildtile():
 	var validTiles:Array = $board.getValidTilesForWord("?")
 	if validTiles.size() > 0:
@@ -475,7 +503,7 @@ func clearClutter() -> void:
 	for x in range($board.boardWidth):
 		for y in range($board.boardHeight):
 			var tile:Tile = $board.boardArray[x][y]
-			if tile != null and tile.onGrid:
+			if tile != null and tile.onGrid and tile.confirmed:
 				var clutter = true
 				for word in confirmedWords:
 					if word.tiles.find(tile) != -1:

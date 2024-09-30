@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://chblun3xgkim8"]
+[gd_scene load_steps=18 format=3 uid="uid://chblun3xgkim8"]
 
 [ext_resource type="PackedScene" uid="uid://mgp5vyu5py3g" path="res://scenes/3D_world.tscn" id="1_exngd"]
 [ext_resource type="Texture2D" uid="uid://baikormjjx5je" path="res://sprites/NPCs/drinks_final/hand_-1.png" id="2_lcci7"]
@@ -13,7 +13,6 @@
 [ext_resource type="Script" path="res://scripts/fakeoutController.gd" id="12_sownw"]
 [ext_resource type="AudioStream" uid="uid://cterf2ujas4ij" path="res://sounds/transition (2).wav" id="13_5nq7e"]
 [ext_resource type="PackedScene" uid="uid://b2sd4halr4wip" path="res://scenes/player_controller.tscn" id="13_uw7ls"]
-[ext_resource type="Texture2D" uid="uid://wnhbdmtdy0ii" path="res://sprites/NPCs/NPC_6.png" id="15_d58sl"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_y6kg5"]
 font_size = 117
@@ -182,6 +181,7 @@ autowrap_mode = 2
 
 [node name="WinScreen" type="TextureRect" parent="."]
 visible = false
+modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -208,7 +208,7 @@ offset_top = -70.0
 grow_horizontal = 2
 grow_vertical = 2
 bbcode_enabled = true
-text = "[font=optimusprinceps/OptimusPrinceps.ttf][font_size=80][center][color=#ff0000]YOU ARE SHOWN THE DOOR
+text = "[font=optimusprinceps/OptimusPrinceps.ttf][font_size=80][center][color=#ffe84a]YOU ARE THE HUMANEST
 [font_size=40] Press R to restart"
 shortcut_keys_enabled = false
 
@@ -220,4 +220,26 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("15_d58sl")
+
+[node name="TextureRect" type="TextureRect" parent="LossScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_id2ys")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="LossScreen"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -70.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[font=optimusprinceps/OptimusPrinceps.ttf][font_size=80][center][color=#ff0000]YOU ARE SHOWN THE DOOR
+[font_size=40] Press R to restart"
+shortcut_keys_enabled = false

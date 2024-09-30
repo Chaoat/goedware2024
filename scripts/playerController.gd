@@ -102,6 +102,9 @@ var randomSpeechTime = 5.0
 var huntingTime = 0.0
 var moreWordsNeededWarning = 0.0
 var isGameRunning = true
+var ScreenModulate = 0
+var lose = false
+var win = false
 
 func _process(delta: float) -> void:
 	if isGameRunning:
@@ -155,10 +158,12 @@ func _process(delta: float) -> void:
 			worldReference.force_leave()
 		
 		if worldReference.npcList.size() == 0:
+			win = true
 			isGameRunning = false
 			winScreen.visible = true
 		
 		if Global.convincingness <= 0:
+			lose = true
 			isGameRunning = false
 			loseScreen.visible = true
 	
@@ -167,6 +172,13 @@ func _process(delta: float) -> void:
 		moreWordsNeededWarning = moreWordsNeededWarning - delta
 	else:
 		moreWordsNeededLabel.visible = false
+		
+	if lose:
+		_addModulate(delta)
+		loseScreen.modulate = Color(1, 1, 1, ScreenModulate)
+	elif win:
+		_addModulate(delta)
+		winScreen.modulate = Color(1, 1, 1, ScreenModulate)
 	
 	if Input.is_action_just_pressed("Restart"):
 		get_tree().change_scene_to_file("res://scenes/gameWithFakeout.tscn")
@@ -235,3 +247,9 @@ func player_drank(drink):
 
 func got_word(word):
 	boardReference.addWordToBoard(word)
+
+func _addModulate(delta):
+	if ScreenModulate != 1:
+		ScreenModulate += delta/3
+		if ScreenModulate > 1:
+			ScreenModulate = 1

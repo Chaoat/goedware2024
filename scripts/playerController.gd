@@ -4,6 +4,7 @@ extends Node
 @export var worldReference : NPCSpawner
 @export var boardReference : ScrabbleBoard
 @export var handReference : Hand
+@export var moreWordsNeededLabel : Label
 
 const conversationReward:float = 100
 const conversationFailureMalus:float = -50
@@ -46,6 +47,7 @@ func _startConversation(npc:NPC):
 		var validWord = boardReference.randomlySelectDesiredWord()
 		spokenSentence = spokenSentence + " " + validWord.word
 	
+	DisplayServer.tts_stop()
 	boardReference.speakSentence(spokenSentence, conversingNPC.NPC_id + 1)
 	
 	playerReference.lockCamera(npc.getFacePosition())
@@ -53,9 +55,14 @@ func _startConversation(npc:NPC):
 func _endConversation():
 	isInConversation = false
 	conversingNPC.talking = false
+	conversingNPC.waitTime = 5.0
 	Global.addConvincingness(conversationReward)
+	var sentence = ""
 	for i in range(0,conversingNPC.conversationDifficulty + 1):
-		boardReference.addWordToBoard(boardReference.find_child("dictionary").randomlyGenerateWord())
+		var word = boardReference.find_child("dictionary").randomlyGenerateWord()
+		boardReference.addWordToBoard(word)
+		sentence = sentence + " " + word
+	boardReference.speakSentence(sentence, conversingNPC.NPC_id + 1)
 	
 	playerReference.unlockCamera()
 
@@ -72,10 +79,10 @@ func _physics_process(delta):
 		var distFromStart = playerReference.position.distance_to(startingPlayerPos)
 		playerReference.position = playerReference.position.move_toward(startingPlayerPos, 0.012*playerReference.speed*delta*pow(distFromStart/conversationWalkAwayDistance, 2))
 
-func _getRandomNPCBetweenDifficulties(minDifficulty:int, _maxDifficulty:int):
+func _getRandomNPCBetweenDifficulties(minDifficulty:int):
 	var viableNPCs = []
 	for npc:NPC in worldReference.npcList:
-		if npc.conversationDifficulty >= minDifficulty and npc.conversationDifficulty <= minDifficulty:
+		if npc.conversationDifficulty >= minDifficulty:
 			viableNPCs.append(npc)
 	
 	if viableNPCs.size() == 0:
@@ -83,13 +90,20 @@ func _getRandomNPCBetweenDifficulties(minDifficulty:int, _maxDifficulty:int):
 	var index = randi()%viableNPCs.size()
 	return viableNPCs[index]
 
+var randomSpeechTime = 5.0
+var huntingTime = 0.0
+var moreWordsNeededWarning = 0.0
 var isGameRunning = true
 func _process(delta: float) -> void:
 	if isGameRunning:
 		if isInConversation == false:
 			for npc:NPC in worldReference.npcList:
-				if npc.talking and npc.conversationDifficulty > 0 and boardReference.confirmedWords.size() >= npc.conversationDifficulty:
-					_startConversation(npc)
+				if npc.talking and npc.conversationDifficulty > 0:
+					if boardReference.confirmedWords.size() >= npc.conversationDifficulty:
+						_startConversation(npc)
+					else:
+						moreWordsNeededWarning = 3.0
+						npc.talking = false
 				elif npc.talking:
 					npc.talking = false
 			
@@ -97,13 +111,25 @@ func _process(delta: float) -> void:
 				if timerTillConversation > 0:
 					timerTillConversation = timerTillConversation - delta
 				else:
-					huntingNPC = _getRandomNPCBetweenDifficulties(1, 9)
+					huntingNPC = _getRandomNPCBetweenDifficulties(1)
+					huntingTime = 10.0
 			else:
-				huntingNPC.setNavTarget(playerReference.position)
-				if huntingNPC.position.distance_to(playerReference.position) <= 1.5:
-					huntingNPC.talking = true
-					_startConversation(huntingNPC)
+				huntingTime = huntingTime - delta
+				if huntingTime <= 0:
 					huntingNPC = null
+				elif huntingNPC.conversationDifficulty > boardReference.confirmedWords.size():
+					huntingNPC = null
+				else:
+					huntingNPC.setNavTarget(playerReference.position)
+					if huntingNPC.position.distance_to(playerReference.position) <= 1.5:
+						huntingNPC.talking = true
+						_startConversation(huntingNPC)
+						huntingNPC = null
+						
+			randomSpeechTime = randomSpeechTime - delta
+			if randomSpeechTime < 0.0 and DisplayServer.tts_is_speaking() == false:
+				randomSpeechTime = randomSpeechTime + 2 + 4*randf()
+				_randomBackgroundNoise()
 		else:
 			if boardReference.areDesiresCleared():
 				_endConversation()
@@ -117,6 +143,29 @@ func _process(delta: float) -> void:
 		if leave_timer > leave_freq:
 			leave_timer = 0
 			worldReference.force_leave()
+	
+	if moreWordsNeededWarning > 0:
+		moreWordsNeededLabel.visible = true
+		moreWordsNeededWarning = moreWordsNeededWarning - delta
+	else:
+		moreWordsNeededLabel.visible = false
+	
+	if Input.is_action_just_pressed("Restart"):
+		get_tree().change_scene_to_file("res://scenes/gameWithFakeout.tscn")
+		Global.addConvincingness(9999)
+		Global.skipIntro = true
+
+func _randomBackgroundNoise():
+	var speakingNPC:NPC = _getRandomNPCBetweenDifficulties(0)
+	if speakingNPC != null:
+		var distance = playerReference.position.distance_to(speakingNPC.position)
+		var volume = max(1 - pow(distance, 2)/100, 0.2)
+		
+		var randomSentence = ""
+		for i in range(speakingNPC.conversationDifficulty):
+			var word = boardReference.find_child("dictionary").randomlyGenerateWord()
+			randomSentence = randomSentence + " " + word
+		boardReference.speakSentence(randomSentence, speakingNPC.NPC_id + 1, volume)
 
 func _handle_drinks(delta):
 	drink_timer -= delta
@@ -156,6 +205,9 @@ func _handle_drinks(delta):
 				#print('trippy')
 				boardReference.randomClutter()
 				current_drink = null
+
+func startMusic():
+	$music.find_child("musicIntro").playing = true
 
 func player_drank(drink):
 	if drink_timer == 0:

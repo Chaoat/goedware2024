@@ -17,6 +17,7 @@ var prev_pos : Vector3
 
 var conversationDifficulty:int = 1
 
+var waitTime = 0.0
 var waiter : bool = false
 var leaving : bool = false
 var talking : bool = false
@@ -64,17 +65,19 @@ func setNavTarget(target:Vector3):
 
 func interact():
 	velocity.y = JUMP
-	talking = true
-	if randi() % 2 :
-		$voice_1.pitch_scale = randf()
-		$voice_1.play()
-	else:
-		$voice_2.pitch_scale = randf()
-		$voice_2.play()
+	#if randi() % 2 :
+		#$voice_1.pitch_scale = randf()
+		#$voice_1.play()
+	#else:
+		#$voice_2.pitch_scale = randf()
+		#$voice_2.play()
 	
 	if waiter:
 		#print('have a drink!')
+		waitTime = 2.0
 		return({"drink": drink})
+	else:
+		talking = true
 
 func _physics_process(delta):
 	velocity.x = 0
@@ -92,10 +95,13 @@ func _physics_process(delta):
 		else:
 			queue_free()
 	
-	if not talking:
+	if not talking and waitTime <= 0.0:
 		#var direction = global_position.direction_to(nav.get_next_path_position()) * speed * delta
 		#velocity += Vector3(direction.x, 0, direction.z)
 		velocity += global_position.direction_to(nav.get_next_path_position()) * speed * delta
+	
+	if waitTime > 0.0:
+		waitTime = waitTime - delta
 	
 	move_and_slide()
 	shadow.global_position.y = 0.1

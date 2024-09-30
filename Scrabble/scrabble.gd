@@ -139,7 +139,7 @@ func _ready() -> void:
 	voices = []
 	for i in range(20):
 		var voiceI = randi()%systemVoices.size()
-		var volume = 40 + 30*randf()
+		var volume = 60 + 40*randf()
 		var pitch = 0.3 + 1.5*randf()
 		var rate = 0.4 + 0.6*randf()
 		voices.append([systemVoices[voiceI], volume, pitch, rate])
@@ -198,6 +198,10 @@ func _process(dt: float) -> void:
 	_updateTileOnCursor(dt)
 	_updateMouseMovement(dt)
 	_updateSnakingTiles(dt)
+	
+	for i in range(desiredWords.size() - 1, -1, -1):
+		if confirmedWords.find(desiredWords[i]) == -1:
+			desiredWords.remove_at(i)
 
 func _putTileOnCursor(tile: Tile):
 	tileOnCursor = tile
@@ -321,7 +325,7 @@ func _checkDesiredWordDone(desiredWord:ValidWord) -> bool:
 								if desiredTile.onGrid:
 									_snakeIntoMouth(desiredTile)
 							desiredWords.remove_at(i)
-							$snake.play()
+							#$snake.play()
 					
 					if isDesiredWord == false:
 						_snakeIntoMouth(pathTile)
@@ -460,10 +464,10 @@ func _placeWord(word:String, x:int, y:int, xDir:int, yDir:int) -> ValidWord:
 		tiles.append(newTile)
 	return ValidWord.new(tiles)
 
-func speakSentence(string:String, voiceID:int):
+func speakSentence(string:String, voiceID:int, volumeMod:float = 1.0):
 	voiceID = voiceID%voices.size()
 	var voice = voices[voiceID]
-	DisplayServer.tts_speak(string, voice[0], voice[1], voice[2], voice[3])
+	DisplayServer.tts_speak(string, voice[0], volumeMod*voice[1], voice[2], voice[3])
 
 func addWildtile():
 	var validTiles:Array = $board.getValidTilesForWord("?")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://d37gqogm3w57j"]
+[gd_scene load_steps=13 format=3 uid="uid://d37gqogm3w57j"]
 
 [ext_resource type="PackedScene" uid="uid://mgp5vyu5py3g" path="res://scenes/3D_world.tscn" id="1_7exlk"]
 [ext_resource type="PackedScene" uid="uid://3whfta4brxjt" path="res://Scrabble/scrabbleBoard.tscn" id="2_75qiq"]
@@ -11,6 +11,12 @@
 [ext_resource type="Script" path="res://scenes/conv_bar.gd" id="6_rhttb"]
 [ext_resource type="Texture2D" uid="uid://ddnqojkb8h8up" path="res://scenes/border.png" id="6_uh3ab"]
 [ext_resource type="PackedScene" uid="uid://b2sd4halr4wip" path="res://scenes/player_controller.tscn" id="11_y8r0t"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_b4tfd"]
+font_size = 21
+font_color = Color(1, 0, 0, 1)
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -105,7 +111,25 @@ texture_over = ExtResource("4_2coij")
 texture_progress = ExtResource("5_17jd7")
 script = ExtResource("6_rhttb")
 
-[node name="PlayerController" parent="." node_paths=PackedStringArray("worldReference", "boardReference", "handReference") instance=ExtResource("11_y8r0t")]
+[node name="PlayerController" parent="." node_paths=PackedStringArray("worldReference", "boardReference", "handReference", "moreWordsNeededLabel") instance=ExtResource("11_y8r0t")]
 worldReference = NodePath("../SubViewportContainer/SubViewport/World")
 boardReference = NodePath("../ScrabbleBoard")
 handReference = NodePath("../HandPositioning/Hand")
+moreWordsNeededLabel = NodePath("../More words needed warning")
+
+[node name="More words needed warning" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.125
+anchor_top = 0.5
+anchor_right = 0.125
+anchor_bottom = 0.534
+offset_top = -20.484
+offset_right = 357.0
+offset_bottom = 20.484
+grow_vertical = 2
+text = "You need more words on your board to speak with this guest"
+label_settings = SubResource("LabelSettings_b4tfd")
+horizontal_alignment = 1
+autowrap_mode = 2

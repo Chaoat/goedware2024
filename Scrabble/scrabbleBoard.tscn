@@ -15,7 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://ci68bmvwibk0i" path="res://sounds/dbl_click_0.wav" id="13_ib5fd"]
 [ext_resource type="AudioStream" uid="uid://b8r44j33qhflm" path="res://sounds/multi.wav" id="14_ev10d"]
 [ext_resource type="AudioStream" uid="uid://3fjseadycb6v" path="res://sounds/click (1).wav" id="15_i46km"]
-[ext_resource type="AudioStream" uid="uid://5qvhvhknpk62" path="res://sounds/sparkle (4) .wav" id="16_48xy6"]
+[ext_resource type="AudioStream" uid="uid://cld5vrailrpfl" path="res://sounds/sparkle (1).wav" id="16_h6k5r"]
 [ext_resource type="AudioStream" uid="uid://ccy0vjfmrc2ga" path="res://sounds/click (2).wav" id="17_g0w46"]
 
 [sub_resource type="Gradient" id="Gradient_eposy"]
@@ -54,6 +54,7 @@ texture = SubResource("NoiseTexture2D_m73pb")
 script = ExtResource("3_462du")
 
 [node name="board" type="Node2D" parent="."]
+position = Vector2(154, 54)
 script = ExtResource("3_26o8r")
 boardWidth = 19
 boardHeight = 16
@@ -110,7 +111,7 @@ stream = ExtResource("14_ev10d")
 stream = ExtResource("15_i46km")
 
 [node name="snake" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("16_48xy6")
+stream = ExtResource("16_h6k5r")
 
 [node name="click2" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("17_g0w46")

@@ -15,6 +15,9 @@ func _ready() -> void:
 	tutorialLabelSettings.outline_color = Color.BLACK
 	tutorialLabelSettings.font_size = 20
 	tutorialLabelSettings.outline_size = 4
+	if Global.skipIntro:
+		_shrinkToBox()
+		tutorialStep = 10
 	pass # Replace with function body.
 
 var tutorialStep = 0
@@ -86,6 +89,7 @@ func _doTutorialStep(delta:float):
 			4:
 				if boardReference.desiredWords.size() == 0:
 					tutorialStep = 5
+					$wakeup.play()
 			5:
 				timerTillFinish = timerTillFinish - delta
 				$Label.visible = (1 == ceili(10*timerTillFinish)%2)
@@ -99,7 +103,7 @@ func _shrinkToBox():
 	barReference.visible = true
 	playerReference.isGameRunning = true
 	barReference.isDecaying = true
-	$wakeup.play()
+	playerReference.startMusic()
 
 class TutorialText:
 	var label:Label

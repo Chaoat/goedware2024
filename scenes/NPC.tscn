@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bc18qelbxsy74"]
+[gd_scene load_steps=9 format=3 uid="uid://bc18qelbxsy74"]
 
 [ext_resource type="Script" path="res://scripts/NPC.gd" id="1_iswqn"]
 [ext_resource type="Texture2D" uid="uid://dk4ms7bojytff" path="res://sprites/shadow.png" id="3_dhwnu"]

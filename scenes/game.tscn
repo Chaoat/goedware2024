@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://d37gqogm3w57j"]
+[gd_scene load_steps=15 format=3 uid="uid://d37gqogm3w57j"]
 
 [ext_resource type="PackedScene" uid="uid://mgp5vyu5py3g" path="res://scenes/3D_world.tscn" id="1_7exlk"]
 [ext_resource type="PackedScene" uid="uid://3whfta4brxjt" path="res://Scrabble/scrabbleBoard.tscn" id="2_75qiq"]
@@ -17,6 +17,15 @@ font_size = 21
 font_color = Color(1, 0, 0, 1)
 outline_size = 8
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Gradient" id="Gradient_8m36c"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kbmug"]
+gradient = SubResource("Gradient_8m36c")
+fill_from = Vector2(1, 1)
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -133,3 +142,34 @@ text = "You need more words on your board to speak with this guest"
 label_settings = SubResource("LabelSettings_b4tfd")
 horizontal_alignment = 1
 autowrap_mode = 2
+
+[node name="LoseScreen" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="LoseScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_kbmug")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="LoseScreen"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -70.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[font=optimusprinceps/OptimusPrinceps.ttf][font_size=80][center][color=#ff0000]YOU LOSE
+[font_size=40] Press R to restart"
+shortcut_keys_enabled = false

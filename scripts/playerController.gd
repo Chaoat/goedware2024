@@ -186,6 +186,8 @@ func _process(delta: float) -> void:
 		get_tree().change_scene_to_file("res://scenes/gameWithFakeout.tscn")
 		Global.addConvincingness(9999)
 		Global.skipIntro = true
+		Global.win = false
+		Global.lose = false
 
 func _randomBackgroundNoise():
 	var speakingNPC:NPC = _getRandomNPCBetweenDifficulties(0)

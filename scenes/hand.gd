@@ -13,7 +13,7 @@ func _ready() -> void:
 	start_position = position
 	
 func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("interact"):
+	if not (Global.win or Global.lose) and Input.is_action_just_pressed("interact"):
 		bobbing = true
 	if bobbing:
 		_bob()

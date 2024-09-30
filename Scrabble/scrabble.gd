@@ -194,10 +194,11 @@ func _mousePosToLocalPos(pos: Vector2):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(dt: float) -> void:
-	_updateHandTiles(dt)
-	_updateTileOnCursor(dt)
-	_updateMouseMovement(dt)
-	_updateSnakingTiles(dt)
+	if not (Global.win or Global.lose):
+		_updateHandTiles(dt)
+		_updateTileOnCursor(dt)
+		_updateMouseMovement(dt)
+		_updateSnakingTiles(dt)
 	
 	for i in range(desiredWords.size() - 1, -1, -1):
 		if confirmedWords.find(desiredWords[i]) == -1:

@@ -1,6 +1,8 @@
 extends Node
 
-static var maxConvincingness : int = 200
+var lose = false
+var win = false
+static var maxConvincingness : int = 5
 
 var convincingness : float = maxConvincingness
 var skipIntro:bool = true

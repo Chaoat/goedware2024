@@ -209,7 +209,7 @@ grow_horizontal = 2
 grow_vertical = 2
 bbcode_enabled = true
 text = "[font=optimusprinceps/OptimusPrinceps.ttf][font_size=80][center][color=#ffe84a]YOU ARE THE HUMANEST
-[font_size=40] Press R to restart"
+[font_size=40] Press R to restart (give it a moment)"
 shortcut_keys_enabled = false
 
 [node name="LossScreen" type="TextureRect" parent="."]
@@ -241,5 +241,5 @@ grow_horizontal = 2
 grow_vertical = 2
 bbcode_enabled = true
 text = "[font=optimusprinceps/OptimusPrinceps.ttf][font_size=80][center][color=#ff0000]YOU ARE SHOWN THE DOOR
-[font_size=40] Press R to restart"
+[font_size=40] Press R to restart (give it a moment)"
 shortcut_keys_enabled = false

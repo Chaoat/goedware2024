@@ -103,8 +103,6 @@ var huntingTime = 0.0
 var moreWordsNeededWarning = 0.0
 var isGameRunning = true
 var ScreenModulate = 0
-var lose = false
-var win = false
 
 func _process(delta: float) -> void:
 	if isGameRunning:
@@ -158,12 +156,12 @@ func _process(delta: float) -> void:
 			worldReference.force_leave()
 		
 		if worldReference.npcList.size() == 0:
-			win = true
+			Global.win = true
 			isGameRunning = false
 			winScreen.visible = true
 		
 		if Global.convincingness <= 0:
-			lose = true
+			Global.lose = true
 			isGameRunning = false
 			loseScreen.visible = true
 	
@@ -173,10 +171,10 @@ func _process(delta: float) -> void:
 	else:
 		moreWordsNeededLabel.visible = false
 		
-	if lose:
+	if Global.lose:
 		_addModulate(delta)
 		loseScreen.modulate = Color(1, 1, 1, ScreenModulate)
-	elif win:
+	elif Global.win:
 		_addModulate(delta)
 		winScreen.modulate = Color(1, 1, 1, ScreenModulate)
 	

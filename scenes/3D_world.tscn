@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=4 uid="uid://mgp5vyu5py3g"]
+[gd_scene load_steps=42 format=4 uid="uid://mgp5vyu5py3g"]
 
 [ext_resource type="PackedScene" uid="uid://dnjrskqnue2hw" path="res://scenes/3D_player.tscn" id="1_a7fng"]
 [ext_resource type="Texture2D" uid="uid://di5wxcf3q2d2h" path="res://sprites/wall_tile.png" id="1_ul7cw"]
@@ -131,6 +131,9 @@ shading_mode = 0
 albedo_color = Color(0.716296, 0.716296, 0.716296, 1)
 uv1_offset = Vector3(0.395, 0.14, 0.74)
 uv1_triplanar_sharpness = 0.499998
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5oqhy"]
+size = Vector3(2.98334, 5.74457, 1)
 
 [node name="World" type="Node3D"]
 script = ExtResource("10_bttmi")
@@ -825,3 +828,31 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.39567, 1.66266, 5.05199)
 [node name="Clipboard" type="Sprite3D" parent="Environment"]
 transform = Transform3D(0.0648925, 0.00373713, 0, -0.00373713, 0.0648925, 0, 0, 0, 0.065, -4.822, 2.12194, -5.51428)
 texture = ExtResource("17_gdokd")
+
+[node name="PlayerBlocker" type="StaticBody3D" parent="Environment"]
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/PlayerBlocker"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.07772, 0, -16.3594)
+shape = SubResource("BoxShape3D_5oqhy")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Environment/PlayerBlocker"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.8695, 0, -16.2213)
+shape = SubResource("BoxShape3D_5oqhy")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Environment/PlayerBlocker"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.65467, 0, 8.58184)
+shape = SubResource("BoxShape3D_5oqhy")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Environment/PlayerBlocker"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5705, 0, 6.17207)
+shape = SubResource("BoxShape3D_5oqhy")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Environment/PlayerBlocker"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.4497, 0, 6.20145)
+shape = SubResource("BoxShape3D_5oqhy")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="Environment/PlayerBlocker"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -10.8458, 0, -7.58505)
+shape = SubResource("BoxShape3D_5oqhy")

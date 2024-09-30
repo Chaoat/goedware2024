@@ -1,9 +1,8 @@
 [gd_scene load_steps=12 format=3 uid="uid://d37gqogm3w57j"]
 
 [ext_resource type="PackedScene" uid="uid://mgp5vyu5py3g" path="res://scenes/3D_world.tscn" id="1_7exlk"]
-[ext_resource type="Script" path="res://scripts/playerController.gd" id="1_grx7k"]
 [ext_resource type="PackedScene" uid="uid://3whfta4brxjt" path="res://Scrabble/scrabbleBoard.tscn" id="2_75qiq"]
-[ext_resource type="Texture2D" uid="uid://baikormjjx5je" path="res://sprites/NPCs/drinks_final/hand only.png" id="2_tcy0w"]
+[ext_resource type="Texture2D" uid="uid://baikormjjx5je" path="res://sprites/NPCs/drinks_final/hand_-1.png" id="2_tcy0w"]
 [ext_resource type="Script" path="res://scenes/hand.gd" id="3_boswx"]
 [ext_resource type="Texture2D" uid="uid://cubnt67dhox6i" path="res://sprites/UI/convincingness bar 0.png" id="3_ix56m"]
 [ext_resource type="Texture2D" uid="uid://cbh6uk1vlg2qp" path="res://sprites/NPCs/drinks/drink_0.png" id="3_o3urq"]
@@ -11,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://ho4l7jgw4fqw" path="res://sprites/UI/convincingness bar 100.png" id="5_17jd7"]
 [ext_resource type="Script" path="res://scenes/conv_bar.gd" id="6_rhttb"]
 [ext_resource type="Texture2D" uid="uid://ddnqojkb8h8up" path="res://scenes/border.png" id="6_uh3ab"]
+[ext_resource type="PackedScene" uid="uid://b2sd4halr4wip" path="res://scenes/player_controller.tscn" id="11_y8r0t"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -36,10 +36,10 @@ render_target_update_mode = 4
 
 [node name="HandPositioning" type="Control" parent="."]
 layout_mode = 1
-anchor_left = 0.35
-anchor_top = 0.65
+anchor_left = 0.2
+anchor_top = 0.4
 anchor_right = 0.52
-anchor_bottom = 1.0
+anchor_bottom = 0.99
 offset_left = -0.199982
 offset_top = -0.199982
 offset_right = -0.200012
@@ -105,8 +105,4 @@ texture_over = ExtResource("4_2coij")
 texture_progress = ExtResource("5_17jd7")
 script = ExtResource("6_rhttb")
 
-[node name="PlayerController" type="Node" parent="." node_paths=PackedStringArray("worldReference", "boardReference", "handReference")]
-script = ExtResource("1_grx7k")
-worldReference = NodePath("../SubViewportContainer/SubViewport/World")
-boardReference = NodePath("../ScrabbleBoard")
-handReference = NodePath("../HandPositioning/Hand")
+[node name="PlayerController" parent="." instance=ExtResource("11_y8r0t")]

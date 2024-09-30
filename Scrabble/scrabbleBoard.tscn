@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://3whfta4brxjt"]
+[gd_scene load_steps=21 format=3 uid="uid://3whfta4brxjt"]
 
 [ext_resource type="Script" path="res://Scrabble/scrabble.gd" id="1_csm6w"]
 [ext_resource type="PackedScene" uid="uid://nchb22ey8og0" path="res://Scrabble/tile.tscn" id="2_8dhyv"]
@@ -12,6 +12,11 @@
 [ext_resource type="Texture2D" uid="uid://bpnxhxkpadkol" path="res://sprites/scrabble/occipitalLobe.png" id="10_6y3ot"]
 [ext_resource type="Texture2D" uid="uid://b6f1w80f6f246" path="res://sprites/scrabble/parietalLobe.png" id="11_dyqpp"]
 [ext_resource type="Texture2D" uid="uid://dbfo3ll52cpyu" path="res://sprites/scrabble/temporalLobe.png" id="12_pe7el"]
+[ext_resource type="AudioStream" uid="uid://ci68bmvwibk0i" path="res://sounds/dbl_click_0.wav" id="13_ib5fd"]
+[ext_resource type="AudioStream" uid="uid://b8r44j33qhflm" path="res://sounds/multi.wav" id="14_ev10d"]
+[ext_resource type="AudioStream" uid="uid://3fjseadycb6v" path="res://sounds/click (1).wav" id="15_i46km"]
+[ext_resource type="AudioStream" uid="uid://5qvhvhknpk62" path="res://sounds/sparkle (4) .wav" id="16_48xy6"]
+[ext_resource type="AudioStream" uid="uid://ccy0vjfmrc2ga" path="res://sounds/click (2).wav" id="17_g0w46"]
 
 [sub_resource type="Gradient" id="Gradient_eposy"]
 colors = PackedColorArray(0.15, 0.063, 0.08185, 1, 0.6794, 0.86, 0.74863, 1)
@@ -94,3 +99,18 @@ grow_vertical = 0
 
 [node name="dictionary" type="Node" parent="."]
 script = ExtResource("4_n44sb")
+
+[node name="confirm" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_ib5fd")
+
+[node name="multi" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_ev10d")
+
+[node name="draw" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_i46km")
+
+[node name="snake" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_48xy6")
+
+[node name="click2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_g0w46")

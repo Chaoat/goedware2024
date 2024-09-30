@@ -60,7 +60,7 @@ func _walkAwayFromConversation():
 	conversingNPC.talking = false
 	Global.addConvincingness(conversationFailureMalus)
 	boardReference.clearDesires()
-	
+	$leave.play()
 	playerReference.unlockCamera()
 
 func _physics_process(delta):
@@ -68,7 +68,7 @@ func _physics_process(delta):
 		var distFromStart = playerReference.position.distance_to(startingPlayerPos)
 		playerReference.position = playerReference.position.move_toward(startingPlayerPos, 0.012*playerReference.speed*delta*pow(distFromStart/conversationWalkAwayDistance, 2))
 
-func _getRandomNPCBetweenDifficulties(minDifficulty:int, maxDifficulty:int):
+func _getRandomNPCBetweenDifficulties(minDifficulty:int, _maxDifficulty:int):
 	var viableNPCs = []
 	for npc:NPC in worldReference.npcList:
 		if npc.conversationDifficulty >= minDifficulty and npc.conversationDifficulty <= minDifficulty:
@@ -131,8 +131,7 @@ func _handle_drinks(delta):
 			1:
 				if randi() % wildcard_chance == 0:
 					#print('wilding')
-					for i in (randi() % wildcard_count + 1):
-						boardReference.addWildtile()
+					boardReference.wildSpray(randi() % wildcard_count + 1)
 							
 			2:
 				#print('head empty')

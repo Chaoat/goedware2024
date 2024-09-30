@@ -99,6 +99,7 @@ func _shrinkToBox():
 	barReference.visible = true
 	playerReference.isGameRunning = true
 	barReference.isDecaying = true
+	$wakeup.play()
 
 class TutorialText:
 	var label:Label

@@ -8,7 +8,7 @@ extends Node3D
 @export var variants = 3
 
 @onready var inside = $Environment/Outside/Inside
-@onready var floor = $Environment/Outside/Inside/Floor
+@onready var floorReference = $Environment/Outside/Inside/Floor
 @onready var ground = $Environment/Outside/Ground
 @onready var roof = $Environment/House/Roof
 
@@ -25,12 +25,12 @@ class npcData:
 	var spawn_point : Vector3
 	var map : RID
 	
-	func _init(id, speed, difficulty, map) -> void:
-		self.id = id
-		self.speed = speed
-		self.difficulty = difficulty
-		self.spawn_point = NavigationServer3D.map_get_random_point(map, 1, false)
-		self.map = map
+	func _init(a, b, c, d) -> void:
+		self.id = a
+		self.speed = b
+		self.difficulty = c
+		self.spawn_point = NavigationServer3D.map_get_random_point(d, 1, false)
+		self.map = d
 		
 func _spawn_NPCs():
 	npcDataList.append_array([
@@ -42,7 +42,6 @@ func _spawn_NPCs():
 	
 	for i in npcDataList:
 		var x = npcReference.instantiate()
-		print
 		x.constructor(i)
 		npcList.append(x)
 		root.call_deferred("add_child", x)
@@ -66,7 +65,7 @@ func _spawn_waiters(n):
 func _ready() -> void:
 	call_deferred("custom_setup")
 	ground.visible = true
-	floor.visible = true
+	floorReference.visible = true
 	roof.visible = true
 	
 func custom_setup():

@@ -85,7 +85,7 @@ class TileBag:
 		_defineLetter(1, 10) #z
 	
 	func returnTile(tile: Tile):
-		var index = WordDictionary.letterToIndex(tile.letter)
+		var _index = WordDictionary.letterToIndex(tile.letter)
 		#tilesInBag[index] = tilesInBag[index] + 1
 		#tilesLeft = tilesLeft + 1
 	
@@ -133,7 +133,7 @@ func _ready() -> void:
 	
 	addWordToBoard("party")
 
-func _updateHandTiles(dt: float):
+func _updateHandTiles(_dt: float):
 	var tileI = 0
 	var nTiles = tilesInHand.size()
 	#for tile:Tile in tilesInHand:
@@ -144,7 +144,7 @@ func _updateHandTiles(dt: float):
 			tile.targetPos.y = 0
 			tileI = tileI + 1
 
-func _updateTileOnCursor(dt: float):
+func _updateTileOnCursor(_dt: float):
 	if tileOnCursor != null:
 		var mousePos = get_viewport().get_mouse_position()
 		mousePos = _mousePosToLocalPos(mousePos)
@@ -169,11 +169,12 @@ func _updateMouseMovement(dt: float):
 			waitingForDragMovement = false
 	mousePosLastFrame = get_viewport().get_mouse_position()
 
-func _updateSnakingTiles(dt: float):
+func _updateSnakingTiles(_dt: float):
 	for i in range(tilesSnakingOutMouth.size() - 1, -1, -1):
 		var tile:Tile = tilesSnakingOutMouth[i]
 		tile.targetPos = tilesSnakingPositions[i]
 		if i == 0 and tile.position.distance_to(tile.targetPos) <= 1:
+			$click2.play()
 			tilesSnakingOutMouth.remove_at(i)
 			tile.queue_free()
 
@@ -191,7 +192,7 @@ func _putTileOnCursor(tile: Tile):
 	tileOnCursor = tile
 	tileOnCursor.localPositionLerpMult = 3
 	tile.reparent(self)
-	add_child(tile)
+	#add_child(tile)
 
 func _checkPointInTile(pointPos, tile) -> bool:
 	return pointPos.x >= tile.position.x - tileWidth/2 and pointPos.x <= tile.position.x + tileWidth/2 and pointPos.y >= tile.position.y - tileHeight/2 and pointPos.y <= tile.position.y + tileHeight/2
@@ -239,7 +240,7 @@ func _dropCursorTile(clickPos: Vector2):
 	if tileOnCursor != null:
 		var posInHandSpace = clickPos - $hand.position
 		if posInHandSpace.y < -tileHeight and $board.canPlaceTileAtBoardCoords(clickPos):
-			var posInBoardSpace = clickPos - $board.position
+			#var posInBoardSpace = clickPos - $board.position
 			var displacedTile = $board.placeTileAtBoardCoords(tileOnCursor, clickPos)
 			_checkValidWordFromTile(tileOnCursor)
 			if displacedTile != null:
@@ -302,6 +303,7 @@ func _checkDesiredWordDone(desiredWord:ValidWord) -> bool:
 								if desiredTile.onGrid:
 									_snakeIntoMouth(desiredTile)
 							desiredWords.remove_at(i)
+							$snake.play()
 					
 					if isDesiredWord == false:
 						_snakeIntoMouth(pathTile)
@@ -328,7 +330,8 @@ func _confirmWord(validWord:ValidWord, drawTiles:bool):
 				desiredWords.remove_at(desiredIndex)
 			confirmedWords.remove_at(i)
 	
-	confirmedWords.append(validWord)
+	confirmedWords.append(validWord) # Confirming happens here
+	$confirm.play()
 	for i in range(validWord.tiles.size()):
 		if validWord.tiles[i].confirmed == false:
 			validWord.tiles[i].confirm()
@@ -466,6 +469,7 @@ func addTileToHand(tile: Tile) -> Tile:
 	return tile
 
 func drawRandomTile() -> Tile:
+	$draw.play()
 	var tileStats = tileBag.pullTile()
 	if tileStats.is_empty():
 		return null
@@ -490,6 +494,7 @@ func clearClutter() -> void:
 					tile.queue_free() # Maybe a nice particle effect to make it look like you're vomiting
 				
 func redraw() -> void:
+	$multi.play()
 	var discard : int = 0
 	for tile in tilesInHand:
 		tile.queue_free()
@@ -498,11 +503,13 @@ func redraw() -> void:
 	for i in discard:
 		drawRandomTile()
 	
+	
 func rotate() -> void:
 	tilesInHand.pop_back().queue_free()
 	drawRandomTile()
 	
 func randomClutter() -> void:
+	$multi.play()
 	for x in range($board.boardWidth):
 		for y in range($board.boardHeight):
 			var tile:Tile = $board.boardArray[x][y]
@@ -517,6 +524,7 @@ func randomClutter() -> void:
 					tile.setStats(tileStats[0], tileStats[1])
 				#var tileStats = tileBag.pullTile()
 				#tile.setStats(tileStats[0], tileStats[1])
+	
 
 func selectDesiredWord(word:String) -> ValidWord:
 	for validWord:ValidWord in confirmedWords:
@@ -550,3 +558,8 @@ func clearDesires():
 	for i in range(desiredWords.size() - 1, -1, -1):
 		desiredWords[i].clearHighlightSprite()
 		desiredWords.remove_at(i)
+
+func wildSpray(n):
+	for i in n:
+		addWildtile()
+		$multi.play()

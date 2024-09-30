@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cbcu5rkqt03be"
+path="res://.godot/imported/Astro Droid 11.wav-282046beeab9563eb4c91b5daec54817.sample"
+
+[deps]
+
+source_file="res://sounds/Astro Droid 11.wav"
+dest_files=["res://.godot/imported/Astro Droid 11.wav-282046beeab9563eb4c91b5daec54817.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

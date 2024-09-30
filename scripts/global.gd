@@ -4,7 +4,7 @@ static var maxConvincingness : int = 200
 
 var convincingness : float = maxConvincingness
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if convincingness > maxConvincingness:
 		convincingness = maxConvincingness
 

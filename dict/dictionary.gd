@@ -95,7 +95,7 @@ func _ready() -> void:
 	
 	return
 
-func _process(dt: float) -> void:
+func _process(_dt: float) -> void:
 	return
 
 static func indexToLetter(index: int) -> String:

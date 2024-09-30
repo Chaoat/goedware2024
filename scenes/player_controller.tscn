@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2sd4halr4wip"]
+
+[ext_resource type="Script" path="res://scripts/playerController.gd" id="1_3l6if"]
+[ext_resource type="AudioStream" uid="uid://c1dsqgii0ky14" path="res://sounds/transition (1).wav" id="2_plvmw"]
+[ext_resource type="PackedScene" uid="uid://ces6b5fc6aceu" path="res://scenes/music.tscn" id="3_lb776"]
+
+[node name="PlayerController" type="Node" node_paths=PackedStringArray("worldReference", "boardReference", "handReference")]
+script = ExtResource("1_3l6if")
+worldReference = NodePath("")
+boardReference = NodePath("")
+handReference = NodePath("")
+
+[node name="leave" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_plvmw")
+
+[node name="music" parent="." instance=ExtResource("3_lb776")]

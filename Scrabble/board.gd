@@ -51,7 +51,7 @@ func _indexToBoardCoords(x: int, y: int) -> Array:
 func _boardCoordsToIndex(x: int, y: int) -> Array:
 	return [ceil(x/tileWidth - 0.5), ceil(y/tileHeight - 0.5)]
 
-func _updateTiles(dt: float):
+func _updateTiles(_dt: float):
 	for x in range(boardWidth):
 		for y in range(boardHeight):
 			if is_instance_valid(boardArray[x][y]): # Checks that tile hasn't been freed

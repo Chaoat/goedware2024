@@ -18,6 +18,8 @@ var localPositionLerpMult = 1
 var targetPos:Vector2 = Vector2(0, 0)
 var targetRotation:float = 0.0
 
+var playback = 0
+
 func _ready():
 	var randomChoice = (randi()%9) + 1
 	var texturePath:String = "res://sprites/scrabble/tiles/" + String.num_int64(randomChoice) + ".png"
@@ -39,6 +41,11 @@ func _process(dt: float) -> void:
 		position = position + localPositionLerpMult*lerpMultiplier*dt*(targetPos - position)
 		#if abs(position - targetPos) <= lerpLeeway:
 		#	position = targetPos
+	if playback:
+		playback -= dt
+		if playback <= 0:
+			playback = 0
+			$click.play()
 
 func isWildtile() -> bool:
 	return letter == "?"
@@ -54,6 +61,7 @@ func placedOnGrid(x: int, y: int):
 	gridX = x
 	gridY = y
 	placedTime = 0.0
+	playback = randf() /4
 	
 func confirm():
 	confirmed = true

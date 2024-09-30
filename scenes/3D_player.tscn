@@ -1,6 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://dnjrskqnue2hw"]
+[gd_scene load_steps=6 format=3 uid="uid://dnjrskqnue2hw"]
 
 [ext_resource type="Script" path="res://scripts/3D_player.gd" id="1_4rap4"]
+[ext_resource type="AudioStream" uid="uid://dpnxus1kuswmq" path="res://sounds/walk (1).wav" id="2_ahb8g"]
+[ext_resource type="AudioStream" uid="uid://c3iw2srykk0y4" path="res://sounds/walk (2).wav" id="3_igonj"]
+[ext_resource type="AudioStream" uid="uid://qqle14hlrhei" path="res://sounds/walk (3).wav" id="4_hdf5a"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_bjl1e"]
 
@@ -21,3 +24,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 target_position = Vector3(0, 0, -1.5)
 collision_mask = 17
 collide_with_areas = true
+
+[node name="walk1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_ahb8g")
+
+[node name="walk2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_igonj")
+
+[node name="walk3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_hdf5a")

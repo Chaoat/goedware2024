@@ -11,34 +11,26 @@ var player : CharacterBody3D
 
 func _ready() -> void:
 	start_position = position
-	#resize()
-	#get_tree().get_root().size_changed.connect(resize) 
 	
-	
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("interact"):
 		bobbing = true
 	if bobbing:
-		position.y = lerp(position.y, start_position.y+bob, BOB_RATE)
-		if abs(position.y - start_position.y - bob) < 1:
-			bobbing = false
+		_bob()
 	elif position != start_position:
 		position = position.lerp(start_position, BOB_RATE)
 			
+func _bob():
+	position.y = lerp(position.y, start_position.y+bob, BOB_RATE)
+	if abs(position.y - start_position.y - bob) < 1:
+		bobbing = false
 		
 func player_drank(drink):
-	drinks.texture = load("res://sprites/NPCs/drinks/drink_%s.png" % drink)
-	drinks.visible = true
+	#drinks.texture = load("res://sprites/NPCs/drinks/drink_%s.png" % drink)
+	#drinks.visible = true
+	texture = load("res://sprites/NPCs/drinks_final/hand_%s.png" % drink)
 	
 func finish_drink():
-	drinks.visible = false
-
-## Function to scale the TextureRect based on screen size
-#func resize():
-	#print(resize)
-	#var screen_size = get_viewport().size
-	#var scale_factor = 0.0005  # You can adjust this value based on how much you want to scale
-	#print(scale)
-	## Scale the TextureRect to a percentage of the screen size
-	#scale = Vector2(screen_size.y * scale_factor, screen_size.y * scale_factor)
-	#rect_size()
+	#drinks.visible = false
+	bobbing = true
+	texture = load("res://sprites/NPCs/drinks_final/hand_-1.png")

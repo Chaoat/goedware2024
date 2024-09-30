@@ -65,9 +65,12 @@ func setNavTarget(target:Vector3):
 func interact():
 	velocity.y = JUMP
 	talking = true
-	#print('talking to me')
-	#print(variants.txt[str(NPC_id)])
-	#leave()
+	if randi() % 2 :
+		$voice_1.pitch_scale = randf()
+		$voice_1.play()
+	else:
+		$voice_2.pitch_scale = randf()
+		$voice_2.play()
 	
 	if waiter:
 		#print('have a drink!')

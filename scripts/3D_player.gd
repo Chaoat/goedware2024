@@ -17,9 +17,12 @@ var cameraLookTarget:Vector3
 signal drinking(drink)
 signal interact(word)
 
+var walk_timer : float = 0
+var walk_rate : float = 2 * PI / bob_rate
+
 func _physics_process(delta):
 	clock += delta * bob_rate
-	var bob = sin(clock)/bob_height
+	var bob = sin(clock + (PI/bob_rate))/bob_height
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var linear_dir = input_dir.y
 	var rot_dir = 0
@@ -32,8 +35,15 @@ func _physics_process(delta):
 		velocity.x = sin(basis.get_euler().y) * speed * linear_dir * delta
 		velocity.z = cos(basis.get_euler().y) * speed * linear_dir * delta
 		position.y = lerpf(position.y, bob, 0.2)
+		walk_timer += delta
+		if walk_timer > walk_rate:
+			walk_timer = 0
+			var walk_sound = get_node("walk%s" % (randi() % 3 + 1))
+			walk_sound.pitch_scale = randf_range(0.7, 1)
+			walk_sound.play()
 	else:
 		#velocity = Vector3.ZERO
+		walk_timer = 0
 		velocity.z = lerpf(velocity.z, 0, 0.5)
 		velocity.x = lerpf(velocity.x, 0, 0.5)
 		velocity.y = lerpf(velocity.y, 0, 0.5)
@@ -67,3 +77,5 @@ func unlockCamera():
 func lockCamera(lookTarget:Vector3):
 	cameraLocked = true
 	cameraLookTarget = lookTarget
+
+#func _walk_sound():

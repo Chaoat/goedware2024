@@ -1,18 +1,18 @@
-[gd_scene load_steps=8 format=3 uid="uid://bc18qelbxsy74"]
+[gd_scene load_steps=9 format=3 uid="uid://bc18qelbxsy74"]
 
 [ext_resource type="Script" path="res://scripts/NPC.gd" id="1_iswqn"]
-[ext_resource type="Resource" uid="uid://bi3qk3rd2d04l" path="res://voicelines/NPC_variants.tres" id="2_sri8l"]
 [ext_resource type="Texture2D" uid="uid://dk4ms7bojytff" path="res://sprites/shadow.png" id="3_dhwnu"]
 [ext_resource type="Texture2D" uid="uid://clhh4pdsf81ly" path="res://sprites/NPCs/NPC_-1.png" id="3_g82ju"]
 [ext_resource type="Texture2D" uid="uid://ip6tb87qf6yv" path="res://sprites/NPCs/dish.png" id="5_q2m6m"]
 [ext_resource type="Texture2D" uid="uid://cbh6uk1vlg2qp" path="res://sprites/NPCs/drinks/drink_0.png" id="6_5mff3"]
+[ext_resource type="AudioStream" uid="uid://buxw0svtbnva7" path="res://sounds/voice (1).wav" id="6_tpa5t"]
+[ext_resource type="AudioStream" uid="uid://cul65imkhi76i" path="res://sounds/voice (2).wav" id="7_crc8f"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pmrqo"]
 
 [node name="NPC" type="CharacterBody3D"]
 collision_mask = 2
 script = ExtResource("1_iswqn")
-variants = ExtResource("2_sri8l")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -39,6 +39,13 @@ billboard = 2
 texture = ExtResource("5_q2m6m")
 
 [node name="Drinks" type="Sprite3D" parent="Platter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.79592, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.76019, 0)
 billboard = 2
 texture = ExtResource("6_5mff3")
+
+[node name="voice_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_tpa5t")
+pitch_scale = 0.45
+
+[node name="voice_2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_crc8f")

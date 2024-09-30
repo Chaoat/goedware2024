@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cqogbpopuy634"
+path="res://.godot/imported/G4F SFX11 - ExoInterface - Window Close - Short 16.wav-094c3a314624541388add33cc1602635.sample"
+
+[deps]
+
+source_file="res://sounds/G4F SFX11 - ExoInterface - Window Close - Short 16.wav"
+dest_files=["res://.godot/imported/G4F SFX11 - ExoInterface - Window Close - Short 16.wav-094c3a314624541388add33cc1602635.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

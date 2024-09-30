@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2sd4halr4wip"]
+
+[ext_resource type="Script" path="res://scripts/playerController.gd" id="1_3l6if"]
+[ext_resource type="AudioStream" uid="uid://db28m4r5n7hyk" path="res://sounds/sting.wav" id="2_vw5dq"]
+[ext_resource type="PackedScene" uid="uid://ces6b5fc6aceu" path="res://scenes/music.tscn" id="3_lb776"]
+
+[node name="PlayerController" type="Node"]
+script = ExtResource("1_3l6if")
+
+[node name="leave" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_vw5dq")
+
+[node name="music" parent="." instance=ExtResource("3_lb776")]

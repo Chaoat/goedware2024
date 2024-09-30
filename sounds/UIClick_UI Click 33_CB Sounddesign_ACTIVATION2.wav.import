@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dhjnw5od44fcj"
+path="res://.godot/imported/UIClick_UI Click 33_CB Sounddesign_ACTIVATION2.wav-02fc7377c69ea3565f6ddfcccc630346.sample"
+
+[deps]
+
+source_file="res://sounds/UIClick_UI Click 33_CB Sounddesign_ACTIVATION2.wav"
+dest_files=["res://.godot/imported/UIClick_UI Click 33_CB Sounddesign_ACTIVATION2.wav-02fc7377c69ea3565f6ddfcccc630346.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

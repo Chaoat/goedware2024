@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://ypjrslqj878q"
+path="res://.godot/imported/G4F SFX05 - Casual - CONS sfx_combo_succeed_03.wav-e4e53cec0a37aaa64545435dd700eeeb.sample"
+
+[deps]
+
+source_file="res://sounds/G4F SFX05 - Casual - CONS sfx_combo_succeed_03.wav"
+dest_files=["res://.godot/imported/G4F SFX05 - Casual - CONS sfx_combo_succeed_03.wav-e4e53cec0a37aaa64545435dd700eeeb.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

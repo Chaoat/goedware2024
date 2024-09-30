@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://nchb22ey8og0"]
+[gd_scene load_steps=6 format=3 uid="uid://nchb22ey8og0"]
 
 [ext_resource type="Script" path="res://Scrabble/tile.gd" id="1_itbeu"]
 [ext_resource type="Texture2D" uid="uid://1kp74a1apn73" path="res://sprites/scrabble/tiles/1.png" id="2_dhrbv"]
+[ext_resource type="AudioStream" uid="uid://bwdvu8w62oe3q" path="res://sounds/click (3).wav" id="3_alujc"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qreja"]
 font_size = 26
@@ -43,3 +44,6 @@ label_settings = SubResource("LabelSettings_pi7h6")
 horizontal_alignment = 2
 vertical_alignment = 1
 uppercase = true
+
+[node name="click" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_alujc")

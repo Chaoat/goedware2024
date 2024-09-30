@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://ces6b5fc6aceu"]
+
+[ext_resource type="AudioStream" uid="uid://c607o5hjlh8w7" path="res://sounds/music/LOOP.wav" id="1_xcylu"]
+[ext_resource type="Script" path="res://scenes/music_loop.gd" id="2_y3tp6"]
+[ext_resource type="AudioStream" uid="uid://hryqqtdb557u" path="res://sounds/music/INTRO.wav" id="3_ia1la"]
+
+[node name="music" type="AudioStreamPlayer"]
+stream = ExtResource("1_xcylu")
+volume_db = -15.0
+script = ExtResource("2_y3tp6")
+
+[node name="musicIntro" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_ia1la")
+volume_db = -15.0
+autoplay = true
+
+[connection signal="finished" from="." to="." method="_on_finished"]
+[connection signal="finished" from="musicIntro" to="." method="_on_music_intro_finished"]
